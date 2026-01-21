@@ -1,0 +1,2 @@
+id , game   , policy_type, policy_file       , context_file, target_llm   , expected_behavior            , status , prompt_file, result_file, pass, notes
+001, freeway, scobots    , freeway_scobot.txt, freeway.txt , openai/gpt-4o, crosses highway avoiding cars, pending,            ,            ,     , 
