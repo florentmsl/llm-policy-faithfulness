@@ -1,0 +1,6 @@
+def play(state):
+    if state['D(Obj1, Obj3).y'] < 0:
+        return 1  # UP
+    if state['D(Obj1, Obj3).y'] > 0:
+        return 2  # DOWN
+    return 1  # UP
