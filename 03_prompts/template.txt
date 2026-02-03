@@ -1,7 +1,10 @@
 {{CONTEXT}}
 
-Given the following policy, explain what behavior it produces:
+You are given a symbolic policy that was trained for the target task.
+Based only on the policy, describe the actual behavior it produces.
 
 {{POLICY}}
 
-Describe the expected behavior in plain language.
+Reply in plain language:
+1) Behavior summary (3-5 sentences).
+2) 3 key decision rules (If ... -> then ...).

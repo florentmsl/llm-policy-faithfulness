@@ -1,9 +1,3 @@
-id,game,policy_type,policy_file,context_file,has_context,grounded,behavior,target_llm,expected_behavior,status,prompt_file,result_file,pass,notes
-fw-001,freeway,scobots,fw_scobot.txt,fw.txt,true,true,normal,openai/gpt-4o,Explains chicken crosses lanes while avoiding cars to score points,pending,03_prompts/sent/fw-001_openai_gpt-4o_prompt.txt,,,
-fw-002,freeway,scobots,fw_scobot_ug.txt,fw.txt,true,false,normal,openai/gpt-4o,Explains agent advances safely across lanes while avoiding collisions,pending,03_prompts/sent/fw-002_openai_gpt-4o_prompt.txt,,,
-fw-003,freeway,scobots,fw_scobot.txt,,false,true,normal,openai/gpt-4o,Explains chicken attempts to progress while avoiding cars based on policy,pending,03_prompts/sent/fw-003_openai_gpt-4o_prompt.txt,,,
-fw-004,freeway,scobots,fw_scobot_ug.txt,,false,false,normal,openai/gpt-4o,Explains agent advances safely across lanes while avoiding collisions,pending,03_prompts/sent/fw-004_openai_gpt-4o_prompt.txt,,,
-fw-005,freeway,scobots,fw_scobot_instahit.txt,fw.txt,true,true,instahit,openai/gpt-4o,Identifies unsafe behavior: chicken immediately hits the first car,pending,03_prompts/sent/fw-005_openai_gpt-4o_prompt.txt,,,
-fw-006,freeway,scobots,fw_scobot_instahit_ug.txt,fw.txt,true,false,instahit,openai/gpt-4o,Identifies unsafe behavior: agent immediately collides with the first car,pending,03_prompts/sent/fw-006_openai_gpt-4o_prompt.txt,,,
-fw-007,freeway,scobots,fw_scobot_instahit.txt,,false,true,instahit,openai/gpt-4o,Identifies unsafe behavior: chicken immediately hits the first car,pending,03_prompts/sent/fw-007_openai_gpt-4o_prompt.txt,,,
-fw-008,freeway,scobots,fw_scobot_instahit_ug.txt,,false,false,instahit,openai/gpt-4o,Identifies unsafe behavior: agent immediately collides with the first car,pending,03_prompts/sent/fw-008_openai_gpt-4o_prompt.txt,,,
+id,game,policy_type,policy_file,context_file,target_llm,expected_behavior,status,prompt_file,result_file,pass,notes
+fw-001,freeway,scobots,instahit.txt,freeway.txt,openai/gpt-4o,Identifies unsafe behavior: The agent seeks a collision with the first car.,pending,,,,
+fw-002,freeway,scobots,alwaysup.txt,freeway.txt,openai/gpt-4o,Identifies naive behavior: The agent only ever moves up. It will eventually score but is not reliable.,pending,,,,

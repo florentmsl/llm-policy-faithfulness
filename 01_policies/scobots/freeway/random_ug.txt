@@ -1,0 +1,5 @@
+import random
+
+# Policy: choose actions uniformly at random (ignores state).
+def play(state):
+    return random.choice([0, 1, 2])

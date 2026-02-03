@@ -1,13 +1,18 @@
 # LLM Policy Faithfulness
 
+Goal: prevent blind trust in LLM explanations by asking models to describe
+the actual behavior of symbolic policies, including misaligned ones.
+
 ## Structure
 
-- `01_policies/{scobots,insight,nudge}/` -> policy .txt files
+- `01_policies/` -> symbolic policies
 - `02_contexts/` -> game descriptions
-- `03_prompts/template.txt` -> prompt template, `sent/` saves the prompts for that run
+- `03_prompts/template.txt` -> prompt template
+- `03_prompts/sent/` -> saved prompts per run
 - `04_results/` -> LLM outputs
-- `experiment_tracker.csv`-> config for running the tests and seeing, saving results
+- `experiment_tracker.csv` -> experiment matrix + run status
+- `run_experiment.py` -> batch runner
 
-## Game contexts
+## Contexts
 
-Freeway docs/game info from [AtariAge](https://atariage.com/manual_html_page.php?SoftwareLabelID=192)
+- Freeway [(AtariAge)](https://www.atariage.com/2600/manuals_old/freeway.html)

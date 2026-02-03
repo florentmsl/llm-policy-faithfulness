@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import pandas as pd
 from dotenv import load_dotenv
@@ -15,72 +16,71 @@ OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 os.makedirs(PROMPTS_DIR, exist_ok=True)
 
 
-def call_llm(model: str, prompt: str) -> str:
-    client = OpenAI(
-        base_url=OPENROUTER_BASE_URL,
-        api_key=os.getenv("OPENROUTER_API_KEY"),
-    )
+def call_llm(client: OpenAI, model: str, prompt: str) -> str:
     resp = client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": prompt}],
+        temperature=0,
     )
     return resp.choices[0].message.content
 
 
 def run_experiment(dry: bool = False):
     df = pd.read_csv(INPUT_CSV)
+    df.columns = df.columns.str.strip()
 
-    with open(PROMPT_TEMPLATE) as f:
-        template = f.read()
+    template = Path(PROMPT_TEMPLATE).read_text()
+    client = OpenAI(
+        base_url=OPENROUTER_BASE_URL,
+        api_key=os.getenv("OPENROUTER_API_KEY"),
+    )
 
     for idx, row in df.iterrows():
-        if str(row["status"]).strip() == "done":
+        status = str(row["status"]).strip().lower()
+        if status == "done":
             continue
 
         row_id = str(row["id"]).strip()
-        model = row["target_llm"].strip()
-        print(f"Running {row_id} on {model}...")
-
-        context_file = str(row["context_file"]).strip()
-        policy_type = str(row["policy_type"]).strip()
+        model = str(row["target_llm"]).strip()
         policy_file = str(row["policy_file"]).strip()
-        policy_path = os.path.join("01_policies", policy_type, policy_file)
+        context_path = row["context_file"]
 
-        if context_file and context_file.lower() != "nan":
-            context_path = os.path.join("02_contexts", context_file)
-            with open(context_path) as f:
-                context = f.read()
-        else:
+        if pd.isna(context_path) or str(context_path).strip() == "":
             context = ""
-        with open(policy_path) as f:
-            policy = f.read()
+        else:
+            context_value = str(context_path).strip()
+            resolved_context = Path(context_value)
+            if not resolved_context.is_file():
+                resolved_context = Path("02_contexts") / context_value
+            if not resolved_context.is_file():
+                resolved_context = Path("02_contexts") / str(row["game"]).strip() / context_value
+            if not resolved_context.is_file():
+                raise FileNotFoundError(
+                    f"Context file not found: '{context_value}'. "
+                    "Tried raw path, 02_contexts/<file>, and 02_contexts/<game>/<file>."
+                )
+            context = resolved_context.read_text()
+        policy_path = Path("01_policies") / str(row["policy_type"]).strip() / str(row["game"]).strip() / policy_file
+        policy = policy_path.read_text()
 
         prompt = template.replace("{{CONTEXT}}", context).replace("{{POLICY}}", policy)
 
-        # Save prompt
         prompt_file = f"{row_id}_{model.replace('/', '_')}_prompt.txt"
         prompt_path = os.path.join(PROMPTS_DIR, prompt_file)
-        with open(prompt_path, "w") as f:
-            f.write(prompt)
+        Path(prompt_path).write_text(prompt)
         df.at[idx, "prompt_file"] = prompt_path
 
         if dry:
-            print("Dry run: skipping LLM call.")
             continue
 
-        try:
-            result = call_llm(model, prompt)
-            result_file = f"{row_id}_{model.replace('/', '_')}_result.txt"
-            result_path = os.path.join(RESULTS_DIR, result_file)
-            with open(result_path, "w") as f:
-                f.write(result)
-            df.at[idx, "result_file"] = result_path
-            df.at[idx, "status"] = "done"
-        except Exception as e:
-            print(f"Failed: {e}")
+        result = call_llm(client, model, prompt)
+        result_file = f"{row_id}_{model.replace('/', '_')}_result.txt"
+        result_path = os.path.join(RESULTS_DIR, result_file)
+        Path(result_path).write_text(result)
+        df.at[idx, "result_file"] = result_path
+        df.at[idx, "status"] = "done"
 
     df.to_csv(INPUT_CSV, index=False)
-    print("Batch complete.")
 
 
 if __name__ == "__main__":
