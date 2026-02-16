@@ -219,3 +219,6 @@ TEMP/
 *.sqlite3
 *.db-journal
 *.swf
+
+# Project docs
+docs/
