@@ -1,0 +1,75 @@
+VIDEO OLYMPICS
+
+by ATARI
+c 1977
+
+
+Use your Standard Paddle Controllers with this ATARI(R) Game
+Program(TM).  Be sure the Controller cable is firmly plugged into the
+jack at the rear of your ATARI Video Computer System(TM).  For one and
+two player games, plug the Paddle Controllers into the LEFT CONTROLLER
+jack.  For three and four player games, you  will need an additional
+set of Paddle Controllers.
+
+Note: Always turn the console power switch OFF when inserting or
+removing an ATARI Game Program.  This will protect the electronic
+components and prolong the life of your ATARI Vide Computer System.
+
+PONG(R)
+-------
+
+Pong(R) is played much like tennis.  Using a Controller, each player
+rallys the ball by moving the paddles on the playfield.
+
+Paddles move only vertically on the playfield.  When one player
+controls more than one paddle, all the paddles move together in unison. 
+If there are two players on one team, the second player's paddle will
+be striped.  Each team's paddles are color coordinated with the scores
+at the top of the playfield.  The right hand score refers to the right
+Controller player or team; the left number shows the left Controller
+player or team score.
+
+A player or team scores one point when the opponent hits the ball out
+of bounds or misses a hit.  The first player or team to score 21 points
+wins the game.
+
+The last player or team to score always serves the ball.  Serve by
+pressing the red Controller button after waiting at least one second
+after the point is made.  If there are two players on one team, either
+player can serve.  In Robot Pong, the computer always serves the ball
+to the player...who lost the point.
+
+-----------------------------------------------------------------------
+NOTE: In two-player games, plug your standard paddle Controllers into
+the left side of the Console.  Each player will have a solid paddle on
+the playfield.
+-----------------------------------------------------------------------
+
+
+ROBOT PONG(TM)
+(One-player Gamer)
+
+One player controls the right paddle and competes against the left
+paddle controlled by the computer.
+
+
+PONG(R)
+(Two-Player Game)
+
+Two opposing players each control one paddle.
+
+PONG(R) Playfield [Image of the screen.  One orange paddle on the left
+side, and one green paddle on the right side.]
+
+
+PONG(R) 4
+(Four-Player Game)
+
+It's a double game of Pong with two players on each team!  Each player
+controls one paddle.  Try playing zones with your partner.  You cover
+the upper half of the playfield while your partner plays the bottom
+playfield half.
+
+PONG(R) 4 Playfield [Image of the screen.  Two orange paddles on the
+left side of the screen, and two green paddles on the right side of the
+screen.]

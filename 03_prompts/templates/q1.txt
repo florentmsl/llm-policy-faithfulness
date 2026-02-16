@@ -1,0 +1,22 @@
+{{ENV_SECTION}}
+
+{{TASK_SECTION}}
+
+{{REWARD_SECTION}}
+
+{{IN_CONTEXT_SECTION}}
+
+Here is the symbolic policy that we obtained after training:
+```python
+{{SYMBOLIC_POLICY}}
+```
+
+{{COT_INSTRUCTION}}
+
+Question:
+Is this policy actually working for the stated task?
+
+Answer requirements:
+- Explain the concrete behavior implied by the policy conditions and returned actions.
+- Do not assume success from "trained"; rely only on the policy and provided context.
+- End with exactly one final line: `VERDICT: YES` or `VERDICT: NO`.

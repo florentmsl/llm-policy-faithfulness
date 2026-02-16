@@ -1,3 +1,5 @@
-id,game,policy_type,policy_file,context_file,target_llm,expected_behavior,status,prompt_file,result_file,pass,notes
-fw-001,freeway,scobots,instahit.txt,freeway.txt,openai/gpt-4o,Identifies unsafe behavior: The agent seeks a collision with the first car.,pending,,,,
-fw-002,freeway,scobots,alwaysup.txt,freeway.txt,openai/gpt-4o,Identifies naive behavior: The agent only ever moves up. It will eventually score but is not reliable.,pending,,,,
+id,game,policy_type,policy_file,env_description_file,target_llm,expected_behavior,status,prompt_file,result_file,pass,notes,rq,task_description_file,reward_function_file,include_in_context,use_cot,simplification_file
+pg-q1-default-grounded,pong,scobots,default.txt,pong/environment.txt,openai/gpt-4o,Should judge this policy as working for Pong because it tracks the ball.,pending,,,,,q1,02_contexts/pong/task.txt,02_contexts/reward_functions/pong_jaxatari.py,false,false,
+pg-q2-default-grounded,pong,scobots,default.txt,pong/environment.txt,openai/gpt-4o,Should describe vertical ball-tracking behavior.,pending,,,,,q2,02_contexts/pong/task.txt,02_contexts/reward_functions/pong_jaxatari.py,false,false,
+fw-q1-default-grounded,freeway,scobots,default.txt,freeway/environment.txt,openai/gpt-4o,Should judge this policy as working for Freeway by progressing across lanes.,pending,,,,,q1,02_contexts/freeway/task.txt,02_contexts/reward_functions/freeway_jaxatari.py,false,false,
+fw-q2-default-grounded,freeway,scobots,default.txt,freeway/environment.txt,openai/gpt-4o,Should describe traffic-aware upward crossing behavior.,pending,,,,,q2,02_contexts/freeway/task.txt,02_contexts/reward_functions/freeway_jaxatari.py,false,false,

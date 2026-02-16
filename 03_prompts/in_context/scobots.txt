@@ -1,0 +1,15 @@
+Example policy:
+```python
+def play(state):
+    if state["D(Ball, Paddle).y"] > 2:
+        return 2  # DOWN
+    if state["D(Ball, Paddle).y"] < -2:
+        return 1  # UP
+    return 0  # NOOP
+```
+
+Example explanation:
+This policy tracks the vertical offset between the ball and the controlled paddle.
+If the ball is below the paddle, it moves down; if the ball is above, it moves up.
+When the offset is small, it does nothing and keeps the paddle near its current position.
+The behavior is reactive tracking, not strategic planning.

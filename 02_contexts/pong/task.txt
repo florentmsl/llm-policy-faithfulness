@@ -1,0 +1,1 @@
+Control the player paddle so the ball is returned past the opponent more often than it is missed.

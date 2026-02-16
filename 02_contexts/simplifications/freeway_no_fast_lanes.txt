@@ -1,0 +1,1 @@
+Simplification: reduce all car speeds by 40% and remove lane-speed variance so traffic becomes more uniform and predictable.

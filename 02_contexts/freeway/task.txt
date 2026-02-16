@@ -1,0 +1,1 @@
+Move the controlled chicken from the bottom to the top of the road repeatedly within the time limit while avoiding collisions with cars.

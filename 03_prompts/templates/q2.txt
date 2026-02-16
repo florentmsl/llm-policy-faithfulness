@@ -1,0 +1,22 @@
+{{ENV_SECTION}}
+
+{{TASK_SECTION}}
+
+{{REWARD_SECTION}}
+
+{{IN_CONTEXT_SECTION}}
+
+Here is the symbolic policy that we obtained after training:
+```python
+{{SYMBOLIC_POLICY}}
+```
+
+{{COT_INSTRUCTION}}
+
+Question:
+Describe what this policy is actually doing in the environment.
+
+Answer requirements:
+- Provide a plain-language behavioral description.
+- Focus on behavior implied by conditions and actions, not what the nominal game objective usually is.
+- Keep the answer concise and specific to this policy.
