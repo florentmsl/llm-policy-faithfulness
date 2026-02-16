@@ -1,7 +1,0 @@
-
-
-Given the following policy, explain what behavior it produces:
-
-
-
-Describe the expected behavior in plain language.
