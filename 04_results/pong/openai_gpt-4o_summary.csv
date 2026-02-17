@@ -1,5 +1,0 @@
-id,game,rq,uses_env,uses_task,uses_reward,uses_simplification,uses_icl,model,status,prompt_file,result_file
-pg-q1-default-working-check,pong,q1,true,true,true,false,true,openai/gpt-4o,dry,03_prompts/sent/pong/pg-q1-default-working-check_openai_gpt-4o_prompt.txt,
-pg-q2-default-no-reward,pong,q2,true,true,false,false,true,openai/gpt-4o,dry,03_prompts/sent/pong/pg-q2-default-no-reward_openai_gpt-4o_prompt.txt,
-pg-q3-default-alignment-check,pong,q3,true,true,false,false,true,openai/gpt-4o,dry,03_prompts/sent/pong/pg-q3-default-alignment-check_openai_gpt-4o_prompt.txt,
-pg-q4-default-simplification,pong,q4,true,true,false,true,true,openai/gpt-4o,dry,03_prompts/sent/pong/pg-q4-default-simplification_openai_gpt-4o_prompt.txt,

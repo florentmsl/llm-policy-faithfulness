@@ -13,6 +13,10 @@ load_dotenv()
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 OPTIONAL_BLOCK_PATTERN = re.compile(r"{{#([A-Z0-9_]+)}}(.*?){{/\1}}", re.DOTALL)
+DRY_RUN_RESULT_TEXT = "---- This was a dry run\n"
+MODEL_KEY_TO_OPENROUTER = {
+    "gpt-4o": "openai/gpt-4o",
+}
 
 
 @dataclass(frozen=True)
@@ -34,10 +38,6 @@ def _read_file(path: str) -> str:
 
 def _read_optional_file(path: str | None) -> str:
     return _read_file(path) if path else ""
-
-
-def _model_slug(model: str) -> str:
-    return re.sub(r"[^A-Za-z0-9._-]+", "_", model)
 
 
 def _normalize_prompt(prompt: str) -> str:
@@ -151,15 +151,20 @@ def _call_llm(client: OpenAI, model: str, prompt: str) -> str:
     return response.choices[0].message.content or ""
 
 
-def run(experiments_file: Path, dry: bool, overwrite_existing: bool) -> None:
-    model, template_by_rq, game, experiments = _load_experiment_file(experiments_file)
-    model_slug = _model_slug(model)
+def _can_overwrite_result(result_file: Path) -> bool:
+    if not result_file.is_file():
+        return True
+    return result_file.read_text(encoding="utf-8").strip() == DRY_RUN_RESULT_TEXT.strip()
+
+
+def run(experiments_file: Path, dry: bool) -> None:
+    model_key, template_by_rq, game, experiments = _load_experiment_file(experiments_file)
+    openrouter_model = MODEL_KEY_TO_OPENROUTER.get(model_key, model_key)
 
     prompts_dir = Path("03_prompts/sent") / game
     results_dir = Path("04_results") / game
     prompts_dir.mkdir(parents=True, exist_ok=True)
-    if not dry:
-        results_dir.mkdir(parents=True, exist_ok=True)
+    results_dir.mkdir(parents=True, exist_ok=True)
 
     client = None
     if not dry:
@@ -170,18 +175,20 @@ def run(experiments_file: Path, dry: bool, overwrite_existing: bool) -> None:
         template_path = template_by_rq[experiment.rq]
 
         prompt = _build_prompt(experiment, template_path=template_path)
-        prompt_file = prompts_dir / f"{experiment.experiment_id}_{model_slug}_prompt.txt"
+        prompt_file = prompts_dir / f"{experiment.experiment_id}_{model_key}_prompt.txt"
         prompt_file.write_text(prompt, encoding="utf-8")
 
-        result_file = results_dir / f"{experiment.experiment_id}_{model_slug}_result.txt"
-        status = "dry"
-        if not dry:
-            if result_file.is_file() and not overwrite_existing:
-                status = "skipped_existing"
-            else:
-                status = "done"
-                response_text = _call_llm(client, model, prompt)
-                result_file.write_text(response_text, encoding="utf-8")
+        result_file = results_dir / f"{experiment.experiment_id}_{model_key}_result.txt"
+        can_overwrite = _can_overwrite_result(result_file)
+        if not can_overwrite:
+            status = "skipped_existing"
+        elif dry:
+            status = "dry"
+            result_file.write_text(DRY_RUN_RESULT_TEXT, encoding="utf-8")
+        else:
+            status = "done"
+            response_text = _call_llm(client, openrouter_model, prompt)
+            result_file.write_text(response_text, encoding="utf-8")
 
         summary_rows.append(
             {
@@ -193,15 +200,15 @@ def run(experiments_file: Path, dry: bool, overwrite_existing: bool) -> None:
                 "uses_reward": "true" if experiment.reward_file else "false",
                 "uses_simplification": "true" if experiment.simplification_file else "false",
                 "uses_icl": "true" if experiment.icl_file else "false",
-                "model": model,
+                "model": model_key,
                 "status": status,
                 "prompt_file": str(prompt_file),
-                "result_file": str(result_file) if not dry else "",
+                "result_file": str(result_file),
             }
         )
         print(f"{status}: {experiment.experiment_id}")
 
-    summary_path = results_dir / f"{model_slug}_summary.csv"
+    summary_path = results_dir / f"{model_key}_summary.csv"
     summary_path.parent.mkdir(parents=True, exist_ok=True)
     with summary_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(
@@ -228,8 +235,7 @@ def run(experiments_file: Path, dry: bool, overwrite_existing: bool) -> None:
     print(f"Experiments processed: {len(experiments)}")
     print(f"Prompt files: {prompts_dir}")
     print(f"Summary file: {summary_path}")
-    if not dry:
-        print(f"Result files: {results_dir}")
+    print(f"Result files: {results_dir}")
 
 
 def main() -> None:
@@ -244,17 +250,11 @@ def main() -> None:
         action="store_true",
         help="Build prompt files only (no API calls).",
     )
-    parser.add_argument(
-        "--overwrite-existing",
-        action="store_true",
-        help="Overwrite existing result files (default behavior is skip).",
-    )
     args = parser.parse_args()
 
     run(
         experiments_file=Path(args.file),
         dry=args.dry,
-        overwrite_existing=args.overwrite_existing,
     )
 
 

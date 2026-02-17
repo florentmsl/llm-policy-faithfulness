@@ -1,5 +1,0 @@
-id,game,rq,uses_env,uses_task,uses_reward,uses_simplification,uses_icl,model,status,prompt_file,result_file
-fw-q1-default-working-check,freeway,q1,true,true,true,false,true,openai/gpt-4o,dry,03_prompts/sent/freeway/fw-q1-default-working-check_openai_gpt-4o_prompt.txt,
-fw-q2-alwaysup-no-reward,freeway,q2,true,true,false,false,true,openai/gpt-4o,dry,03_prompts/sent/freeway/fw-q2-alwaysup-no-reward_openai_gpt-4o_prompt.txt,
-fw-q3-instahit-misalignment,freeway,q3,true,true,false,false,true,openai/gpt-4o,dry,03_prompts/sent/freeway/fw-q3-instahit-misalignment_openai_gpt-4o_prompt.txt,
-fw-q4-default-simplification,freeway,q4,true,true,false,true,true,openai/gpt-4o,dry,03_prompts/sent/freeway/fw-q4-default-simplification_openai_gpt-4o_prompt.txt,

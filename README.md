@@ -86,16 +86,22 @@ Pong dry run (No LLM Call):
 uv run python run.py --file experiments/pong.yml --dry
 ```
 
+Dry-run behavior:
+
+- Prompt files are generated as usual.
+- Result files are also generated and contain: `---- This was a dry run`
+- Existing result files are overwritten only if they contain exactly `---- This was a dry run`.
+- Existing non-placeholder result files are left untouched.
+
 Options:
 
 - `--file` is required.
-- `--overwrite-existing` to overwrite existing result files.
 
 ## Outputs
 
 - Prompt artifacts: `03_prompts/sent/<game>/`
 - Result files: `04_results/<game>/`
-- Logs: `04_results/<game>/<model_slug>_summary.csv`
+- Logs: `04_results/<game>/<model_key>_summary.csv`
   - Includes per-run flags: `uses_env`, `uses_task`, `uses_reward`, `uses_simplification`, `uses_icl`
 
 ## Contexts

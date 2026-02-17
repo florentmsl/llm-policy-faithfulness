@@ -1,6 +1,6 @@
 defaults:
   game: pong
-  model: openai/gpt-4o
+  model: gpt-4o
   icl_file: 03_prompts/in_context/scobots.txt
   templates:
     q1: 03_prompts/templates/q1_research.txt

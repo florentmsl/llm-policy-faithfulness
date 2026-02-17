@@ -1,6 +1,6 @@
 defaults:
   game: freeway
-  model: openai/gpt-4o
+  model: gemini-3-pro
   icl_file: 03_prompts/in_context/scobots.txt
   templates:
     q1: 03_prompts/templates/q1_research.txt
