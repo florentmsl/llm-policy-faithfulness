@@ -18,17 +18,17 @@ experiments:
     rq: q1
     policy_file: 01_policies/scobots/freeway/aligned.txt
 
-  - id: fw-q1-instahit-full-context
+  - id: fw-q1-alwaysup-full-context
     rq: q1
-    policy_file: 01_policies/scobots/freeway/instahit.txt
+    policy_file: 01_policies/scobots/freeway/alwaysup.txt
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
     reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
     icl_file: 03_prompts/in_context/scobots.txt
 
-  - id: fw-q1-instahit-policy-only
+  - id: fw-q1-alwaysup-policy-only
     rq: q1
-    policy_file: 01_policies/scobots/freeway/instahit.txt
+    policy_file: 01_policies/scobots/freeway/alwaysup.txt
 
   - id: fw-q2-aligned-full-context
     rq: q2
