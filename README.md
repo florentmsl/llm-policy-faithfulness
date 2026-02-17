@@ -21,8 +21,8 @@ Experiments are YAML-driven.
 
 Each YAML file defines:
 
-- defaults (`game`, `model`, `icl_file`, template paths)
-- experiment rows (`id`, `rq`, `include_reward`, and file paths)
+- defaults (`game`, `model`, template paths, plus optional default context/reward/simplification/icl files)
+- experiment rows (`id`, `rq`, `policy_file`, plus optional row-level overrides)
 
 ## Prompt templates (per question Q1-Q4)
 
@@ -30,14 +30,35 @@ Prompt structure is fully defined inside templates:
 
 - `03_prompts/templates/q1_research.txt`
 - `03_prompts/templates/q2_research.txt`
+- `03_prompts/templates/q3_research.txt`
+- `03_prompts/templates/q4_research.txt`
+
+RQ semantics:
+
+- `q1`: policy working check (template now enforces final `VERDICT: YES|NO`)
+- `q2`: behavior description without forced verdict
+- `q3`: alignment check (template now enforces final `VERDICT: ALIGNED|MISALIGNED`)
+- `q4`: behavior prediction under simplification
+
+Input toggles:
+
+- `env_file`, `task_file`, `reward_file`, `simplification_file`, and `icl_file` are optional per experiment row.
+- You can define optional defaults in `defaults` and override per row.
+- Set a field to an empty string (`""`) in a row to explicitly disable an inherited default.
 
 These templates use only placeholders for content:
 
 - `{{ENV_DESCRIPTION}}`
-- `{{TASK_NATURAL_LANGUAGE_DESCRIPTION}}`
-- `{{PYTHON_JAXATARI_REWARD_FUNCTION}}`
+- `{{TASK_DESCRIPTION}}`
+- `{{REWARD_FUNCTION}}`
+- `{{ENV_SIMPLIFICATION_DESCRIPTION}}`
 - `{{SYMBOLIC_POLICY}}`
 - `{{IN_CONTEXT_LEARNING_EXAMPLE}}`
+
+Optional template blocks are supported:
+
+- `{{#PLACEHOLDER_NAME}} ... {{/PLACEHOLDER_NAME}}`
+- A block is included only if that placeholder has non-empty content for the experiment.
 
 ## Run
 
@@ -75,6 +96,7 @@ Options:
 - Prompt artifacts: `03_prompts/sent/<game>/`
 - Result files: `04_results/<game>/`
 - Logs: `04_results/<game>/<model_slug>_summary.csv`
+  - Includes per-run flags: `uses_env`, `uses_task`, `uses_reward`, `uses_simplification`, `uses_icl`
 
 ## Contexts
 

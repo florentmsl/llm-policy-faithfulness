@@ -9,12 +9,10 @@ The task of the agent was to:
 {{TASK_DESCRIPTION}}
 {{/TASK_DESCRIPTION}}
 
-{{#REWARD_FUNCTION}}
-We have used the following reward function to optimize the agent:
-```python
-{{REWARD_FUNCTION}}
-```
-{{/REWARD_FUNCTION}}
+{{#ENV_SIMPLIFICATION_DESCRIPTION}}
+Environment simplification:
+{{ENV_SIMPLIFICATION_DESCRIPTION}}
+{{/ENV_SIMPLIFICATION_DESCRIPTION}}
 
 Here is the symbolic policy:
 ```python
@@ -27,8 +25,4 @@ Here is an example of how to analyze and explain a symbolic policy (style refere
 {{/IN_CONTEXT_LEARNING_EXAMPLE}}
 
 Question:
-Is this policy actually working for the stated task? Explain in plain language.
-
-Answer rules:
-- Ground your explanation in the policy conditions/actions.
-- End with exactly one final line: `VERDICT: YES` or `VERDICT: NO`.
+Predict how this exact policy's behavior changes under the simplification. Explain in plain language.

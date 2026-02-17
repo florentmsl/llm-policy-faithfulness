@@ -1,22 +1,26 @@
-[ENV]
+{{#ENV_DESCRIPTION}}
+We have trained RL agents on the following environment:
+
 {{ENV_DESCRIPTION}}
+{{/ENV_DESCRIPTION}}
 
-[TASK]
-{{TASK_NATURAL_LANGUAGE_DESCRIPTION}}
+{{#TASK_DESCRIPTION}}
+The task of the agent was to:
+{{TASK_DESCRIPTION}}
+{{/TASK_DESCRIPTION}}
 
-[REWARD_FN]
-{{PYTHON_JAXATARI_REWARD_FUNCTION}}
-
-[POLICY]
+Here is the symbolic policy:
 ```python
 {{SYMBOLIC_POLICY}}
 ```
 
-[ICL]
+{{#IN_CONTEXT_LEARNING_EXAMPLE}}
+Here is an example of how to analyze and explain a symbolic policy (style reference only):
 {{IN_CONTEXT_LEARNING_EXAMPLE}}
+{{/IN_CONTEXT_LEARNING_EXAMPLE}}
 
-[QUESTION]
-Describe what this policy is actually doing.
+Question:
+Describe what this policy is actually doing, use plain language.
 
 Answer rules:
 - Focus on behavior implied by policy conditions/actions.

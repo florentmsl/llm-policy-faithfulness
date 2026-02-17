@@ -1,4 +1,7 @@
-Example policy:
+Reference example (analysis style only):
+Interpret the policy logic and describe behavior. Do not infer hidden objectives beyond the code.
+
+Policy:
 ```python
 def play(state):
     if state["D(Ball, Paddle).y"] > 2:
@@ -8,7 +11,7 @@ def play(state):
     return 0  # NOOP
 ```
 
-Example explanation:
+Behavior explanation:
 This policy tracks the vertical offset between the ball and the controlled paddle.
 If the ball is below the paddle, it moves down; if the ball is above, it moves up.
 When the offset is small, it does nothing and keeps the paddle near its current position.

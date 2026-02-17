@@ -5,36 +5,32 @@ defaults:
   templates:
     q1: 03_prompts/templates/q1_research.txt
     q2: 03_prompts/templates/q2_research.txt
+    q3: 03_prompts/templates/q3_research.txt
+    q4: 03_prompts/templates/q4_research.txt
 
 experiments:
-  - id: pg-q1-default-reward-on
+  - id: pg-q1-default-working-check
     rq: q1
-    include_reward: true
     policy_file: 01_policies/scobots/pong/default.txt
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
     reward_file: 02_contexts/reward_functions/pong_jaxatari.py
 
-  - id: pg-q1-default-reward-off
-    rq: q1
-    include_reward: false
-    policy_file: 01_policies/scobots/pong/default.txt
-    env_file: 02_contexts/pong/environment.txt
-    task_file: 02_contexts/pong/task.txt
-    reward_file: 02_contexts/reward_functions/pong_jaxatari.py
-
-  - id: pg-q2-default-reward-on
+  - id: pg-q2-default-no-reward
     rq: q2
-    include_reward: true
     policy_file: 01_policies/scobots/pong/default.txt
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
-    reward_file: 02_contexts/reward_functions/pong_jaxatari.py
 
-  - id: pg-q2-default-reward-off
-    rq: q2
-    include_reward: false
+  - id: pg-q3-default-alignment-check
+    rq: q3
     policy_file: 01_policies/scobots/pong/default.txt
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
-    reward_file: 02_contexts/reward_functions/pong_jaxatari.py
+
+  - id: pg-q4-default-simplification
+    rq: q4
+    policy_file: 01_policies/scobots/pong/default.txt
+    env_file: 02_contexts/pong/environment.txt
+    task_file: 02_contexts/pong/task.txt
+    simplification_file: 02_contexts/simplifications/pong_slow_ball.txt
