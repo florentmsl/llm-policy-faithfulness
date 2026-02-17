@@ -1,5 +1,5 @@
 id,game,rq,uses_env,uses_task,uses_reward,uses_simplification,uses_icl,model,status,prompt_file,result_file
-fw-q1-default-working-check,freeway,q1,true,true,true,false,true,gemini-3-pro,dry,03_prompts/sent/freeway/fw-q1-default-working-check_gemini-3-pro_prompt.txt,04_results/freeway/fw-q1-default-working-check_gemini-3-pro_result.txt
-fw-q2-alwaysup-no-reward,freeway,q2,true,true,false,false,true,gemini-3-pro,dry,03_prompts/sent/freeway/fw-q2-alwaysup-no-reward_gemini-3-pro_prompt.txt,04_results/freeway/fw-q2-alwaysup-no-reward_gemini-3-pro_result.txt
-fw-q3-instahit-misalignment,freeway,q3,true,true,false,false,true,gemini-3-pro,dry,03_prompts/sent/freeway/fw-q3-instahit-misalignment_gemini-3-pro_prompt.txt,04_results/freeway/fw-q3-instahit-misalignment_gemini-3-pro_result.txt
-fw-q4-default-simplification,freeway,q4,true,true,false,true,true,gemini-3-pro,dry,03_prompts/sent/freeway/fw-q4-default-simplification_gemini-3-pro_prompt.txt,04_results/freeway/fw-q4-default-simplification_gemini-3-pro_result.txt
+fw-q2-aligned-full-context,freeway,q2,true,true,false,false,false,gemini-3-pro,dry,03_prompts/sent/freeway/fw-q2-aligned-full-context_gemini-3-pro_prompt.txt,04_results/freeway/fw-q2-aligned-full-context_gemini-3-pro_result.txt
+fw-q2-aligned-policy-only,freeway,q2,false,false,false,false,false,gemini-3-pro,dry,03_prompts/sent/freeway/fw-q2-aligned-policy-only_gemini-3-pro_prompt.txt,04_results/freeway/fw-q2-aligned-policy-only_gemini-3-pro_result.txt
+fw-q2-instahit-full-context,freeway,q2,true,true,false,false,false,gemini-3-pro,dry,03_prompts/sent/freeway/fw-q2-instahit-full-context_gemini-3-pro_prompt.txt,04_results/freeway/fw-q2-instahit-full-context_gemini-3-pro_result.txt
+fw-q2-instahit-policy-only,freeway,q2,false,false,false,false,false,gemini-3-pro,dry,03_prompts/sent/freeway/fw-q2-instahit-policy-only_gemini-3-pro_prompt.txt,04_results/freeway/fw-q2-instahit-policy-only_gemini-3-pro_result.txt

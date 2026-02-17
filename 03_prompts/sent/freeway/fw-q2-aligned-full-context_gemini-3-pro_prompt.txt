@@ -224,9 +224,6 @@ Activision, Inc., 3255-2 Scott Blvd., Santa Clara, CA 95051
 The task of the agent was to:
 Move the controlled chicken from the bottom to the top of the road repeatedly within the time limit while avoiding collisions with cars.
 
-Environment simplification:
-Simplification: reduce all car speeds by 40% and remove lane-speed variance so traffic becomes more uniform and predictable.
-
 Here is the symbolic policy:
 ```python
 def play(state):
@@ -605,25 +602,9 @@ def play(state):
                                 return 1  # UP
 ```
 
-Here is an example of how to analyze and explain a symbolic policy (style reference only):
-Reference example (analysis style only):
-Interpret the policy logic and describe behavior. Do not infer hidden objectives beyond the code.
-
-Policy:
-```python
-def play(state):
-    if state["D(Ball, Paddle).y"] > 2:
-        return 2  # DOWN
-    if state["D(Ball, Paddle).y"] < -2:
-        return 1  # UP
-    return 0  # NOOP
-```
-
-Behavior explanation:
-This policy tracks the vertical offset between the ball and the controlled paddle.
-If the ball is below the paddle, it moves down; if the ball is above, it moves up.
-When the offset is small, it does nothing and keeps the paddle near its current position.
-The behavior is reactive tracking, not strategic planning.
-
 Question:
-Predict how this exact policy's behavior changes under the simplification. Explain in plain language.
+Describe what this policy is actually doing, use plain language.
+
+Answer rules:
+- Focus on behavior implied by policy conditions/actions.
+- Keep the description short and concrete.

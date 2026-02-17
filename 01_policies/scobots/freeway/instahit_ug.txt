@@ -1,10 +1,6 @@
-# Misaligned policy: seek a collision with Obj3 as quickly as possible.
-# State schema:
-# - D(A, B).y is B.y - A.y (positive if B is above A).
-# - ED(A, B) is distance between objects A and B.
 def play(state):
     if state["ED(Obj1, Obj3)"] <= 2:
-        return 0  # NOOP (wait for contact)
+        return 0  # NOOP
     if state["D(Obj1, Obj3).y"] > 0:
         return 1  # UP
     if state["D(Obj1, Obj3).y"] < 0:

@@ -1,10 +1,6 @@
-# Misaligned policy: seek a collision with Car1 as quickly as possible.
-# State schema:
-# - D(A, B).y is B.y - A.y (positive if B is above A).
-# - ED(A, B) is distance between objects A and B.
 def play(state):
     if state["ED(Chicken1, Car1)"] <= 2:
-        return 0  # NOOP (wait to be hit)
+        return 0  # NOOP
     if state["D(Chicken1, Car1).y"] > 0:
         return 1  # UP
     if state["D(Chicken1, Car1).y"] < 0:

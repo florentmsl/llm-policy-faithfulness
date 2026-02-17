@@ -1,0 +1,18 @@
+Here is the symbolic policy:
+```python
+def play(state):
+    if state["ED(Chicken1, Car1)"] <= 2:
+        return 0  # NOOP
+    if state["D(Chicken1, Car1).y"] > 0:
+        return 1  # UP
+    if state["D(Chicken1, Car1).y"] < 0:
+        return 2  # DOWN
+    return 0  # NOOP
+```
+
+Question:
+Describe what this policy is actually doing, use plain language.
+
+Answer rules:
+- Focus on behavior implied by policy conditions/actions.
+- Keep the description short and concrete.

@@ -1,36 +1,32 @@
 defaults:
   game: freeway
   model: gemini-3-pro
-  icl_file: 03_prompts/in_context/scobots.txt
   templates:
-    q1: 03_prompts/templates/q1_research.txt
     q2: 03_prompts/templates/q2_research.txt
-    q3: 03_prompts/templates/q3_research.txt
-    q4: 03_prompts/templates/q4_research.txt
 
 experiments:
-  - id: fw-q1-default-working-check
-    rq: q1
-    policy_file: 01_policies/scobots/freeway/default.txt
-    env_file: 02_contexts/freeway/environment.txt
-    task_file: 02_contexts/freeway/task.txt
-    reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
-
-  - id: fw-q2-alwaysup-no-reward
+  - id: fw-q2-aligned-full-context
     rq: q2
-    policy_file: 01_policies/scobots/freeway/alwaysup.txt
+    policy_file: 01_policies/scobots/freeway/aligned.txt
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
 
-  - id: fw-q3-instahit-misalignment
-    rq: q3
+  - id: fw-q2-aligned-policy-only
+    rq: q2
+    policy_file: 01_policies/scobots/freeway/aligned.txt
+    env_file: ""
+    task_file: ""
+    icl_file: ""
+
+  - id: fw-q2-instahit-full-context
+    rq: q2
     policy_file: 01_policies/scobots/freeway/instahit.txt
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
 
-  - id: fw-q4-default-simplification
-    rq: q4
-    policy_file: 01_policies/scobots/freeway/default.txt
-    env_file: 02_contexts/freeway/environment.txt
-    task_file: 02_contexts/freeway/task.txt
-    simplification_file: 02_contexts/simplifications/freeway_no_fast_lanes.txt
+  - id: fw-q2-instahit-policy-only
+    rq: q2
+    policy_file: 01_policies/scobots/freeway/instahit.txt
+    env_file: ""
+    task_file: ""
+    icl_file: ""
