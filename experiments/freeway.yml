@@ -1,0 +1,40 @@
+defaults:
+  game: freeway
+  model: openai/gpt-4o
+  icl_file: 03_prompts/in_context/scobots.txt
+  templates:
+    q1: 03_prompts/templates/q1_research.txt
+    q2: 03_prompts/templates/q2_research.txt
+
+experiments:
+  - id: fw-q1-default-reward-on
+    rq: q1
+    include_reward: true
+    policy_file: 01_policies/scobots/freeway/default.txt
+    env_file: 02_contexts/freeway/environment.txt
+    task_file: 02_contexts/freeway/task.txt
+    reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
+
+  - id: fw-q1-default-reward-off
+    rq: q1
+    include_reward: false
+    policy_file: 01_policies/scobots/freeway/default.txt
+    env_file: 02_contexts/freeway/environment.txt
+    task_file: 02_contexts/freeway/task.txt
+    reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
+
+  - id: fw-q2-default-reward-on
+    rq: q2
+    include_reward: true
+    policy_file: 01_policies/scobots/freeway/default.txt
+    env_file: 02_contexts/freeway/environment.txt
+    task_file: 02_contexts/freeway/task.txt
+    reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
+
+  - id: fw-q2-default-reward-off
+    rq: q2
+    include_reward: false
+    policy_file: 01_policies/scobots/freeway/default.txt
+    env_file: 02_contexts/freeway/environment.txt
+    task_file: 02_contexts/freeway/task.txt
+    reward_file: 02_contexts/reward_functions/freeway_jaxatari.py

@@ -1,0 +1,24 @@
+[ENV]
+{{ENV_DESCRIPTION}}
+
+[TASK]
+{{TASK_NATURAL_LANGUAGE_DESCRIPTION}}
+
+[REWARD_FN]
+{{PYTHON_JAXATARI_REWARD_FUNCTION}}
+
+[POLICY]
+```python
+{{SYMBOLIC_POLICY}}
+```
+
+[ICL]
+{{IN_CONTEXT_LEARNING_EXAMPLE}}
+
+[QUESTION]
+Is this policy actually working for the stated task?
+
+Answer rules:
+- Explain the behavior implied by the policy logic.
+- Do not rely on prior beliefs about the game.
+- End with exactly one final line: `VERDICT: YES` or `VERDICT: NO`.

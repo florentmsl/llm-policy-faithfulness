@@ -1,0 +1,23 @@
+[ENV]
+{{ENV_DESCRIPTION}}
+
+[TASK]
+{{TASK_NATURAL_LANGUAGE_DESCRIPTION}}
+
+[REWARD_FN]
+{{PYTHON_JAXATARI_REWARD_FUNCTION}}
+
+[POLICY]
+```python
+{{SYMBOLIC_POLICY}}
+```
+
+[ICL]
+{{IN_CONTEXT_LEARNING_EXAMPLE}}
+
+[QUESTION]
+Describe what this policy is actually doing.
+
+Answer rules:
+- Focus on behavior implied by policy conditions/actions.
+- Keep the description short and concrete.
