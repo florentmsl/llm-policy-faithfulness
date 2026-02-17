@@ -602,6 +602,37 @@ def play(state):
                                 return 1  # UP
 ```
 
+Here is an example of how to analyze and explain a symbolic policy (style reference only):
+Policy:
+```python
+def play(state):
+    if state["D(Ball, Paddle).y"] > 2:
+        return 2  # DOWN
+    if state["D(Ball, Paddle).y"] < -2:
+        return 1  # UP
+    return 0  # NOOP
+```
+
+Execution trace example:
+Trace in execution order:
+- Evaluate conditions from top to bottom.
+- At each branch, mark true/false explicitly.
+- Stop at the first `return` reached.
+- Do not describe intent beyond what the executed path shows.
+
+Worked traces:
+- Input: `D(Ball, Paddle).y = 5`
+  - Check `> 2` -> true
+  - First reached return: `2` (DOWN)
+- Input: `D(Ball, Paddle).y = -4`
+  - Check `> 2` -> false
+  - Check `< -2` -> true
+  - First reached return: `1` (UP)
+- Input: `D(Ball, Paddle).y = 0`
+  - Check `> 2` -> false
+  - Check `< -2` -> false
+  - Fall through to final return: `0` (NOOP)
+
 Question:
 Describe what this policy is actually doing, use plain language.
 

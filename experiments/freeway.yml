@@ -11,49 +11,45 @@ experiments:
     policy_file: 01_policies/scobots/freeway/aligned.txt
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
+    reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
+    icl_file: 03_prompts/in_context/scobots.txt
 
   - id: fw-q1-aligned-policy-only
     rq: q1
     policy_file: 01_policies/scobots/freeway/aligned.txt
-    env_file: ""
-    task_file: ""
-    icl_file: ""
 
   - id: fw-q1-instahit-full-context
     rq: q1
     policy_file: 01_policies/scobots/freeway/instahit.txt
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
+    reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
+    icl_file: 03_prompts/in_context/scobots.txt
 
   - id: fw-q1-instahit-policy-only
     rq: q1
     policy_file: 01_policies/scobots/freeway/instahit.txt
-    env_file: ""
-    task_file: ""
-    icl_file: ""
 
   - id: fw-q2-aligned-full-context
     rq: q2
     policy_file: 01_policies/scobots/freeway/aligned.txt
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
+    reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
+    icl_file: 03_prompts/in_context/scobots.txt
 
   - id: fw-q2-aligned-policy-only
     rq: q2
     policy_file: 01_policies/scobots/freeway/aligned.txt
-    env_file: ""
-    task_file: ""
-    icl_file: ""
 
   - id: fw-q2-instahit-full-context
     rq: q2
     policy_file: 01_policies/scobots/freeway/instahit.txt
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
+    reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
+    icl_file: 03_prompts/in_context/scobots.txt
 
   - id: fw-q2-instahit-policy-only
     rq: q2
     policy_file: 01_policies/scobots/freeway/instahit.txt
-    env_file: ""
-    task_file: ""
-    icl_file: ""

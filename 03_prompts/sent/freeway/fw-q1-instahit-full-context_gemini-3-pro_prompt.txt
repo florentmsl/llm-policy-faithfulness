@@ -224,6 +224,18 @@ Activision, Inc., 3255-2 Scott Blvd., Santa Clara, CA 95051
 The task of the agent was to:
 Move the controlled chicken from the bottom to the top of the road repeatedly within the time limit while avoiding collisions with cars.
 
+We have used the following reward function to optimize the agent:
+```python
+def reward_fn(prev_state, state):
+    """
+    Representative Freeway-style reward:
+    +1 when Chicken1 completes a crossing, else 0.
+    """
+    if state["Chicken1_crossed_top"] and not prev_state["Chicken1_crossed_top"]:
+        return 1.0
+    return 0.0
+```
+
 Here is the symbolic policy:
 ```python
 def play(state):
@@ -235,6 +247,37 @@ def play(state):
         return 2  # DOWN
     return 0  # NOOP
 ```
+
+Here is an example of how to analyze and explain a symbolic policy (style reference only):
+Policy:
+```python
+def play(state):
+    if state["D(Ball, Paddle).y"] > 2:
+        return 2  # DOWN
+    if state["D(Ball, Paddle).y"] < -2:
+        return 1  # UP
+    return 0  # NOOP
+```
+
+Execution trace example:
+Trace in execution order:
+- Evaluate conditions from top to bottom.
+- At each branch, mark true/false explicitly.
+- Stop at the first `return` reached.
+- Do not describe intent beyond what the executed path shows.
+
+Worked traces:
+- Input: `D(Ball, Paddle).y = 5`
+  - Check `> 2` -> true
+  - First reached return: `2` (DOWN)
+- Input: `D(Ball, Paddle).y = -4`
+  - Check `> 2` -> false
+  - Check `< -2` -> true
+  - First reached return: `1` (UP)
+- Input: `D(Ball, Paddle).y = 0`
+  - Check `> 2` -> false
+  - Check `< -2` -> false
+  - Fall through to final return: `0` (NOOP)
 
 Question:
 Is this policy actually working for the stated task? Explain in plain language.

@@ -1,6 +1,3 @@
-Reference example (analysis style only):
-Interpret the policy logic and describe behavior. Do not infer hidden objectives beyond the code.
-
 Policy:
 ```python
 def play(state):
@@ -11,8 +8,22 @@ def play(state):
     return 0  # NOOP
 ```
 
-Behavior explanation:
-This policy tracks the vertical offset between the ball and the controlled paddle.
-If the ball is below the paddle, it moves down; if the ball is above, it moves up.
-When the offset is small, it does nothing and keeps the paddle near its current position.
-The behavior is reactive tracking, not strategic planning.
+Execution trace example:
+Trace in execution order:
+- Evaluate conditions from top to bottom.
+- At each branch, mark true/false explicitly.
+- Stop at the first `return` reached.
+- Do not describe intent beyond what the executed path shows.
+
+Worked traces:
+- Input: `D(Ball, Paddle).y = 5`
+  - Check `> 2` -> true
+  - First reached return: `2` (DOWN)
+- Input: `D(Ball, Paddle).y = -4`
+  - Check `> 2` -> false
+  - Check `< -2` -> true
+  - First reached return: `1` (UP)
+- Input: `D(Ball, Paddle).y = 0`
+  - Check `> 2` -> false
+  - Check `< -2` -> false
+  - Fall through to final return: `0` (NOOP)
