@@ -1,27 +1,34 @@
-{{#ENV_DESCRIPTION}}
-We have trained RL agents on the following environment:
+You need to help a user analyze a control policy for a reinforcement learning task.
+The policy is obtained with deep reinforcement learning.
+You need to first understand the goal of the task and the policy.
 
+# Task Description
+{{#ENV_DESCRIPTION}}
+Environment:
 {{ENV_DESCRIPTION}}
 {{/ENV_DESCRIPTION}}
 
 {{#TASK_DESCRIPTION}}
-The task of the agent was to:
+Task objective:
 {{TASK_DESCRIPTION}}
 {{/TASK_DESCRIPTION}}
 
-Here is the symbolic policy:
+# The Policy
+Here is the symbolic policy obtained after training:
 ```python
 {{SYMBOLIC_POLICY}}
 ```
 
+# Example (only for reference)
 {{#IN_CONTEXT_LEARNING_EXAMPLE}}
-Here is an example of how to analyze and explain a symbolic policy (style reference only):
+Here is an example of how to analyze and explain a symbolic policy (only for reference):
 {{IN_CONTEXT_LEARNING_EXAMPLE}}
 {{/IN_CONTEXT_LEARNING_EXAMPLE}}
 
-Question:
-Describe what this policy is actually doing, use plain language.
+# Your Task
+Describe what this policy is doing, use plain language.
 
-Answer rules:
-- Focus on behavior implied by policy conditions/actions.
-- Keep the description short and concrete.
+# Answer Rules
+- The explanation must be specific and concrete.
+- Trace the program flow in execution order (which conditions are checked, which branches are taken, and which actions are returned).
+- Your explanations should be entirely based on the policy.

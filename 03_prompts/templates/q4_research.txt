@@ -1,28 +1,47 @@
-{{#ENV_DESCRIPTION}}
-We have trained RL agents on the following environment:
+You need to help a user analyze a control policy for a reinforcement learning task.
+The policy is obtained with deep reinforcement learning.
+You need to first understand the goal of the task and the policy.
 
+# Task Description
+{{#ENV_DESCRIPTION}}
+Environment:
 {{ENV_DESCRIPTION}}
 {{/ENV_DESCRIPTION}}
 
 {{#TASK_DESCRIPTION}}
-The task of the agent was to:
+Task objective:
 {{TASK_DESCRIPTION}}
 {{/TASK_DESCRIPTION}}
 
+# Environment Simplification
 {{#ENV_SIMPLIFICATION_DESCRIPTION}}
-Environment simplification:
+Simplification setup:
 {{ENV_SIMPLIFICATION_DESCRIPTION}}
 {{/ENV_SIMPLIFICATION_DESCRIPTION}}
 
-Here is the symbolic policy:
+# The Policy
+Here is the symbolic policy obtained after training:
 ```python
 {{SYMBOLIC_POLICY}}
 ```
 
+# Example (only for reference)
 {{#IN_CONTEXT_LEARNING_EXAMPLE}}
-Here is an example of how to analyze and explain a symbolic policy (style reference only):
+Here is an example of how to analyze and explain a symbolic policy (only for reference):
 {{IN_CONTEXT_LEARNING_EXAMPLE}}
 {{/IN_CONTEXT_LEARNING_EXAMPLE}}
 
-Question:
+# Your Task
 Predict how this exact policy's behavior changes under the simplification. Explain in plain language.
+
+Clarification:
+- "Simplification" means a change to the environment dynamics/conditions, not a simpler policy.
+- The symbolic policy stays exactly the same; only the environment changes.
+
+# Answer Rules
+- The explanation must be specific and concrete.
+- Trace the program flow in execution order (which conditions are checked, which branches are taken, and which actions are returned).
+- Your explanations should be entirely based on the policy.
+- First describe expected behavior in the baseline setup.
+- Then describe expected behavior in the simplified setup.
+- Explain the behavioral change by linking it to concrete policy conditions/actions.

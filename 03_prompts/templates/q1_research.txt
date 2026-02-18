@@ -1,34 +1,41 @@
-{{#ENV_DESCRIPTION}}
-We have trained RL agents on the following environment:
+You need to help a user analyze a control policy for a reinforcement learning task.
+The policy is obtained with deep reinforcement learning.
+You need to first understand the goal of the task and the policy.
 
+# Task Description
+{{#ENV_DESCRIPTION}}
+Environment:
 {{ENV_DESCRIPTION}}
 {{/ENV_DESCRIPTION}}
 
 {{#TASK_DESCRIPTION}}
-The task of the agent was to:
+Task objective:
 {{TASK_DESCRIPTION}}
 {{/TASK_DESCRIPTION}}
 
 {{#REWARD_FUNCTION}}
-We have used the following reward function to optimize the agent:
+Reward function used during training:
 ```python
 {{REWARD_FUNCTION}}
 ```
 {{/REWARD_FUNCTION}}
 
-Here is the symbolic policy:
+# The Policy
+Here is the symbolic policy obtained after training:
 ```python
 {{SYMBOLIC_POLICY}}
 ```
 
+# Example (only for reference)
 {{#IN_CONTEXT_LEARNING_EXAMPLE}}
-Here is an example of how to analyze and explain a symbolic policy (style reference only):
+Here is an example of how to analyze and explain a symbolic policy (only for reference):
 {{IN_CONTEXT_LEARNING_EXAMPLE}}
 {{/IN_CONTEXT_LEARNING_EXAMPLE}}
 
-Question:
-Is this policy actually working for the stated task? Explain in plain language.
+# Your Task
+Explain what this policy does in the environment.
 
-Answer rules:
-- Ground your explanation in the policy conditions/actions.
-- End with exactly one final line: `VERDICT: YES` or `VERDICT: NO`.
+# Answer Rules
+- The explanation must be specific and concrete.
+- Trace the program flow in execution order (which conditions are checked, which branches are taken, and which actions are returned).
+- Your explanations should be entirely based on the policy.

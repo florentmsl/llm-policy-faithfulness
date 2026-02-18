@@ -13,7 +13,7 @@ Trace in execution order:
 - Evaluate conditions from top to bottom.
 - At each branch, mark true/false explicitly.
 - Stop at the first `return` reached.
-- Do not describe intent beyond what the executed path shows.
+- Describe only what the executed path shows.
 
 Worked traces:
 - Input: `D(Ball, Paddle).y = 5`

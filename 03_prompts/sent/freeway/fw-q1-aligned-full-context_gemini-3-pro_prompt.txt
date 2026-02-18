@@ -1,5 +1,10 @@
-We have trained RL agents on the following environment:
+You need to help a user analyze a control policy for a reinforcement learning task.
+The policy is obtained with deep reinforcement learning.
+You need to first understand the goal of the task and the policy.
 
+# Task Description
+
+Environment:
 ACTIVISION TM
 
 FREEWAY TM
@@ -221,10 +226,10 @@ Activision, Inc., 3255-2 Scott Blvd., Santa Clara, CA 95051
 
 -------------------Atari 2600 Instructions Archive-------------------
 
-The task of the agent was to:
+Task objective:
 Move the controlled chicken from the bottom to the top of the road repeatedly within the time limit while avoiding collisions with cars.
 
-We have used the following reward function to optimize the agent:
+Reward function used during training:
 ```python
 def reward_fn(prev_state, state):
     """
@@ -236,7 +241,8 @@ def reward_fn(prev_state, state):
     return 0.0
 ```
 
-Here is the symbolic policy:
+# The Policy
+Here is the symbolic policy obtained after training:
 ```python
 def play(state):
     if state['LT(Chicken1, Car1).x'] <= 0:
@@ -614,7 +620,9 @@ def play(state):
                                 return 1  # UP
 ```
 
-Here is an example of how to analyze and explain a symbolic policy (style reference only):
+# Example (only for reference)
+
+Here is an example of how to analyze and explain a symbolic policy (only for reference):
 Policy:
 ```python
 def play(state):
@@ -630,7 +638,7 @@ Trace in execution order:
 - Evaluate conditions from top to bottom.
 - At each branch, mark true/false explicitly.
 - Stop at the first `return` reached.
-- Do not describe intent beyond what the executed path shows.
+- Describe only what the executed path shows.
 
 Worked traces:
 - Input: `D(Ball, Paddle).y = 5`
@@ -645,9 +653,10 @@ Worked traces:
   - Check `< -2` -> false
   - Fall through to final return: `0` (NOOP)
 
-Question:
-Is this policy actually working for the stated task? Explain in plain language.
+# Your Task
+Explain what this policy does in the environment.
 
-Answer rules:
-- Ground your explanation in the policy conditions/actions.
-- End with exactly one final line: `VERDICT: YES` or `VERDICT: NO`.
+# Answer Rules
+- The explanation must be specific and concrete.
+- Trace the program flow in execution order (which conditions are checked, which branches are taken, and which actions are returned).
+- Your explanations should be entirely based on the policy.
