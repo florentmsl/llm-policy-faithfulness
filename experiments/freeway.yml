@@ -43,14 +43,6 @@ experiments:
     rq: q2
     policy_file: 01_policies/scobots/freeway/aligned.txt
 
-  - id: fw-q1-aligned-ug-policy-only
-    rq: q1
-    policy_file: 01_policies/scobots/freeway/aligned_ug.txt
-
-  - id: fw-q2-aligned-ug-policy-only
-    rq: q2
-    policy_file: 01_policies/scobots/freeway/aligned_ug.txt
-
   - id: fw-q3-aligned-full-context
     rq: q3
     policy_file: 01_policies/scobots/freeway/aligned.txt
@@ -61,10 +53,6 @@ experiments:
   - id: fw-q3-aligned-policy-only
     rq: q3
     policy_file: 01_policies/scobots/freeway/aligned.txt
-
-  - id: fw-q3-aligned-ug-policy-only
-    rq: q3
-    policy_file: 01_policies/scobots/freeway/aligned_ug.txt
 
   - id: fw-q3-alwaysup-full-context
     rq: q3
