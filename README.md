@@ -99,9 +99,9 @@ Options:
 
 ## Outputs
 
-- Prompt artifacts: `03_prompts/sent/<game>/`
-- Result files: `04_results/<game>/`
-- Logs: `04_results/<game>/<model_key>_summary.csv`
+- Prompt artifacts: `03_prompts/sent/<game>/<model_key>/`
+- Result files: `04_results/<game>/<model_key>/`
+- Logs: `04_results/<game>/<model_key>/summary.csv`
   - Includes per-run flags: `uses_env`, `uses_task`, `uses_reward`, `uses_simplification`, `uses_icl`
 
 ## Contexts

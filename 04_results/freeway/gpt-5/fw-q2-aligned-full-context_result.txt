@@ -1,0 +1,64 @@
+The policy is a big decision tree that repeatedly compares **Chicken1** to various cars (and sometimes **Chicken2**) using features that look like relative x/y relations (`LT(...)`, `D(...)`, `C(...)`) and distances (`ED(...)`). It then outputs one of three actions: `1=UP`, `2=DOWN`, `0=NOOP`.
+
+Execution order always starts here:
+
+1) Check `LT(Chicken1, Car1).x <= 0`
+- If **true**, it goes into a large subtree that next checks `LT(Chicken1, Car2).x <= 0`.
+- If **false**, it goes into a different large subtree that next checks `LT(Chicken2, Chicken1).y <= 636`.
+
+From there, it keeps drilling down with more comparisons until it hits a `return`.
+
+What the branches *do* (in program-flow terms)
+
+A) If `LT(Chicken1, Car1).x <= 0` is **true**:
+2) Check `LT(Chicken1, Car2).x <= 0`
+- If **true**, it next checks `LT(Car8, Chicken1).y <= -3855`, then things like `D(Car1, Car4).x`, `ED(Car1, Chicken1)`, `C(Car6, Car2).x`, `ED(Car10, Chicken1)`, etc.
+  - Many leaves in this region return **UP** (often both sides of a condition return UP, making parts of the tree effectively “default to UP” once reached).
+  - **DOWN** appears when certain distance checks flip (often involving `ED(..., Chicken1)` thresholds).
+  - **NOOP** appears in a few “wait” leaves.
+
+Example concrete trace to a leaf (UP):
+- `LT(Chicken1, Car1).x <= 0` -> true  
+- `LT(Chicken1, Car2).x <= 0` -> true  
+- `LT(Car8, Chicken1).y <= -3855` -> true  
+- `D(Car1, Car4).x <= 55` -> true  
+- `ED(Car1, Chicken1) <= 79` -> true  
+- `C(Car6, Car2).x <= 91` -> true  
+- `ED(Car10, Chicken1) <= 131` -> true  
+- First reached return: `1` (**UP**)
+
+Example concrete trace to a leaf (DOWN) from the same path:
+- Same as above, but `ED(Car10, Chicken1) <= 131` -> **false**  
+- First reached return: `2` (**DOWN**)
+
+Example concrete trace to a leaf (NOOP):
+- `LT(Chicken1, Car1).x <= 0` -> true  
+- `LT(Chicken1, Car2).x <= 0` -> true  
+- `LT(Car8, Chicken1).y <= -3855` -> true  
+- `D(Car1, Car4).x <= 55` -> true  
+- `ED(Car1, Chicken1) <= 79` -> **false**  
+- `ED(Car8, Car9) <= 28` -> true  
+- `C(Car7, Chicken1).y <= 118` -> true  
+- First reached return: `0` (**NOOP**)
+
+- If `LT(Chicken1, Car2).x <= 0` is **false** (still under `LT(Chicken1, Car1).x <= 0` true), the policy switches to checking things like `D(Car4, Car2).x`, `ED(Car2, Chicken1)`, `ED(Chicken1, Car7)`, `ED(Car1, Car8)`, `D(Car10, Car1).x`, `Car9.x#1`, etc., and again mixes **UP/DOWN/NOOP** depending on thresholds.
+
+B) If `LT(Chicken1, Car1).x <= 0` is **false**:
+2) Check `LT(Chicken2, Chicken1).y <= 636`
+- If **true**, it heavily consults `ED(Car6, Car2)`, `D(Car1, Car6).x`, `D(Car6, Car8).x`, `ED(Car7, Chicken1)`, `ED(Car9, Chicken1)`, `Car10.x#1`, `Car1.x`, and returns **UP** in many cases but also quite a few **DOWN** returns when those distance/relative-position thresholds indicate “don’t go up”.
+- If **false**, it checks `ED(Car9, Car10)`, `C(Car6, Car4).x`, `D(Car3, Car9).x`, several `LT(...).y` relations, etc., and returns mostly **UP**, with some **DOWN** and occasional **NOOP**.
+
+Example concrete NOOP leaf in this “else” side:
+- `LT(Chicken1, Car1).x <= 0` -> false  
+- `LT(Chicken2, Chicken1).y <= 636` -> true  
+- `ED(Car6, Car2) <= 104` -> **false**  
+- `ED(Car9, Chicken1) <= 28` -> true  
+- `Car10.x#1 <= -1` -> true  
+- `C(Car5, Car3).x <= 114` -> true  
+- First reached return: `0` (**NOOP**)
+
+Bottom line (only from the code structure)
+- The policy is **not** a simple “always go up” rule: it conditionally chooses **DOWN** and sometimes **NOOP** based on a large set of car–chicken relational/distance features.
+- Nevertheless, many sub-branches collapse to **UP** (several conditions have `return 1` on both sides), so a lot of the time it behaves like “prefer UP unless specific nearby-car patterns trigger DOWN/NOOP.”
+
+If you paste one concrete `state` (just the keys that appear along the taken path), I can do a single fully-determined trace with every condition marked true/false all the way to the returned action.

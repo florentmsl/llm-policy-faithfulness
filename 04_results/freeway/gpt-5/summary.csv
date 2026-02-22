@@ -1,0 +1,15 @@
+id,game,rq,uses_env,uses_task,uses_reward,uses_simplification,uses_icl,model,status,prompt_file,result_file
+fw-q1-aligned-full-context,freeway,q1,true,true,true,false,true,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q1-aligned-full-context_prompt.txt,04_results/freeway/gpt-5/fw-q1-aligned-full-context_result.txt
+fw-q1-aligned-policy-only,freeway,q1,false,false,false,false,false,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q1-aligned-policy-only_prompt.txt,04_results/freeway/gpt-5/fw-q1-aligned-policy-only_result.txt
+fw-q1-alwaysup-full-context,freeway,q1,true,true,true,false,true,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q1-alwaysup-full-context_prompt.txt,04_results/freeway/gpt-5/fw-q1-alwaysup-full-context_result.txt
+fw-q1-alwaysup-policy-only,freeway,q1,false,false,false,false,false,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q1-alwaysup-policy-only_prompt.txt,04_results/freeway/gpt-5/fw-q1-alwaysup-policy-only_result.txt
+fw-q2-aligned-full-context,freeway,q2,true,true,false,false,true,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q2-aligned-full-context_prompt.txt,04_results/freeway/gpt-5/fw-q2-aligned-full-context_result.txt
+fw-q2-aligned-policy-only,freeway,q2,false,false,false,false,false,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q2-aligned-policy-only_prompt.txt,04_results/freeway/gpt-5/fw-q2-aligned-policy-only_result.txt
+fw-q1-aligned-ug-policy-only,freeway,q1,false,false,false,false,false,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q1-aligned-ug-policy-only_prompt.txt,04_results/freeway/gpt-5/fw-q1-aligned-ug-policy-only_result.txt
+fw-q2-aligned-ug-policy-only,freeway,q2,false,false,false,false,false,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q2-aligned-ug-policy-only_prompt.txt,04_results/freeway/gpt-5/fw-q2-aligned-ug-policy-only_result.txt
+fw-q3-aligned-full-context,freeway,q3,true,true,false,false,true,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q3-aligned-full-context_prompt.txt,04_results/freeway/gpt-5/fw-q3-aligned-full-context_result.txt
+fw-q3-aligned-policy-only,freeway,q3,false,false,false,false,false,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q3-aligned-policy-only_prompt.txt,04_results/freeway/gpt-5/fw-q3-aligned-policy-only_result.txt
+fw-q3-aligned-ug-policy-only,freeway,q3,false,false,false,false,false,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q3-aligned-ug-policy-only_prompt.txt,04_results/freeway/gpt-5/fw-q3-aligned-ug-policy-only_result.txt
+fw-q3-alwaysup-full-context,freeway,q3,true,true,false,false,true,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q3-alwaysup-full-context_prompt.txt,04_results/freeway/gpt-5/fw-q3-alwaysup-full-context_result.txt
+fw-q4-aligned-stopped-cars,freeway,q4,true,true,false,true,true,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q4-aligned-stopped-cars_prompt.txt,04_results/freeway/gpt-5/fw-q4-aligned-stopped-cars_result.txt
+fw-q4-alwaysup-stopped-cars,freeway,q4,true,true,false,true,true,gpt-5,dry,03_prompts/sent/freeway/gpt-5/fw-q4-alwaysup-stopped-cars_prompt.txt,04_results/freeway/gpt-5/fw-q4-alwaysup-stopped-cars_result.txt

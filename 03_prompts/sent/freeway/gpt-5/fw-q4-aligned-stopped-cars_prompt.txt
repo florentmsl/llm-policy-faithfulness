@@ -1,0 +1,661 @@
+You need to help a user analyze a control policy for a reinforcement learning task.
+The policy is obtained with deep reinforcement learning.
+You need to first understand the goal of the task and the policy.
+
+# Task Description
+
+Environment:
+ACTIVISION TM
+
+FREEWAY TM
+
+INSTRUCTIONS
+
+If you think driving on a busy freeway is intense...wait 'till
+you try to cross it on foot! In Freeway by ACTIVISION, your
+challenge is to guide a chicken across ten lanes of the most
+perilous freeway traffic imaginable. Be careful, because those
+speeding cars and trucks don't brake for animals! So, before
+you start the chicken across the road, take a minute to read
+these instructions. You'll find out how to score points by
+leading your fearless fowl to safety without getting his
+feathers ruffled by a "semi".
+
+ACTIVISION TM
+
+FREEWAY BASICS
+
+1.   Hook up your video game system. Follow the manufacturer's
+     instruction.
+
+2.   With power OFF, plug in the game cartridge.
+
+3.   Turn power ON. If no picture appears, check connection of
+     your game system to TV, then repeat steps 1-3.
+
+4.   Plug in Joystick Controllers.
+
+5.   Set difficulty switches at b (down) position.
+
+6.   Select game with game select switch. In all games, there
+     are ten lanes of traffic, five in each direction.
+          Game 1:   Lake Shore Drive, Chicago, 3 A.M.
+          Game 2:   Interstate 5, Seattle, 6 A.M.
+          Game 3:   Santa Monica Freeway, Los Angeles, 10 A.M.
+          Game 4:   Bayshore Freeway, San Francisco, Midnight
+          Game 5:   John Lodge Expressway, Detroit, 9 P.M.
+          Game 6:   The Beltway, Washington D.C., 6 P.M.
+          Game 7:   LBJ Freeway, Dallas, 5 P.M.
+          Game 8:   Long Island Expressway, New York City, 3  
+                    A.M.
+          (See descriptions under "Special Features.")
+
+7.   Use of Joystick Controllers. The left Joystick controls
+     the chicken on the left. The right Joystick controls the
+     chicken on the right. Hold Joystick with red button at
+     upper left. Pushing the Joystick forward moves your
+     chicken ahead (up). Pulling the Joystick back moves your
+     chicken back (down). Your chicken can move forward and
+     backward only, not side-to-side. The red button has no
+     effect.
+
+8.   Difficulty switches. With the difficulty switch in the b
+     (down) position, your chicken is knocked back one lane
+     when struck by a vehicle. With the switch in the a (up)
+     position, your chicken will return to the curb (the
+     beginning) after being struck by a vehicle. The left
+     difficulty switch is for the left player; the right
+     switch is for the right player. Start with difficulty
+     switches in the b (down) position; a (up) is for more
+     advanced players.
+
+9.   To begin play. Press game reset. One or two players may
+     play in any game.
+
+10.  Scoring/Timing. Each time you guide your chicken
+     successfully across the freeway, you are awarded one
+     point. The score for each player is indicated at the top
+     of the screen, directly above each player's chicken.
+     There are two minutes and sixteen seconds in each game.
+     When the score begins to flash, eight seconds of playing
+     time remain. At the end of each game, the traffic comes
+     to a stop and the final score is shown. Whoever scores
+     the most points is a winner.
+
+                                   Note to owners of Sears
+                                   Tele-Game Video Arcade
+                                   system:
+                                   Difficulty switches are
+                                   called skill left (or
+                                   right) player and a (up) is
+                                   expert and b (down) is
+                                   novice.
+
+SPECIAL FEATURES OF FREEWAY TM BY ACTIVISION TM
+
+When game reset is pressed, the traffic in the game you've
+selected begins to move. This motion is accompanied by sounds
+associated with a typical freeway: the drone of auto and truck
+engines, the honks from the horns of the vehicles. Each game
+has its own combination of these sounds.
+
+Should your chicken get hit, he'll chirp and be knocked back
+either one lane or all the way back to the beginning
+(depending on where you've set your difficulty switch). He
+always gets up, though, and is ready to try again.
+
+[Screen shot with arrows indicating SCORES, TRAFFIC,
+CHICKENS.]
+
+GAMES
+
+Each game offers a different challenge. The type, speed and
+frequency of traffic may vary, depending on the game.
+
+     GAME ONE: LAKE SHORE DRIVE, CHICAGO, 3 A.M.
+Automobiles only. Traffic is thin. Speeds are relatively slow.
+Autos move slowest in lanes closest to curbs, then faster with
+each lane closer to center of highway.
+
+     GAME TWO: INTERSTATE 5, SEATTLE, 6 A.M.
+Upper lane closest to center of freeway has trucks; all others
+have autos. Traffic is thicker and moves faster than in Game
+One. Speeds of autos increase in the same order as they did in
+Game one.
+
+     GAME THREE: SANTA MONICA FREEWAY, LOS ANGELES, 10 A.M.
+Trucks are now in both center lanes. These trucks are the
+fastest moving vehicles, and they move faster than the fastest
+moving vehicles in Games One and Two. Traffic is thicker in
+the two lanes closest to the curbs.
+
+     GAME FOUR: BAYSHORE FREEWAY, SAN FRANCISCO, MIDNIGHT
+There are trucks in all lanes. The trucks in the lanes closest
+to center, as well as those closest to the curbs, move at the
+same speed as the trucks in Game Three. The trucks in lanes 2
+and 4 move at half the speed of those in lanes 1 and 5. The
+trucks in lane 3 are the slowest, and move at half the speed
+of those in lanes 2 and 4. (Lane at bottom of screen is lane
+1; lane at top is lane 10.)
+
+     GAMES FIVE THROUGH EIGHT
+Similar to Games One through Four in the amount of traffic for
+each game. But, take care, because the speeds of the vehicles
+are increased and decreased at random throughout each of these
+games - without regard to lane. You'll really have to be on
+your toes, because you can never tell when the speed of any
+particular traffic will change.
+
+GETTING THE FEEL OF FREEWAY TM BY ACTIVISION TM
+
+The objective in Freeway by ACTIVISION is to score as many
+points as you can by guiding your chicken across the ten lanes
+of traffic as many times as possible in two minutes and
+sixteen seconds.
+
+For beginners, try Game One (Lake Shore Drive) with the
+difficulty switches in the b (down) position. Get the feel of
+how your chicken responds to your Joystick. Since the traffic
+flow in Game One is relatively light, you have ample time to
+react to oncoming vehicles. You want to guide your chicken
+across the freeway as quickly as possible, but you don't want
+to put him where he can't avoid an oncoming vehicle. You will
+need to be aware of traffic not only in the lane closest to
+your chicken, but also in the lanes on either side.
+
+After you get the feel of Game One, try your hand at some of
+the tougher highways. And, when you're really feeling bold,
+put your difficulty switch up to a and watch out!
+
+Freeway by ACTIVISION is a game of anticipation and timing.
+After awhile, you'll learn to judge traffic flow and make the
+right move at the right time. Sometimes that means bravely
+forging ahead. And, at other times, that will mean sitting
+back and waiting for just the right opening.
+
+JOIN THE ACTIVISION "SAVE THE CHICKEN FOUNDATION"
+
+Activision wants to recognize your traffic dodging
+achievements. So, if you're successful in guiding your chicken
+through traffic at least 20 times in either Game Three or Game
+Seven, you can become an official member of the Activision
+"Save the Chicken Foundation." Send us a picture of your TV
+screen showing your accomplishment, and we'll enroll you and
+send you a special membership emblem.
+
+HOW TO BECOME AN ACE "CHICKEN CROSSER" IN FREEWAY TM BY
+ACTIVISION TM
+Tips from David Crane, designer of Freeway
+
+David Crane is also the designer of Dragster TM, Fishing Derby
+TM and Laser Blast TM by ACTIVISION. He consistently comes up
+with highly unusual, imaginative and challenging games. 
+
+[Nice photo of Crane (same one that appears in the 1982
+Activision games catalog.)]
+
+"As unusual as Freeway is, you still will have to employ some
+tried and true gaming skills to do well at it. For instance,
+you must become familiar with the different traffic patterns
+in order to anticipate and make the right moves. This is
+especially difficult in Games Five through Eight, where
+traffic speeds can change instantly.
+
+"You'll notice that clusters of vehicles in each lane travel
+at generally the same distance apart, at the same speed. If a
+cluster happens to be in a fast lane, you'll have to plan in
+advance how you're going to get through without being hit.
+
+"Succeeding at Freeway will depend on your ability to develop
+quick reflexes to avoid the traffic and "hit the hole" at just
+the right time. Have fun and watch the traffic!
+
+"Drop me a line. I'd like to hear about your exploits."
+
+[David Crane signature]
+
+Look for more Activision video games wherever you buy your
+video game cartridges. Drop us a note and we'll gladly add
+your name to our mailing list and keep you posted on new
+Activision game cartridges as they become available.
+
+ACTIVISION TM
+Activision, Inc., 3255-2 Scott Blvd., Santa Clara, CA 95051
+
+(c) 1981 Activision AG-009-03 Rev. 2         Printed in U.S.A.
+
+-------------------Atari 2600 Instructions Archive-------------------
+
+Task objective:
+Move the controlled chicken from the bottom to the top of the road repeatedly within the time limit while avoiding collisions with cars.
+
+# Environment Simplification
+
+Simplification setup:
+Simplification: all cars are completely immobilized (no horizontal movement). The chicken can cross the road without needing to time gaps in traffic.
+
+# The Policy
+Here is the symbolic policy obtained after training:
+```python
+def play(state):
+    if state['LT(Chicken1, Car1).x'] <= 0:
+        if state['LT(Chicken1, Car2).x'] <= 0:
+            if state['LT(Car8, Chicken1).y'] <= -3855:
+                if state['D(Car1, Car4).x'] <= 55:
+                    if state['ED(Car1, Chicken1)'] <= 79:
+                        if state['C(Car6, Car2).x'] <= 91:
+                            if state['ED(Car10, Chicken1)'] <= 131:
+                                return 1  # UP
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['ED(Car2, Chicken1)'] <= 18:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                    else:
+                        if state['ED(Car8, Car9)'] <= 28:
+                            if state['C(Car7, Chicken1).y'] <= 118:
+                                return 0  # NOOP
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['ED(Car7, Chicken1)'] <= 65:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                else:
+                    if state['ED(Car2, Chicken1)'] <= 61:
+                        if state['ED(Chicken2, Car9)'] <= 32:
+                            if state['ED(Car1, Chicken1)'] <= 59:
+                                return 2  # DOWN
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['ED(Car3, Chicken1)'] <= 36:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                    else:
+                        if state['ED(Car6, Chicken1)'] <= 68:
+                            return 2  # DOWN
+                        else:
+                            if state['ED(Chicken1, Car4)'] <= 51:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+            else:
+                if state['LT(Car9, Chicken1).x'] <= 0:
+                    if state['D(Chicken1, Car1).y'] <= -71:
+                        if state['D(Car2, Car3).x'] <= 112:
+                            if state['LT(Car5, Chicken1).y'] <= -1867:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                        else:
+                            if state['ED(Car1, Car6)'] <= 91:
+                                return 2  # DOWN
+                            else:
+                                return 1  # UP
+                    else:
+                        if state['LT(Car10, Chicken1).y'] <= -4058:
+                            if state['D(Car7, Car8).x'] <= 22:
+                                return 1  # UP
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['LT(Car6, Chicken1).y'] <= -3203:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                else:
+                    if state['ED(Chicken2, Car9)'] <= 32:
+                        if state['ED(Car10, Chicken1)'] <= 125:
+                            if state['ED(Chicken2, Car10)'] <= 47:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                        else:
+                            if state['ED(Car1, Car3)'] <= 43:
+                                return 2  # DOWN
+                            else:
+                                return 2  # DOWN
+                    else:
+                        if state['ED(Car5, Chicken1)'] <= 37:
+                            if state['ED(Car5, Car2)'] <= 64:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                        else:
+                            if state['C(Car6, Car3).x'] <= 125:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+        else:
+            if state['D(Car4, Car2).x'] <= -57:
+                if state['ED(Car5, Chicken2)'] <= 103:
+                    if state['ED(Car2, Chicken1)'] <= 110:
+                        if state['ED(Chicken1, Car7)'] <= 28:
+                            if state['D(Car10, Car3).x'] <= 39:
+                                return 2  # DOWN
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['C(Car1, Car8).x'] <= 82:
+                                return 2  # DOWN
+                            else:
+                                return 1  # UP
+                    else:
+                        if state['ED(Car1, Car8)'] <= 123:
+                            if state['ED(Chicken1, Car10)'] <= 37:
+                                return 1  # UP
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['ED(Car9, Car5)'] <= 66:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                else:
+                    if state['ED(Car7, Chicken1)'] <= 22:
+                        if state['ED(Chicken1, Car3)'] <= 114:
+                            if state['ED(Car8, Chicken1)'] <= 89:
+                                return 2  # DOWN
+                            else:
+                                return 1  # UP
+                        else:
+                            if state['ED(Car1, Car4)'] <= 48:
+                                return 1  # UP
+                            else:
+                                return 0  # NOOP
+                    else:
+                        if state['ED(Car8, Car3)'] <= 93:
+                            if state['ED(Car7, Chicken1)'] <= 29:
+                                return 2  # DOWN
+                            else:
+                                return 1  # UP
+                        else:
+                            if state['ED(Car9, Chicken1)'] <= 40:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+            else:
+                if state['D(Car3, Car9).x'] <= 112:
+                    if state['C(Car9, Car5).x'] <= 132:
+                        if state['ED(Chicken1, Car9)'] <= 8:
+                            if state['D(Car1, Car10).x'] <= -157:
+                                return 1  # UP
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['D(Car9, Car8).x'] <= -114:
+                                return 2  # DOWN
+                            else:
+                                return 1  # UP
+                    else:
+                        if state['ED(Chicken1, Car8)'] <= 65:
+                            if state['ED(Car1, Chicken1)'] <= 131:
+                                return 2  # DOWN
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['ED(Car3, Chicken1)'] <= 91:
+                                return 2  # DOWN
+                            else:
+                                return 1  # UP
+                else:
+                    if state['D(Car10, Car1).x'] <= 48:
+                        if state['LT(Car10, Chicken1).y'] <= 1562:
+                            if state['D(Car1, Car4).x'] <= 4:
+                                return 0  # NOOP
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['Car9.x#1'] <= 140:
+                                return 1  # UP
+                            else:
+                                return 2  # DOWN
+                    else:
+                        if state['ED(Car9, Car1)'] <= 128:
+                            if state['ED(Car4, Chicken1)'] <= 65:
+                                return 2  # DOWN
+                            else:
+                                return 0  # NOOP
+                        else:
+                            if state['ED(Chicken1, Car5)'] <= 46:
+                                return 2  # DOWN
+                            else:
+                                return 0  # NOOP
+    else:
+        if state['LT(Chicken2, Chicken1).y'] <= 636:
+            if state['ED(Car6, Car2)'] <= 104:
+                if state['D(Car1, Car6).x'] <= 93:
+                    if state['D(Car6, Car8).x'] <= -51:
+                        if state['ED(Car1, Car7)'] <= 120:
+                            if state['ED(Chicken1, Car1)'] <= 171:
+                                return 1  # UP
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['ED(Car1, Car4)'] <= 53:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                    else:
+                        if state['ED(Car8, Car9)'] <= 115:
+                            if state['C(Car8, Car4).x'] <= 96:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                        else:
+                            if state['ED(Car7, Chicken1)'] <= 64:
+                                return 0  # NOOP
+                            else:
+                                return 1  # UP
+                else:
+                    if state['ED(Chicken2, Car8)'] <= 55:
+                        if state['D(Car8, Car5).x'] <= -67:
+                            if state['Car10.x'] <= 156:
+                                return 1  # UP
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['LT(Car5, Chicken1).x'] <= 0:
+                                return 1  # UP
+                            else:
+                                return 2  # DOWN
+                    else:
+                        if state['D(Car7, Car3).x'] <= -39:
+                            if state['C(Car10, Car8).x'] <= 153:
+                                return 2  # DOWN
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['ED(Car2, Chicken1)'] <= 151:
+                                return 2  # DOWN
+                            else:
+                                return 1  # UP
+            else:
+                if state['ED(Car9, Chicken1)'] <= 28:
+                    if state['Car10.x#1'] <= -1:
+                        if state['C(Car5, Car3).x'] <= 114:
+                            return 0  # NOOP
+                        else:
+                            if state['LT(Car9, Chicken1).y'] <= 15:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                    else:
+                        if state['ED(Chicken1, Car1)'] <= 142:
+                            if state['LT(Car8, Chicken1).y'] <= -295:
+                                return 2  # DOWN
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['ED(Car1, Chicken1)'] <= 152:
+                                return 2  # DOWN
+                            else:
+                                return 2  # DOWN
+                else:
+                    if state['C(Car10, Car6).x'] <= 109:
+                        if state['ED(Car4, Car10)'] <= 100:
+                            if state['C(Car5, Car9).x'] <= 59:
+                                return 1  # UP
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['Car1.x'] <= 28:
+                                return 2  # DOWN
+                            else:
+                                return 1  # UP
+                    else:
+                        if state['ED(Car8, Car7)'] <= 68:
+                            if state['D(Car1, Car4).x'] <= 36:
+                                return 1  # UP
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['ED(Car7, Car10)'] <= 87:
+                                return 2  # DOWN
+                            else:
+                                return 2  # DOWN
+        else:
+            if state['ED(Car9, Car10)'] <= 127:
+                if state['C(Car6, Car4).x'] <= 47:
+                    if state['D(Car3, Car9).x'] <= 5:
+                        if state['LT(Car9, Chicken1).y'] <= 26:
+                            if state['C(Car1, Chicken1).x'] <= 100:
+                                return 2  # DOWN
+                            else:
+                                return 1  # UP
+                        else:
+                            if state['LT(Chicken1, Car9).y'] <= -21:
+                                return 1  # UP
+                            else:
+                                return 0  # NOOP
+                    else:
+                        if state['ED(Chicken1, Car9)'] <= 19:
+                            if state['LT(Car7, Chicken1).y'] <= 2168:
+                                return 0  # NOOP
+                            else:
+                                return 1  # UP
+                        else:
+                            if state['LT(Car2, Chicken1).y'] <= 2716:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                else:
+                    if state['D(Car8, Car7).x'] <= 96:
+                        if state['D(Car9, Car3).x'] <= -106:
+                            if state['ED(Car10, Car1)'] <= 160:
+                                return 0  # NOOP
+                            else:
+                                return 1  # UP
+                        else:
+                            if state['C(Car8, Car9).x'] <= 72:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                    else:
+                        if state['ED(Chicken1, Car9)'] <= 21:
+                            return 1  # UP
+                        else:
+                            if state['C(Car6, Car10).x'] <= 71:
+                                return 2  # DOWN
+                            else:
+                                return 2  # DOWN
+            else:
+                if state['ED(Car3, Chicken1)'] <= 153:
+                    if state['ED(Chicken1, Car8)'] <= 111:
+                        if state['ED(Car6, Car9)'] <= 50:
+                            if state['ED(Car5, Chicken1)'] <= 102:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                        else:
+                            if state['LT(Chicken2, Chicken1).y'] <= 2552:
+                                return 0  # NOOP
+                            else:
+                                return 2  # DOWN
+                    else:
+                        if state['ED(Chicken1, Car4)'] <= 109:
+                            if state['LT(Car5, Chicken1).y'] <= -739:
+                                return 0  # NOOP
+                            else:
+                                return 2  # DOWN
+                        else:
+                            if state['ED(Chicken1, Car8)'] <= 114:
+                                return 0  # NOOP
+                            else:
+                                return 2  # DOWN
+                else:
+                    if state['ED(Car10, Car5)'] <= 81:
+                        if state['ED(Chicken1, Car1)'] <= 157:
+                            if state['ED(Chicken1, Car3)'] <= 155:
+                                return 2  # DOWN
+                            else:
+                                return 0  # NOOP
+                        else:
+                            if state['ED(Car10, Chicken1)'] <= 89:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                    else:
+                        if state['LT(Car6, Chicken1).y'] <= -49:
+                            if state['ED(Chicken1, Car1)'] <= 149:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+                        else:
+                            if state['LT(Car9, Chicken1).y'] <= -1373:
+                                return 1  # UP
+                            else:
+                                return 1  # UP
+```
+
+# Example (only for reference)
+Here is an example of how to analyze and explain a symbolic policy (only for reference):
+Policy:
+```python
+def play(state):
+    if state["D(Ball, Paddle).y"] > 2:
+        return 2  # DOWN
+    if state["D(Ball, Paddle).y"] < -2:
+        return 1  # UP
+    return 0  # NOOP
+```
+
+Execution trace example:
+Trace in execution order:
+- Evaluate conditions from top to bottom.
+- At each branch, mark true/false explicitly.
+- Stop at the first `return` reached.
+- Describe only what the executed path shows.
+
+Worked traces:
+- Input: `D(Ball, Paddle).y = 5`
+  - Check `> 2` -> true
+  - First reached return: `2` (DOWN)
+- Input: `D(Ball, Paddle).y = -4`
+  - Check `> 2` -> false
+  - Check `< -2` -> true
+  - First reached return: `1` (UP)
+- Input: `D(Ball, Paddle).y = 0`
+  - Check `> 2` -> false
+  - Check `< -2` -> false
+  - Fall through to final return: `0` (NOOP)
+
+# Your Task
+Predict how this exact policy's behavior changes under the simplification. Explain in plain language.
+
+Clarification:
+- "Simplification" means a change to the environment dynamics/conditions, not a simpler policy.
+- The symbolic policy stays exactly the same; only the environment changes.
+
+# Answer Rules
+- The explanation must be specific and concrete.
+- Trace the program flow in execution order (which conditions are checked, which branches are taken, and which actions are returned).
+- Your explanations should be entirely based on the policy.
+- First describe expected behavior in the baseline setup.
+- Then describe expected behavior in the simplified setup.
+- Explain the behavioral change by linking it to concrete policy conditions/actions.

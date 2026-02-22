@@ -1,0 +1,275 @@
+This policy is a large nested decision tree over numeric features in `state`, returning one of three actions: `1=UP`, `2=DOWN`, `0=NOOP`. You can read it as: it checks conditions in a fixed order; the first condition that applies routes you deeper until a leaf returns an action.
+
+Below is the program flow in execution order (written as “check → if true do … else do …”, with the eventual returned action at the leaves).
+
+1) First check `state['LT(Obj1, Obj3).x'] <= 0`.
+
+A) If `LT(Obj1, Obj3).x <= 0`:
+2) Check `LT(Obj1, Obj4).x <= 0`.
+
+A1) If `LT(Obj1, Obj4).x <= 0`:
+3) Check `LT(Obj10, Obj1).y <= -3855`.
+
+A1a) If `LT(Obj10, Obj1).y <= -3855`:
+4) Check `D(Obj3, Obj6).x <= 55`.
+
+- If `D(Obj3, Obj6).x <= 55`:
+  5) Check `ED(Obj3, Obj1) <= 79`.
+  - If `ED(Obj3, Obj1) <= 79`:
+    6) Check `C(Obj8, Obj4).x <= 91`.
+    - If `C(Obj8, Obj4).x <= 91`:
+      7) Check `ED(Obj12, Obj1) <= 131` → if true return `UP`, else return `DOWN`.
+    - Else (`C(Obj8, Obj4).x > 91`):
+      7) Check `ED(Obj4, Obj1) <= 18` → return `UP` (both branches return `UP`).
+  - Else (`ED(Obj3, Obj1) > 79`):
+    6) Check `ED(Obj10, Obj11) <= 28`.
+    - If `ED(Obj10, Obj11) <= 28`:
+      7) Check `C(Obj9, Obj1).y <= 118` → if true return `NOOP`, else return `DOWN`.
+    - Else (`ED(Obj10, Obj11) > 28`):
+      7) Check `ED(Obj9, Obj1) <= 65` → return `UP` (both branches return `UP`).
+
+- Else (`D(Obj3, Obj6).x > 55`):
+  5) Check `ED(Obj4, Obj1) <= 61`.
+  - If `ED(Obj4, Obj1) <= 61`:
+    6) Check `ED(Obj2, Obj11) <= 32`.
+    - If `ED(Obj2, Obj11) <= 32`:
+      7) Check `ED(Obj3, Obj1) <= 59` → return `DOWN` (both branches return `DOWN`).
+    - Else:
+      7) Check `ED(Obj5, Obj1) <= 36` → return `UP` (both branches return `UP`).
+  - Else (`ED(Obj4, Obj1) > 61`):
+    6) Check `ED(Obj8, Obj1) <= 68` → if true return `DOWN`, else:
+      7) Check `ED(Obj1, Obj6) <= 51` → return `UP` (both branches return `UP`).
+
+A1b) Else (`LT(Obj10, Obj1).y > -3855`):
+4) Check `LT(Obj11, Obj1).x <= 0`.
+
+- If `LT(Obj11, Obj1).x <= 0`:
+  5) Check `D(Obj1, Obj3).y <= -71`.
+  - If `D(Obj1, Obj3).y <= -71`:
+    6) Check `D(Obj4, Obj5).x <= 112`.
+    - If `D(Obj4, Obj5).x <= 112`:
+      7) Check `LT(Obj7, Obj1).y <= -1867` → return `UP` (both branches return `UP`).
+    - Else:
+      7) Check `ED(Obj3, Obj8) <= 91` → if true return `DOWN`, else return `UP`.
+  - Else (`D(Obj1, Obj3).y > -71`):
+    6) Check `LT(Obj12, Obj1).y <= -4058`.
+    - If `LT(Obj12, Obj1).y <= -4058`:
+      7) Check `D(Obj9, Obj10).x <= 22` → if true return `UP`, else return `DOWN`.
+    - Else:
+      7) Check `LT(Obj8, Obj1).y <= -3203` → return `UP` (both branches return `UP`).
+
+- Else (`LT(Obj11, Obj1).x > 0`):
+  5) Check `ED(Obj2, Obj11) <= 32`.
+  - If `ED(Obj2, Obj11) <= 32`:
+    6) Check `ED(Obj12, Obj1) <= 125`.
+    - If `ED(Obj12, Obj1) <= 125`:
+      7) Check `ED(Obj2, Obj12) <= 47` → return `UP` (both branches return `UP`).
+    - Else:
+      7) Check `ED(Obj3, Obj5) <= 43` → return `DOWN` (both branches return `DOWN`).
+  - Else:
+    6) Check `ED(Obj7, Obj1) <= 37`.
+    - If `ED(Obj7, Obj1) <= 37`:
+      7) Check `ED(Obj7, Obj4) <= 64` → return `UP` (both branches return `UP`).
+    - Else:
+      7) Check `C(Obj8, Obj5).x <= 125` → return `UP` (both branches return `UP`).
+
+A2) Else (`LT(Obj1, Obj4).x > 0`):
+3) Check `D(Obj6, Obj4).x <= -57`.
+
+A2a) If `D(Obj6, Obj4).x <= -57`:
+4) Check `ED(Obj7, Obj2) <= 103`.
+
+- If `ED(Obj7, Obj2) <= 103`:
+  5) Check `ED(Obj4, Obj1) <= 110`.
+  - If `ED(Obj4, Obj1) <= 110`:
+    6) Check `ED(Obj1, Obj9) <= 28`.
+    - If `ED(Obj1, Obj9) <= 28`:
+      7) Check `D(Obj12, Obj5).x <= 39` → return `DOWN` (both branches return `DOWN`).
+    - Else:
+      7) Check `C(Obj3, Obj10).x <= 82` → if true return `DOWN`, else return `UP`.
+  - Else:
+    6) Check `ED(Obj3, Obj10) <= 123`.
+    - If `ED(Obj3, Obj10) <= 123`:
+      7) Check `ED(Obj1, Obj12) <= 37` → if true return `UP`, else return `DOWN`.
+    - Else:
+      7) Check `ED(Obj11, Obj7) <= 66` → return `UP` (both branches return `UP`).
+
+- Else (`ED(Obj7, Obj2) > 103`):
+  5) Check `ED(Obj9, Obj1) <= 22`.
+  - If `ED(Obj9, Obj1) <= 22`:
+    6) Check `ED(Obj1, Obj5) <= 114`.
+    - If `ED(Obj1, Obj5) <= 114`:
+      7) Check `ED(Obj10, Obj1) <= 89` → if true return `DOWN`, else return `UP`.
+    - Else:
+      7) Check `ED(Obj3, Obj6) <= 48` → if true return `UP`, else return `NOOP`.
+  - Else:
+    6) Check `ED(Obj10, Obj5) <= 93`.
+    - If `ED(Obj10, Obj5) <= 93`:
+      7) Check `ED(Obj9, Obj1) <= 29` → if true return `DOWN`, else return `UP`.
+    - Else:
+      7) Check `ED(Obj11, Obj1) <= 40` → return `UP` (both branches return `UP`).
+
+A2b) Else (`D(Obj6, Obj4).x > -57`):
+4) Check `D(Obj5, Obj11).x <= 112`.
+
+- If `D(Obj5, Obj11).x <= 112`:
+  5) Check `C(Obj11, Obj7).x <= 132`.
+  - If `C(Obj11, Obj7).x <= 132`:
+    6) Check `ED(Obj1, Obj11) <= 8`.
+    - If `ED(Obj1, Obj11) <= 8`:
+      7) Check `D(Obj3, Obj12).x <= -157` → if true return `UP`, else return `DOWN`.
+    - Else:
+      7) Check `D(Obj11, Obj10).x <= -114` → if true return `DOWN`, else return `UP`.
+  - Else:
+    6) Check `ED(Obj1, Obj10) <= 65`.
+    - If `ED(Obj1, Obj10) <= 65`:
+      7) Check `ED(Obj3, Obj1) <= 131` → return `DOWN` (both branches return `DOWN`).
+    - Else:
+      7) Check `ED(Obj5, Obj1) <= 91` → if true return `DOWN`, else return `UP`.
+
+- Else (`D(Obj5, Obj11).x > 112`):
+  5) Check `D(Obj12, Obj3).x <= 48`.
+  - If `D(Obj12, Obj3).x <= 48`:
+    6) Check `LT(Obj12, Obj1).y <= 1562`.
+    - If `LT(Obj12, Obj1).y <= 1562`:
+      7) Check `D(Obj3, Obj6).x <= 4` → if true return `NOOP`, else return `DOWN`.
+    - Else:
+      7) Check `Obj11.x#1 <= 140` → if true return `UP`, else return `DOWN`.
+  - Else:
+    6) Check `ED(Obj11, Obj3) <= 128`.
+    - If `ED(Obj11, Obj3) <= 128`:
+      7) Check `ED(Obj6, Obj1) <= 65` → if true return `DOWN`, else return `NOOP`.
+    - Else:
+      7) Check `ED(Obj1, Obj7) <= 46` → if true return `DOWN`, else return `NOOP`.
+
+B) Else (`LT(Obj1, Obj3).x > 0`):
+2) Check `LT(Obj2, Obj1).y <= 636`.
+
+B1) If `LT(Obj2, Obj1).y <= 636`:
+3) Check `ED(Obj8, Obj4) <= 104`.
+
+- If `ED(Obj8, Obj4) <= 104`:
+  4) Check `D(Obj3, Obj8).x <= 93`.
+  - If `D(Obj3, Obj8).x <= 93`:
+    5) Check `D(Obj8, Obj10).x <= -51`.
+    - If `D(Obj8, Obj10).x <= -51`:
+      6) Check `ED(Obj3, Obj9) <= 120`.
+      - If `ED(Obj3, Obj9) <= 120`:
+        7) Check `ED(Obj1, Obj3) <= 171` → if true return `UP`, else return `DOWN`.
+      - Else:
+        7) Check `ED(Obj3, Obj6) <= 53` → return `UP` (both branches return `UP`).
+    - Else:
+      6) Check `ED(Obj10, Obj11) <= 115`.
+      - If `ED(Obj10, Obj11) <= 115`:
+        7) Check `C(Obj10, Obj6).x <= 96` → return `UP` (both branches return `UP`).
+      - Else:
+        7) Check `ED(Obj9, Obj1) <= 64` → if true return `NOOP`, else return `UP`.
+  - Else:
+    5) Check `ED(Obj2, Obj10) <= 55`.
+    - If `ED(Obj2, Obj10) <= 55`:
+      6) Check `D(Obj10, Obj7).x <= -67`.
+      - If `D(Obj10, Obj7).x <= -67`:
+        7) Check `Obj12.x <= 156` → if true return `UP`, else return `DOWN`.
+      - Else:
+        7) Check `LT(Obj7, Obj1).x <= 0` → if true return `UP`, else return `DOWN`.
+    - Else:
+      6) Check `D(Obj9, Obj5).x <= -39`.
+      - If `D(Obj9, Obj5).x <= -39`:
+        7) Check `C(Obj12, Obj10).x <= 153` → return `DOWN` (both branches return `DOWN`).
+      - Else:
+        7) Check `ED(Obj4, Obj1) <= 151` → if true return `DOWN`, else return `UP`.
+
+- Else (`ED(Obj8, Obj4) > 104`):
+  4) Check `ED(Obj11, Obj1) <= 28`.
+  - If `ED(Obj11, Obj1) <= 28`:
+    5) Check `Obj12.x#1 <= -1`.
+    - If `Obj12.x#1 <= -1`:
+      6) Check `C(Obj7, Obj5).x <= 114` → if true return `NOOP`, else:
+        7) Check `LT(Obj11, Obj1).y <= 15` → return `UP` (both branches return `UP`).
+    - Else:
+      6) Check `ED(Obj1, Obj3) <= 142`.
+      - If `ED(Obj1, Obj3) <= 142`:
+        7) Check `LT(Obj10, Obj1).y <= -295` → return `DOWN` (both branches return `DOWN`).
+      - Else:
+        7) Check `ED(Obj3, Obj1) <= 152` → return `DOWN` (both branches return `DOWN`).
+  - Else:
+    5) Check `C(Obj12, Obj8).x <= 109`.
+    - If `C(Obj12, Obj8).x <= 109`:
+      6) Check `ED(Obj6, Obj12) <= 100`.
+      - If `ED(Obj6, Obj12) <= 100`:
+        7) Check `C(Obj7, Obj11).x <= 59` → if true return `UP`, else return `DOWN`.
+      - Else:
+        7) Check `Obj3.x <= 28` → if true return `DOWN`, else return `UP`.
+    - Else:
+      6) Check `ED(Obj10, Obj9) <= 68`.
+      - If `ED(Obj10, Obj9) <= 68`:
+        7) Check `D(Obj3, Obj6).x <= 36` → if true return `UP`, else return `DOWN`.
+      - Else:
+        7) Check `ED(Obj9, Obj12) <= 87` → return `DOWN` (both branches return `DOWN`).
+
+B2) Else (`LT(Obj2, Obj1).y > 636`):
+3) Check `ED(Obj11, Obj12) <= 127`.
+
+- If `ED(Obj11, Obj12) <= 127`:
+  4) Check `C(Obj8, Obj6).x <= 47`.
+  - If `C(Obj8, Obj6).x <= 47`:
+    5) Check `D(Obj5, Obj11).x <= 5`.
+    - If `D(Obj5, Obj11).x <= 5`:
+      6) Check `LT(Obj11, Obj1).y <= 26`.
+      - If `LT(Obj11, Obj1).y <= 26`:
+        7) Check `C(Obj3, Obj1).x <= 100` → if true return `DOWN`, else return `UP`.
+      - Else:
+        7) Check `LT(Obj1, Obj11).y <= -21` → if true return `UP`, else return `NOOP`.
+    - Else:
+      6) Check `ED(Obj1, Obj11) <= 19`.
+      - If `ED(Obj1, Obj11) <= 19`:
+        7) Check `LT(Obj9, Obj1).y <= 2168` → if true return `NOOP`, else return `UP`.
+      - Else:
+        7) Check `LT(Obj4, Obj1).y <= 2716` → return `UP` (both branches return `UP`).
+  - Else (`C(Obj8, Obj6).x > 47`):
+    5) Check `D(Obj10, Obj9).x <= 96`.
+    - If `D(Obj10, Obj9).x <= 96`:
+      6) Check `D(Obj11, Obj5).x <= -106`.
+      - If `D(Obj11, Obj5).x <= -106`:
+        7) Check `ED(Obj12, Obj3) <= 160` → if true return `NOOP`, else return `UP`.
+      - Else:
+        7) Check `C(Obj10, Obj11).x <= 72` → return `UP` (both branches return `UP`).
+    - Else:
+      6) Check `ED(Obj1, Obj11) <= 21` → if true return `UP`, else:
+        7) Check `C(Obj8, Obj12).x <= 71` → return `DOWN` (both branches return `DOWN`).
+
+- Else (`ED(Obj11, Obj12) > 127`):
+  4) Check `ED(Obj5, Obj1) <= 153`.
+  - If `ED(Obj5, Obj1) <= 153`:
+    5) Check `ED(Obj1, Obj10) <= 111`.
+    - If `ED(Obj1, Obj10) <= 111`:
+      6) Check `ED(Obj8, Obj11) <= 50`.
+      - If `ED(Obj8, Obj11) <= 50`:
+        7) Check `ED(Obj7, Obj1) <= 102` → return `UP` (both branches return `UP`).
+      - Else:
+        7) Check `LT(Obj2, Obj1).y <= 2552` → if true return `NOOP`, else return `DOWN`.
+    - Else (`ED(Obj1, Obj10) > 111`):
+      6) Check `ED(Obj1, Obj6) <= 109`.
+      - If `ED(Obj1, Obj6) <= 109`:
+        7) Check `LT(Obj7, Obj1).y <= -739` → if true return `NOOP`, else return `DOWN`.
+      - Else:
+        7) Check `ED(Obj1, Obj10) <= 114` → if true return `NOOP`, else return `DOWN`.
+  - Else (`ED(Obj5, Obj1) > 153`):
+    5) Check `ED(Obj12, Obj7) <= 81`.
+    - If `ED(Obj12, Obj7) <= 81`:
+      6) Check `ED(Obj1, Obj3) <= 157`.
+      - If `ED(Obj1, Obj3) <= 157`:
+        7) Check `ED(Obj1, Obj5) <= 155` → if true return `DOWN`, else return `NOOP`.
+      - Else:
+        7) Check `ED(Obj12, Obj1) <= 89` → return `UP` (both branches return `UP`).
+    - Else:
+      6) Check `LT(Obj8, Obj1).y <= -49`.
+      - If `LT(Obj8, Obj1).y <= -49`:
+        7) Check `ED(Obj1, Obj3) <= 149` → return `UP` (both branches return `UP`).
+      - Else:
+        7) Check `LT(Obj11, Obj1).y <= -1373` → return `UP` (both branches return `UP`).
+
+Overall behavioral summary (still strictly from the code):
+- The tree is heavily biased toward returning `UP`: many sub-branches end in `UP` regardless of the last few comparisons.
+- `DOWN` is chosen in specific “exception” regions, often when certain `ED(...)`, `D(...).x`, or `LT(...).y` thresholds are crossed.
+- `NOOP` appears only in a handful of narrow cases (e.g., some `C(Obj9, Obj1).y <= 118`, some “far/near” thresholds like `D(Obj3, Obj6).x <= 4`, and several late-branch checks), but it is never the dominant action.

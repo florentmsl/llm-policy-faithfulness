@@ -1,0 +1,1 @@
+Simplification: all cars are completely immobilized (no horizontal movement). The chicken can cross the road without needing to time gaps in traffic.

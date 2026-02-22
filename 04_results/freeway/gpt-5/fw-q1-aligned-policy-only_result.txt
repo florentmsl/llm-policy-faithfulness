@@ -1,0 +1,135 @@
+This is a deterministic **decision-tree policy** that returns one of three actions:
+
+- `1 = UP`
+- `2 = DOWN`
+- `0 = NOOP`
+
+It bases every decision on numeric thresholds of state features like `LT(...).x/.y`, `D(...).x/.y`, `ED(...)`, and `C(...).x/.y` (it never uses anything else like score, reward, or a “goal” variable).
+
+## Execution flow (in order)
+
+### 1) First split: `LT(Chicken1, Car1).x`
+The policy starts by checking:
+
+1. `state['LT(Chicken1, Car1).x'] <= 0`
+
+There are two big regimes:
+
+---
+
+## Regime A: `LT(Chicken1, Car1).x <= 0`
+
+### 2A) Next split: `LT(Chicken1, Car2).x`
+2. `state['LT(Chicken1, Car2).x'] <= 0`
+
+#### 2A-i) If `LT(Chicken1, Car2).x <= 0`
+3. Check `state['LT(Car8, Chicken1).y'] <= -3855`
+
+##### 3A-i) If `LT(Car8, Chicken1).y <= -3855`
+4. Check `state['D(Car1, Car4).x'] <= 55`
+
+- **If `D(Car1, Car4).x <= 55`:**
+  5. Check `state['ED(Car1, Chicken1)'] <= 79`
+
+  - **If `ED(Car1, Chicken1) <= 79`:**
+    6. Check `state['C(Car6, Car2).x'] <= 91`
+    - **If `C(Car6, Car2).x <= 91`:**
+      7. Check `state['ED(Car10, Chicken1)'] <= 131`
+      - If `<= 131` → return `1 (UP)`
+      - Else → return `2 (DOWN)`
+    - **If `C(Car6, Car2).x > 91`:**
+      7. Check `state['ED(Car2, Chicken1)'] <= 18`
+      - If `<= 18` → return `1 (UP)`
+      - Else → return `1 (UP)` (so this sub-branch is **always UP**)
+
+  - **If `ED(Car1, Chicken1) > 79`:**
+    6. Check `state['ED(Car8, Car9)'] <= 28`
+    - If `<= 28`:
+      7. Check `state['C(Car7, Chicken1).y'] <= 118`
+      - If `<= 118` → return `0 (NOOP)`
+      - Else → return `2 (DOWN)`
+    - Else (`> 28`):
+      7. Check `state['ED(Car7, Chicken1)'] <= 65`
+      - If `<= 65` → return `1 (UP)`
+      - Else → return `1 (UP)` (so this sub-branch is **always UP**)
+
+- **If `D(Car1, Car4).x > 55`:**
+  5. Check `state['ED(Car2, Chicken1)'] <= 61`
+  - If `<= 61`:
+    6. Check `state['ED(Chicken2, Car9)'] <= 32`
+    - If `<= 32`:
+      7. Check `state['ED(Car1, Chicken1)'] <= 59`
+      - If `<= 59` → return `2 (DOWN)`
+      - Else → return `2 (DOWN)` (**always DOWN**)
+    - Else (`> 32`):
+      7. Check `state['ED(Car3, Chicken1)'] <= 36`
+      - If `<= 36` → return `1 (UP)`
+      - Else → return `1 (UP)` (**always UP**)
+  - Else (`ED(Car2,Chicken1) > 61`):
+    6. Check `state['ED(Car6, Chicken1)'] <= 68`
+    - If `<= 68` → return `2 (DOWN)`
+    - Else:
+      7. Check `state['ED(Chicken1, Car4)'] <= 51`
+      - If `<= 51` → return `1 (UP)`
+      - Else → return `1 (UP)` (**always UP**)
+
+So, in this whole `LT(Car8,Chicken1).y <= -3855` area, **UP is the default**, with **DOWN** triggered by a few specific “distance small / threshold exceeded” checks, and **NOOP** appearing in one tight case (`ED(Car8,Car9) <= 28` and `C(Car7,Chicken1).y <= 118`).
+
+##### 3A-ii) If `LT(Car8, Chicken1).y > -3855`
+4. Check `state['LT(Car9, Chicken1).x'] <= 0`
+
+- If `LT(Car9,Chicken1).x <= 0`: it then checks things like `D(Chicken1,Car1).y`, `D(Car2,Car3).x`, `LT(Car10,Chicken1).y`, `D(Car7,Car8).x`, `LT(Car6,Chicken1).y`, and returns **mostly UP**, with some **DOWN** in subcases like:
+  - `D(Chicken1, Car1).y > -71` and `LT(Car10, Chicken1).y <= -4058` and `D(Car7, Car8).x > 22` → `2 (DOWN)`
+  - `D(Chicken1, Car1).y <= -71` and `D(Car2,Car3).x > 112` and `ED(Car1,Car6) <= 91` → `2 (DOWN)`
+
+- Else (`LT(Car9,Chicken1).x > 0`): it checks `ED(Chicken2,Car9)`, `ED(Car10,Chicken1)`, `ED(Chicken2,Car10)`, `ED(Car1,Car3)`, `ED(Car5,Chicken1)`, `ED(Car5,Car2)`, `C(Car6,Car3).x` and in this whole block the leaves shown are **always UP** except one block that is **always DOWN**:
+  - If `ED(Chicken2,Car9) <= 32` and `ED(Car10,Chicken1) > 125` → return `2 (DOWN)` (it additionally checks `ED(Car1,Car3)` but both outcomes are `DOWN`)
+
+#### 2A-ii) If `LT(Chicken1, Car2).x > 0`
+3. Check `state['D(Car4, Car2).x'] <= -57`
+
+This branch contains **many DOWN returns** mixed with UP/NOOP. Examples of concrete leaves:
+
+- If `D(Car4,Car2).x <= -57` and `ED(Car5,Chicken2) <= 103` and `ED(Car2,Chicken1) <= 110` and `ED(Chicken1,Car7) <= 28` → return `2 (DOWN)` (it checks `D(Car10,Car3).x` but both sides return DOWN).
+- If `D(Car4,Car2).x <= -57` and `ED(Car5,Chicken2) > 103` and `ED(Car7,Chicken1) <= 22` and `ED(Chicken1,Car3) > 114` and `ED(Car1,Car4) > 48` → return `0 (NOOP)`.
+- If `D(Car4,Car2).x > -57` and `D(Car3,Car9).x <= 112` and `C(Car9,Car5).x <= 132` and `ED(Chicken1,Car9) <= 8` and `D(Car1,Car10).x > -157` → return `2 (DOWN)`.
+- If `D(Car4,Car2).x > -57` and `D(Car3,Car9).x > 112` and `D(Car10,Car1).x <= 48` and `LT(Car10,Chicken1).y <= 1562` and `D(Car1,Car4).x <= 4` → return `0 (NOOP)`.
+
+---
+
+## Regime B: `LT(Chicken1, Car1).x > 0`
+
+### 2B) Next split: `LT(Chicken2, Chicken1).y`
+2. Check `state['LT(Chicken2, Chicken1).y'] <= 636`
+
+#### 2B-i) If `<= 636`
+3. Check `state['ED(Car6, Car2)'] <= 104`
+
+- If `ED(Car6,Car2) <= 104`: then `D(Car1,Car6).x` is checked, and inside those branches the policy is **mostly UP**, with some explicit DOWN and occasional NOOP. For example:
+  - If `D(Car1,Car6).x <= 93` and `D(Car6,Car8).x > -51` and `ED(Car8,Car9) > 115` and `ED(Car7,Chicken1) <= 64` → return `0 (NOOP)`.
+  - If `D(Car1,Car6).x > 93` and `ED(Chicken2,Car8) <= 55` and `D(Car8,Car5).x <= -67` and `Car10.x > 156` → return `2 (DOWN)`.
+  - If `D(Car1,Car6).x > 93` and `ED(Chicken2,Car8) > 55` and `D(Car7,Car3).x > -39` and `ED(Car2,Chicken1) <= 151` → return `2 (DOWN)`.
+
+- If `ED(Car6,Car2) > 104`: then it checks `ED(Car9,Chicken1) <= 28` and later `Car10.x#1`, `C(Car5,Car3).x`, `LT(Car9,Chicken1).y`, etc., and in this sub-tree:
+  - When `ED(Car9,Chicken1) <= 28`, many leaves are **DOWN** (e.g. if `Car10.x#1 > -1` and `ED(Chicken1,Car1) <= 142` → always `2 (DOWN)`).
+  - When `ED(Car9,Chicken1) > 28`, it splits on `C(Car10,Car6).x <= 109` and often returns **UP** or **DOWN** based on distances like `ED(Car4,Car10)`, `Car1.x`, `ED(Car8,Car7)`, `ED(Car7,Car10)`.
+
+#### 2B-ii) If `> 636`
+3. Check `state['ED(Car9, Car10)'] <= 127`
+
+This region is again mostly UP, with some NOOP and DOWN depending on close-distance checks:
+
+- If `ED(Car9,Car10) <= 127` and `C(Car6,Car4).x <= 47` and `D(Car3,Car9).x <= 5` and `LT(Car9,Chicken1).y > 26` and `LT(Chicken1,Car9).y > -21` → return `0 (NOOP)`.
+- If `ED(Car9,Car10) > 127` and `ED(Car3,Chicken1) <= 153` and `ED(Chicken1,Car8) > 111` and `ED(Chicken1,Car4) > 109` and `ED(Chicken1,Car8) <= 114` → return `0 (NOOP)`, else → `2 (DOWN)`.
+- If `ED(Car9,Car10) > 127` and `ED(Car3,Chicken1) > 153`: the shown leaves are **mostly UP**, except:
+  - If `ED(Car10,Car5) <= 81` and `ED(Chicken1,Car1) <= 157` and `ED(Chicken1,Car3) <= 155` → return `2 (DOWN)`
+  - If `ED(Car10,Car5) <= 81` and `ED(Chicken1,Car1) <= 157` and `ED(Chicken1,Car3) > 155` → return `0 (NOOP)`
+
+---
+
+## What it “does” behaviorally (strictly from the code)
+- The policy is **UP-biased**: many subtrees collapse to “always UP” once you enter them (several conditions are checked but both outcomes return `1`).
+- It produces **DOWN** mainly in specific “proximity/geometry” situations (low `ED(...)` or certain `D/LT` thresholds), often around `Car9/Car10/Car1/Car2` relationships with `Chicken1`.
+- It produces **NOOP** rarely, in a handful of narrow configurations (examples above), typically gated by multiple distance/relative-position checks.
+
+If you want, I can take a *specific* example state (you provide the numeric values for the features that appear on one path) and I’ll trace **exactly** which branches are taken and why, down to the final returned action.

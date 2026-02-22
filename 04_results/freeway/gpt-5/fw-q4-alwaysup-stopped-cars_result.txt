@@ -1,0 +1,36 @@
+## Baseline (normal Freeway with moving cars)
+
+### What the policy actually does
+If you follow the code in execution order, it *looks* like a big decision tree—but every leaf returns the same action:
+
+- Start: check `state['LT(Chicken1, Car1).x'] <= 0`
+  - If **true**, enter the first big branch, which checks dozens of other conditions…
+    - No matter which sub-conditions are true/false, every reachable leaf ends with `return 1`.
+  - If **false**, enter the `else` branch, which also checks dozens of other conditions…
+    - Again, every reachable leaf ends with `return 1`.
+
+So the policy is behaviorally equivalent to:
+
+```python
+def play(state):
+    return 1
+```
+
+Given your example mapping (`1  # UP`), this means the chicken **always presses UP**, and *none* of the state predicates actually change the action (even where the comment says `# DOWN` or `# NOOP`, the code still returns `1`).
+
+### Expected baseline behavior
+- The chicken will continuously try to move upward every step, regardless of where cars are.
+- Because cars move horizontally and the policy never waits or backs up, it will **walk into traffic frequently**, getting hit and knocked back/reset depending on difficulty.
+- It may still occasionally make progress (e.g., by repeatedly pushing up and eventually slipping through), but it will not exhibit “timing/anticipation” behavior—just constant upward motion.
+
+## Simplified setup (all cars immobilized)
+
+### Program-flow trace under simplification
+The checked conditions still depend on car/chicken positions, but since *every* path returns `1`, immobilizing cars does not change which action is produced:
+- Same first check `LT(Chicken1, Car1).x <= 0` → either way → eventually `return 1`.
+
+### Expected simplified behavior (behavioral change)
+- Since cars no longer move, the reason the baseline fails (needing to time gaps / avoid oncoming vehicles) disappears.
+- With the policy still always outputting `1` (UP), the chicken will **march straight upward and keep doing so**, so it should **cross much more reliably and repeatedly**, yielding a much higher score than in the baseline.
+
+In short: the simplification doesn’t change the policy’s decision-making (it has none—always `1`), but it changes the environment so that “always UP” becomes far more effective.

@@ -1,9 +1,11 @@
 defaults:
   game: freeway
-  model: gemini-3-pro
+  model: gpt-5
   templates:
     q1: 03_prompts/templates/q1_research.txt
     q2: 03_prompts/templates/q2_research.txt
+    q3: 03_prompts/templates/q3_research.txt
+    q4: 03_prompts/templates/q4_research.txt
 
 experiments:
   - id: fw-q1-aligned-full-context
@@ -35,21 +37,54 @@ experiments:
     policy_file: 01_policies/scobots/freeway/aligned.txt
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
-    reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
     icl_file: 03_prompts/in_context/scobots.txt
 
   - id: fw-q2-aligned-policy-only
     rq: q2
     policy_file: 01_policies/scobots/freeway/aligned.txt
 
-  - id: fw-q2-instahit-full-context
+  - id: fw-q1-aligned-ug-policy-only
+    rq: q1
+    policy_file: 01_policies/scobots/freeway/aligned_ug.txt
+
+  - id: fw-q2-aligned-ug-policy-only
     rq: q2
-    policy_file: 01_policies/scobots/freeway/instahit.txt
+    policy_file: 01_policies/scobots/freeway/aligned_ug.txt
+
+  - id: fw-q3-aligned-full-context
+    rq: q3
+    policy_file: 01_policies/scobots/freeway/aligned.txt
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
-    reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
     icl_file: 03_prompts/in_context/scobots.txt
 
-  - id: fw-q2-instahit-policy-only
-    rq: q2
-    policy_file: 01_policies/scobots/freeway/instahit.txt
+  - id: fw-q3-aligned-policy-only
+    rq: q3
+    policy_file: 01_policies/scobots/freeway/aligned.txt
+
+  - id: fw-q3-aligned-ug-policy-only
+    rq: q3
+    policy_file: 01_policies/scobots/freeway/aligned_ug.txt
+
+  - id: fw-q3-alwaysup-full-context
+    rq: q3
+    policy_file: 01_policies/scobots/freeway/alwaysup.txt
+    env_file: 02_contexts/freeway/environment.txt
+    task_file: 02_contexts/freeway/task.txt
+    icl_file: 03_prompts/in_context/scobots.txt
+
+  - id: fw-q4-aligned-stopped-cars
+    rq: q4
+    policy_file: 01_policies/scobots/freeway/aligned.txt
+    env_file: 02_contexts/freeway/environment.txt
+    task_file: 02_contexts/freeway/task.txt
+    simplification_file: 02_contexts/simplifications/freeway_stopped_cars.txt
+    icl_file: 03_prompts/in_context/scobots.txt
+
+  - id: fw-q4-alwaysup-stopped-cars
+    rq: q4
+    policy_file: 01_policies/scobots/freeway/alwaysup.txt
+    env_file: 02_contexts/freeway/environment.txt
+    task_file: 02_contexts/freeway/task.txt
+    simplification_file: 02_contexts/simplifications/freeway_stopped_cars.txt
+    icl_file: 03_prompts/in_context/scobots.txt

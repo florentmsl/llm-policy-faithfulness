@@ -1,0 +1,154 @@
+Actions: `0 = NOOP`, `1 = UP`, `2 = DOWN`.
+
+The policy is a big decision tree. It checks state features in this exact order and returns the first action at the reached leaf.
+
+1) First split: `LT(Chicken1, Car1).x <= 0`?
+- If **yes** (goes into the big “Chicken1 vs Car1” left branch):
+  1.1) Check `LT(Chicken1, Car2).x <= 0`?
+  - If **yes**:
+    1.1.1) Check `LT(Car8, Chicken1).y <= -3855`?
+    - If **yes**:
+      1.1.1.1) Check `D(Car1, Car4).x <= 55`?
+      - If **yes**:
+        1.1.1.1.1) Check `ED(Car1, Chicken1) <= 79`?
+        - If **yes**:
+          - Check `C(Car6, Car2).x <= 91`?
+            - If **yes**: check `ED(Car10, Chicken1) <= 131` → **UP** else **DOWN**.
+            - If **no**: check `ED(Car2, Chicken1) <= 18` → **UP** else **UP** (this subtree always returns **UP**).
+        - If **no**:
+          - Check `ED(Car8, Car9) <= 28`?
+            - If **yes**: check `C(Car7, Chicken1).y <= 118` → **NOOP** else **DOWN**.
+            - If **no**: check `ED(Car7, Chicken1) <= 65` → **UP** else **UP** (always **UP**).
+      - If **no** (`D(Car1, Car4).x > 55`):
+        - Check `ED(Car2, Chicken1) <= 61`?
+          - If **yes**: check `ED(Chicken2, Car9) <= 32`?
+            - If **yes**: check `ED(Car1, Chicken1) <= 59` → **DOWN** else **DOWN** (always **DOWN**).
+            - If **no**: check `ED(Car3, Chicken1) <= 36` → **UP** else **UP** (always **UP**).
+          - If **no**: check `ED(Car6, Chicken1) <= 68` → **DOWN** else check `ED(Chicken1, Car4) <= 51` → **UP** else **UP** (always **UP** after that last check).
+    - If **no** (`LT(Car8, Chicken1).y > -3855`):
+      1.1.2) Check `LT(Car9, Chicken1).x <= 0`?
+      - If **yes**:
+        - Check `D(Chicken1, Car1).y <= -71`?
+          - If **yes**: check `D(Car2, Car3).x <= 112`?
+            - If **yes**: check `LT(Car5, Chicken1).y <= -1867` → **UP** else **UP** (always **UP**).
+            - If **no**: check `ED(Car1, Car6) <= 91` → **DOWN** else **UP**.
+          - If **no**: check `LT(Car10, Chicken1).y <= -4058`?
+            - If **yes**: check `D(Car7, Car8).x <= 22` → **UP** else **DOWN**.
+            - If **no**: check `LT(Car6, Chicken1).y <= -3203` → **UP** else **UP** (always **UP**).
+      - If **no** (`LT(Car9, Chicken1).x > 0`):
+        - Check `ED(Chicken2, Car9) <= 32`?
+          - If **yes**: check `ED(Car10, Chicken1) <= 125`?
+            - If **yes**: check `ED(Chicken2, Car10) <= 47` → **UP** else **UP** (always **UP**).
+            - If **no**: check `ED(Car1, Car3) <= 43` → **DOWN** else **DOWN** (always **DOWN**).
+          - If **no**: check `ED(Car5, Chicken1) <= 37`?
+            - If **yes**: check `ED(Car5, Car2) <= 64` → **UP** else **UP** (always **UP**).
+            - If **no**: check `C(Car6, Car3).x <= 125` → **UP** else **UP** (always **UP**).
+  - If **no** (`LT(Chicken1, Car2).x > 0`):
+    1.2) Check `D(Car4, Car2).x <= -57`?
+    - If **yes**:
+      - Check `ED(Car5, Chicken2) <= 103`?
+        - If **yes**: check `ED(Car2, Chicken1) <= 110`?
+          - If **yes**: check `ED(Chicken1, Car7) <= 28`?
+            - If **yes**: check `D(Car10, Car3).x <= 39` → **DOWN** else **DOWN** (always **DOWN**).
+            - If **no**: check `C(Car1, Car8).x <= 82` → **DOWN** else **UP**.
+          - If **no**: check `ED(Car1, Car8) <= 123`?
+            - If **yes**: check `ED(Chicken1, Car10) <= 37` → **UP** else **DOWN**.
+            - If **no**: check `ED(Car9, Car5) <= 66` → **UP** else **UP** (always **UP**).
+        - If **no** (`ED(Car5, Chicken2) > 103`):
+          - Check `ED(Car7, Chicken1) <= 22`?
+            - If **yes**: check `ED(Chicken1, Car3) <= 114`?
+              - If **yes**: check `ED(Car8, Chicken1) <= 89` → **DOWN** else **UP**.
+              - If **no**: check `ED(Car1, Car4) <= 48` → **UP** else **NOOP**.
+            - If **no**: check `ED(Car8, Car3) <= 93`?
+              - If **yes**: check `ED(Car7, Chicken1) <= 29` → **DOWN** else **UP**.
+              - If **no**: check `ED(Car9, Chicken1) <= 40` → **UP** else **UP** (always **UP**).
+    - If **no** (`D(Car4, Car2).x > -57`):
+      - Check `D(Car3, Car9).x <= 112`?
+        - If **yes**: check `C(Car9, Car5).x <= 132`?
+          - If **yes**: check `ED(Chicken1, Car9) <= 8`?
+            - If **yes**: check `D(Car1, Car10).x <= -157` → **UP** else **DOWN**.
+            - If **no**: check `D(Car9, Car8).x <= -114` → **DOWN** else **UP**.
+          - If **no**: check `ED(Chicken1, Car8) <= 65`?
+            - If **yes**: check `ED(Car1, Chicken1) <= 131` → **DOWN** else **DOWN** (always **DOWN**).
+            - If **no**: check `ED(Car3, Chicken1) <= 91` → **DOWN** else **UP**.
+        - If **no** (`D(Car3, Car9).x > 112`):
+          - Check `D(Car10, Car1).x <= 48`?
+            - If **yes**: check `LT(Car10, Chicken1).y <= 1562`?
+              - If **yes**: check `D(Car1, Car4).x <= 4` → **NOOP** else **DOWN**.
+              - If **no**: check `Car9.x#1 <= 140` → **UP** else **DOWN**.
+            - If **no**: check `ED(Car9, Car1) <= 128`?
+              - If **yes**: check `ED(Car4, Chicken1) <= 65` → **DOWN** else **NOOP**.
+              - If **no**: check `ED(Chicken1, Car5) <= 46` → **DOWN** else **NOOP**.
+
+- If **no** (`LT(Chicken1, Car1).x > 0`, the big right branch):
+  2) Check `LT(Chicken2, Chicken1).y <= 636`?
+  - If **yes**:
+    2.1) Check `ED(Car6, Car2) <= 104`?
+    - If **yes**:
+      - Check `D(Car1, Car6).x <= 93`?
+        - If **yes**:
+          - Check `D(Car6, Car8).x <= -51`?
+            - If **yes**: check `ED(Car1, Car7) <= 120`?
+              - If **yes**: check `ED(Chicken1, Car1) <= 171` → **UP** else **DOWN**.
+              - If **no**: check `ED(Car1, Car4) <= 53` → **UP** else **UP** (always **UP**).
+            - If **no**: check `ED(Car8, Car9) <= 115`?
+              - If **yes**: check `C(Car8, Car4).x <= 96` → **UP** else **UP** (always **UP**).
+              - If **no**: check `ED(Car7, Chicken1) <= 64` → **NOOP** else **UP**.
+        - If **no** (`D(Car1, Car6).x > 93`):
+          - Check `ED(Chicken2, Car8) <= 55`?
+            - If **yes**: check `D(Car8, Car5).x <= -67`?
+              - If **yes**: check `Car10.x <= 156` → **UP** else **DOWN**.
+              - If **no**: check `LT(Car5, Chicken1).x <= 0` → **UP** else **DOWN**.
+            - If **no**: check `D(Car7, Car3).x <= -39`?
+              - If **yes**: check `C(Car10, Car8).x <= 153` → **DOWN** else **DOWN** (always **DOWN**).
+              - If **no**: check `ED(Car2, Chicken1) <= 151` → **DOWN** else **UP**.
+    - If **no** (`ED(Car6, Car2) > 104`):
+      - Check `ED(Car9, Chicken1) <= 28`?
+        - If **yes**: check `Car10.x#1 <= -1`?
+          - If **yes**: check `C(Car5, Car3).x <= 114` → **NOOP** else check `LT(Car9, Chicken1).y <= 15` → **UP** else **UP**.
+          - If **no**: check `ED(Chicken1, Car1) <= 142`?
+            - If **yes**: check `LT(Car8, Chicken1).y <= -295` → **DOWN** else **DOWN** (always **DOWN**).
+            - If **no**: check `ED(Car1, Chicken1) <= 152` → **DOWN** else **DOWN** (always **DOWN**).
+        - If **no** (`ED(Car9, Chicken1) > 28`):
+          - Check `C(Car10, Car6).x <= 109`?
+            - If **yes**: check `ED(Car4, Car10) <= 100`?
+              - If **yes**: check `C(Car5, Car9).x <= 59` → **UP** else **DOWN**.
+              - If **no**: check `Car1.x <= 28` → **DOWN** else **UP**.
+            - If **no**: check `ED(Car8, Car7) <= 68`?
+              - If **yes**: check `D(Car1, Car4).x <= 36` → **UP** else **DOWN**.
+              - If **no**: check `ED(Car7, Car10) <= 87` → **DOWN** else **DOWN** (always **DOWN**).
+  - If **no** (`LT(Chicken2, Chicken1).y > 636`):
+    2.2) Check `ED(Car9, Car10) <= 127`?
+    - If **yes**:
+      - Check `C(Car6, Car4).x <= 47`?
+        - If **yes**: check `D(Car3, Car9).x <= 5`?
+          - If **yes**: check `LT(Car9, Chicken1).y <= 26`?
+            - If **yes**: check `C(Car1, Chicken1).x <= 100` → **DOWN** else **UP**.
+            - If **no**: check `LT(Chicken1, Car9).y <= -21` → **UP** else **NOOP**.
+          - If **no**: check `ED(Chicken1, Car9) <= 19`?
+            - If **yes**: check `LT(Car7, Chicken1).y <= 2168` → **NOOP** else **UP**.
+            - If **no**: check `LT(Car2, Chicken1).y <= 2716` → **UP** else **UP** (always **UP**).
+        - If **no** (`C(Car6, Car4).x > 47`): check `D(Car8, Car7).x <= 96`?
+          - If **yes**: check `D(Car9, Car3).x <= -106`?
+            - If **yes**: check `ED(Car10, Car1) <= 160` → **NOOP** else **UP**.
+            - If **no**: check `C(Car8, Car9).x <= 72` → **UP** else **UP**.
+          - If **no**: check `ED(Chicken1, Car9) <= 21` → **UP** else check `C(Car6, Car10).x <= 71` → **DOWN** else **DOWN** (always **DOWN**).
+    - If **no** (`ED(Car9, Car10) > 127`):
+      - Check `ED(Car3, Chicken1) <= 153`?
+        - If **yes**: check `ED(Chicken1, Car8) <= 111`?
+          - If **yes**: check `ED(Car6, Car9) <= 50`?
+            - If **yes**: check `ED(Car5, Chicken1) <= 102` → **UP** else **UP**.
+            - If **no**: check `LT(Chicken2, Chicken1).y <= 2552` → **NOOP** else **DOWN**.
+          - If **no**: check `ED(Chicken1, Car4) <= 109`?
+            - If **yes**: check `LT(Car5, Chicken1).y <= -739` → **NOOP** else **DOWN**.
+            - If **no**: check `ED(Chicken1, Car8) <= 114` → **NOOP** else **DOWN**.
+        - If **no** (`ED(Car3, Chicken1) > 153`):
+          - Check `ED(Car10, Car5) <= 81`?
+            - If **yes**: check `ED(Chicken1, Car1) <= 157`?
+              - If **yes**: check `ED(Chicken1, Car3) <= 155` → **DOWN** else **NOOP**.
+              - If **no**: check `ED(Car10, Chicken1) <= 89` → **UP** else **UP**.
+            - If **no**: check `LT(Car6, Chicken1).y <= -49`?
+              - If **yes**: check `ED(Chicken1, Car1) <= 149` → **UP** else **UP**.
+              - If **no**: check `LT(Car9, Chicken1).y <= -1373` → **UP** else **UP**.
+
+Overall, most reachable leaves return **UP**; **DOWN** and **NOOP** are triggered in specific “close/threshold” situations (various `ED(...)`, `D(...).x`, and `LT(...).y` tests), with a few subtrees that are effectively constant (**always UP** or **always DOWN**) once you enter them (as noted above).

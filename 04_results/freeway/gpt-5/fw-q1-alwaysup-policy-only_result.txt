@@ -1,0 +1,31 @@
+This `play(state)` function is a big nested decision tree, but **every single leaf returns `1`**, so **the action is always `1` regardless of the state**. The conditions only affect *which path* is taken through the tree, not the returned action.
+
+## Execution flow (in order)
+
+1. The first check is:
+   - `state['LT(Chicken1, Car1).x'] <= 0`
+   - If **true**, execution goes into the large “then” subtree (many more nested checks).
+   - If **false**, execution goes into the large “else” subtree (many more nested checks).
+
+2. In the **true** subtree, the next checks (in order) start like:
+   - `state['LT(Chicken1, Car2).x'] <= 0`
+     - If true: checks `state['LT(Car8, Chicken1).y'] <= -3855`, then `state['D(Car1, Car4).x'] <= 55`, then `state['ED(Car1, Chicken1)'] <= 79`, … and so on.
+     - If false: checks `state['D(Car4, Car2).x'] <= -57`, then `state['ED(Car5, Chicken2)'] <= 103`, … and so on.
+   - **But**: no matter how these comparisons evaluate, every terminal branch ends with `return 1`.
+
+3. In the **false** subtree (when `LT(Chicken1, Car1).x > 0`), the next checks (in order) start like:
+   - `state['LT(Chicken2, Chicken1).y'] <= 636`
+     - If true: checks `state['ED(Car6, Car2)'] <= 104`, then `state['D(Car1, Car6).x'] <= 93`, … and so on.
+     - If false: checks `state['ED(Car9, Car10)'] <= 127`, then `state['C(Car6, Car4).x'] <= 47`, … and so on.
+   - Again, **every** terminal branch ends with `return 1`.
+
+## Concrete behavioral summary (policy-equivalent form)
+
+Because all leaves return the same value, the policy is behaviorally equivalent to:
+
+```python
+def play(state):
+    return 1
+```
+
+So in the environment, this policy **always takes action `1` on every timestep**, independent of car/chicken positions/distances encoded in `state`. (The `# UP/# DOWN/# NOOP` comments don’t match the actual code behavior, since the code never returns anything other than `1`.)

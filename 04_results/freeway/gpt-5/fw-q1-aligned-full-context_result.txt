@@ -1,0 +1,87 @@
+This policy is a large nested `if` tree that outputs one of three actions each step: `0` (NOOP), `1` (UP), or `2` (DOWN). It only ever looks at the numeric values in `state[...]` and returns the first action reached along the top-to-bottom, left-to-right execution path.
+
+## Top-level control flow (checked in this exact order)
+
+1. Check `state["LT(Chicken1, Car1).x"] <= 0`
+   - If **true**, go into the first big block (many checks involving `Chicken1` vs `Car1/Car2/...`).
+   - If **false**, go into the second big block (starts by checking `state["LT(Chicken2, Chicken1).y"] <= 636`).
+
+Within each big block, the policy keeps checking one condition at a time; as soon as a `return` is hit, it stops and outputs that action.
+
+A notable fact from the code itself: many leaves return `1  # UP`; `2  # DOWN` and `0  # NOOP` appear only in specific sub-branches (often gated by small `ED(...)` thresholds and some `LT(...)`/`D(...)`/`C(...)` comparisons, plus a few raw `Car1.x`, `Car9.x#1`, `Car10.x#1` checks).
+
+## Concrete execution traces (example state-values → exact path → action)
+
+### Trace A: returns **UP** via the very first deep “Car10 close enough” check
+Assume the state has these values:
+- `LT(Chicken1, Car1).x = -1`
+- `LT(Chicken1, Car2).x = -1`
+- `LT(Car8, Chicken1).y = -4000`
+- `D(Car1, Car4).x = 50`
+- `ED(Car1, Chicken1) = 70`
+- `C(Car6, Car2).x = 90`
+- `ED(Car10, Chicken1) = 100`
+
+Execution (in order):
+- `LT(Chicken1, Car1).x <= 0` → true
+- `LT(Chicken1, Car2).x <= 0` → true
+- `LT(Car8, Chicken1).y <= -3855` → true
+- `D(Car1, Car4).x <= 55` → true
+- `ED(Car1, Chicken1) <= 79` → true
+- `C(Car6, Car2).x <= 91` → true
+- `ED(Car10, Chicken1) <= 131` → true
+- First reached return → `1` (**UP**)
+
+### Trace B: same path as A but returns **DOWN** when `ED(Car10, Chicken1)` is larger
+Use the same values as Trace A except:
+- `ED(Car10, Chicken1) = 200`
+
+Execution is identical until the last check:
+- `ED(Car10, Chicken1) <= 131` → **false**
+- First reached return → `2` (**DOWN**)
+
+### Trace C: returns **NOOP** in the “Car8–Car9 close & Car7.y small” sub-branch
+Assume:
+- `LT(Chicken1, Car1).x = -1`
+- `LT(Chicken1, Car2).x = -1`
+- `LT(Car8, Chicken1).y = -4000`
+- `D(Car1, Car4).x = 50`
+- `ED(Car1, Chicken1) = 100`  (so `<= 79` is false)
+- `ED(Car8, Car9) = 20`       (so `<= 28` is true)
+- `C(Car7, Chicken1).y = 100` (so `<= 118` is true)
+
+Execution:
+- `LT(Chicken1, Car1).x <= 0` → true
+- `LT(Chicken1, Car2).x <= 0` → true
+- `LT(Car8, Chicken1).y <= -3855` → true
+- `D(Car1, Car4).x <= 55` → true
+- `ED(Car1, Chicken1) <= 79` → **false** (take the `else`)
+- `ED(Car8, Car9) <= 28` → true
+- `C(Car7, Chicken1).y <= 118` → true
+- First reached return → `0` (**NOOP**)
+
+### Trace D: goes to the *other* top-level half and returns **DOWN** (a branch that forces DOWN)
+Assume:
+- `LT(Chicken1, Car1).x = 1`              (so the top-level test is false)
+- `LT(Chicken2, Chicken1).y = 0`          (so `<= 636` is true)
+- `ED(Car6, Car2) = 200`                  (so `<= 104` is false → take the `else`)
+- `ED(Car9, Chicken1) = 20`               (so `<= 28` is true)
+- `Car10.x#1 = 5`                         (so `<= -1` is false → take the `else`)
+- `ED(Chicken1, Car1) = 100`              (so `<= 142` is true)
+- `LT(Car8, Chicken1).y = -300`           (so `<= -295` is true)
+
+Execution:
+- `LT(Chicken1, Car1).x <= 0` → **false** (enter second big block)
+- `LT(Chicken2, Chicken1).y <= 636` → true
+- `ED(Car6, Car2) <= 104` → **false**
+- `ED(Car9, Chicken1) <= 28` → true
+- `Car10.x#1 <= -1` → **false**
+- `ED(Chicken1, Car1) <= 142` → true
+- `LT(Car8, Chicken1).y <= -295` → true
+- First reached return → `2` (**DOWN**)
+
+## What the policy is doing (strictly from the code)
+- It is a reactive rule set that chooses among **UP/DOWN/NOOP** based on many pairwise features like `LT(...)`, `D(...)`, `C(... )`, and `ED(...)` between `Chicken1/Chicken2` and various `Car*` objects.
+- Across the tree, the default outcome is very often **UP**, but there are explicit “override” pockets that return **DOWN** or **NOOP** when certain thresholds are met (as in Traces B/C/D).
+
+If you paste a *real* concrete `state` dictionary (actual numbers for the keys used), I can produce the exact single-step trace for that state (every condition true/false in order) and the resulting action.

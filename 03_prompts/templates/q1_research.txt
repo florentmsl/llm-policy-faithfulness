@@ -26,8 +26,8 @@ Here is the symbolic policy obtained after training:
 {{SYMBOLIC_POLICY}}
 ```
 
-# Example (only for reference)
 {{#IN_CONTEXT_LEARNING_EXAMPLE}}
+# Example (only for reference)
 Here is an example of how to analyze and explain a symbolic policy (only for reference):
 {{IN_CONTEXT_LEARNING_EXAMPLE}}
 {{/IN_CONTEXT_LEARNING_EXAMPLE}}

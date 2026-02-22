@@ -1,0 +1,423 @@
+This `play(state)` policy is a large nested if/else decision tree over the numeric features in `state`, and it returns only three actions: `1 (UP)`, `2 (DOWN)`, or `0 (NOOP)`. Below is the control flow in the exact order it executes.
+
+## 0) Root split
+1) Check `state['LT(Obj1, Obj3).x'] <= 0`
+
+- **If true**: go to section **1** (“Obj1 vs Obj3.x: <= 0”).
+- **If false**: go to section **2** (“Obj1 vs Obj3.x: > 0”).
+
+---
+
+## 1) If `LT(Obj1, Obj3).x <= 0`
+2) Check `state['LT(Obj1, Obj4).x'] <= 0`
+
+### 1A) If `LT(Obj1, Obj4).x <= 0`
+3) Check `state['LT(Obj10, Obj1).y'] <= -3855`
+
+#### 1A.i) If `LT(Obj10, Obj1).y <= -3855`
+4) Check `state['D(Obj3, Obj6).x'] <= 55`
+
+##### 1A.i.a) If `D(Obj3, Obj6).x <= 55`
+5) Check `state['ED(Obj3, Obj1)'] <= 79`
+
+- **If `ED(Obj3, Obj1) <= 79`:**
+  6) Check `state['C(Obj8, Obj4).x'] <= 91`
+  - If `<= 91`:
+    7) Check `state['ED(Obj12, Obj1)'] <= 131`
+    - If `<= 131`: **return `UP`**
+    - Else: **return `DOWN`**
+  - Else (`> 91`):
+    7) Check `state['ED(Obj4, Obj1)'] <= 18`
+    - If `<= 18`: **return `UP`**
+    - Else: **return `UP`** (both branches are `UP`, so this subtree is effectively `UP`)
+
+- **Else (`ED(Obj3, Obj1) > 79`):**
+  6) Check `state['ED(Obj10, Obj11)'] <= 28`
+  - If `<= 28`:
+    7) Check `state['C(Obj9, Obj1).y'] <= 118`
+    - If `<= 118`: **return `NOOP`**
+    - Else: **return `DOWN`**
+  - Else (`> 28`):
+    7) Check `state['ED(Obj9, Obj1)'] <= 65`
+    - If `<= 65`: **return `UP`**
+    - Else: **return `UP`** (effectively `UP`)
+
+##### 1A.i.b) Else (`D(Obj3, Obj6).x > 55`)
+5) Check `state['ED(Obj4, Obj1)'] <= 61`
+
+- If `<= 61`:
+  6) Check `state['ED(Obj2, Obj11)'] <= 32`
+  - If `<= 32`:
+    7) Check `state['ED(Obj3, Obj1)'] <= 59`
+    - If `<= 59`: **return `DOWN`**
+    - Else: **return `DOWN`** (effectively `DOWN`)
+  - Else (`> 32`):
+    7) Check `state['ED(Obj5, Obj1)'] <= 36`
+    - If `<= 36`: **return `UP`**
+    - Else: **return `UP`** (effectively `UP`)
+- Else (`> 61`):
+  6) Check `state['ED(Obj8, Obj1)'] <= 68`
+  - If `<= 68`: **return `DOWN`**
+  - Else:
+    7) Check `state['ED(Obj1, Obj6)'] <= 51`
+    - If `<= 51`: **return `UP`**
+    - Else: **return `UP`** (effectively `UP`)
+
+#### 1A.ii) Else (`LT(Obj10, Obj1).y > -3855`)
+4) Check `state['LT(Obj11, Obj1).x'] <= 0`
+
+##### 1A.ii.a) If `LT(Obj11, Obj1).x <= 0`
+5) Check `state['D(Obj1, Obj3).y'] <= -71`
+
+- If `D(Obj1, Obj3).y <= -71`:
+  6) Check `state['D(Obj4, Obj5).x'] <= 112`
+  - If `<= 112`:
+    7) Check `state['LT(Obj7, Obj1).y'] <= -1867`
+    - If `<= -1867`: **return `UP`**
+    - Else: **return `UP`** (effectively `UP`)
+  - Else (`> 112`):
+    7) Check `state['ED(Obj3, Obj8)'] <= 91`
+    - If `<= 91`: **return `DOWN`**
+    - Else: **return `UP`**
+- Else (`D(Obj1, Obj3).y > -71`):
+  6) Check `state['LT(Obj12, Obj1).y'] <= -4058`
+  - If `<= -4058`:
+    7) Check `state['D(Obj9, Obj10).x'] <= 22`
+    - If `<= 22`: **return `UP`**
+    - Else: **return `DOWN`**
+  - Else (`> -4058`):
+    7) Check `state['LT(Obj8, Obj1).y'] <= -3203`
+    - If `<= -3203`: **return `UP`**
+    - Else: **return `UP`** (effectively `UP`)
+
+##### 1A.ii.b) Else (`LT(Obj11, Obj1).x > 0`)
+5) Check `state['ED(Obj2, Obj11)'] <= 32`
+
+- If `<= 32`:
+  6) Check `state['ED(Obj12, Obj1)'] <= 125`
+  - If `<= 125`:
+    7) Check `state['ED(Obj2, Obj12)'] <= 47`
+    - If `<= 47`: **return `UP`**
+    - Else: **return `UP`** (effectively `UP`)
+  - Else (`> 125`):
+    7) Check `state['ED(Obj3, Obj5)'] <= 43`
+    - If `<= 43`: **return `DOWN`**
+    - Else: **return `DOWN`** (effectively `DOWN`)
+- Else (`> 32`):
+  6) Check `state['ED(Obj7, Obj1)'] <= 37`
+  - If `<= 37`:
+    7) Check `state['ED(Obj7, Obj4)'] <= 64`
+    - If `<= 64`: **return `UP`**
+    - Else: **return `UP`** (effectively `UP`)
+  - Else (`> 37`):
+    7) Check `state['C(Obj8, Obj5).x'] <= 125`
+    - If `<= 125`: **return `UP`**
+    - Else: **return `UP`** (effectively `UP`)
+
+### 1B) Else (`LT(Obj1, Obj4).x > 0`)
+3) Check `state['D(Obj6, Obj4).x'] <= -57`
+
+#### 1B.i) If `D(Obj6, Obj4).x <= -57`
+4) Check `state['ED(Obj7, Obj2)'] <= 103`
+
+- If `<= 103`:
+  5) Check `state['ED(Obj4, Obj1)'] <= 110`
+  - If `<= 110`:
+    6) Check `state['ED(Obj1, Obj9)'] <= 28`
+    - If `<= 28`:
+      7) Check `state['D(Obj12, Obj5).x'] <= 39`
+      - If `<= 39`: **return `DOWN`**
+      - Else: **return `DOWN`** (effectively `DOWN`)
+    - Else (`> 28`):
+      7) Check `state['C(Obj3, Obj10).x'] <= 82`
+      - If `<= 82`: **return `DOWN`**
+      - Else: **return `UP`**
+  - Else (`> 110`):
+    6) Check `state['ED(Obj3, Obj10)'] <= 123`
+    - If `<= 123`:
+      7) Check `state['ED(Obj1, Obj12)'] <= 37`
+      - If `<= 37`: **return `UP`**
+      - Else: **return `DOWN`**
+    - Else (`> 123`):
+      7) Check `state['ED(Obj11, Obj7)'] <= 66`
+      - If `<= 66`: **return `UP`**
+      - Else: **return `UP`** (effectively `UP`)
+- Else (`ED(Obj7, Obj2) > 103`):
+  5) Check `state['ED(Obj9, Obj1)'] <= 22`
+  - If `<= 22`:
+    6) Check `state['ED(Obj1, Obj5)'] <= 114`
+    - If `<= 114`:
+      7) Check `state['ED(Obj10, Obj1)'] <= 89`
+      - If `<= 89`: **return `DOWN`**
+      - Else: **return `UP`**
+    - Else (`> 114`):
+      7) Check `state['ED(Obj3, Obj6)'] <= 48`
+      - If `<= 48`: **return `UP`**
+      - Else: **return `NOOP`**
+  - Else (`> 22`):
+    6) Check `state['ED(Obj10, Obj5)'] <= 93`
+    - If `<= 93`:
+      7) Check `state['ED(Obj9, Obj1)'] <= 29`
+      - If `<= 29`: **return `DOWN`**
+      - Else: **return `UP`**
+    - Else (`> 93`):
+      7) Check `state['ED(Obj11, Obj1)'] <= 40`
+      - If `<= 40`: **return `UP`**
+      - Else: **return `UP`** (effectively `UP`)
+
+#### 1B.ii) Else (`D(Obj6, Obj4).x > -57`)
+4) Check `state['D(Obj5, Obj11).x'] <= 112`
+
+- If `<= 112`:
+  5) Check `state['C(Obj11, Obj7).x'] <= 132`
+  - If `<= 132`:
+    6) Check `state['ED(Obj1, Obj11)'] <= 8`
+    - If `<= 8`:
+      7) Check `state['D(Obj3, Obj12).x'] <= -157`
+      - If `<= -157`: **return `UP`**
+      - Else: **return `DOWN`**
+    - Else (`> 8`):
+      7) Check `state['D(Obj11, Obj10).x'] <= -114`
+      - If `<= -114`: **return `DOWN`**
+      - Else: **return `UP`**
+  - Else (`> 132`):
+    6) Check `state['ED(Obj1, Obj10)'] <= 65`
+    - If `<= 65`:
+      7) Check `state['ED(Obj3, Obj1)'] <= 131`
+      - If `<= 131`: **return `DOWN`**
+      - Else: **return `DOWN`** (effectively `DOWN`)
+    - Else (`> 65`):
+      7) Check `state['ED(Obj5, Obj1)'] <= 91`
+      - If `<= 91`: **return `DOWN`**
+      - Else: **return `UP`**
+- Else (`D(Obj5, Obj11).x > 112`):
+  5) Check `state['D(Obj12, Obj3).x'] <= 48`
+  - If `<= 48`:
+    6) Check `state['LT(Obj12, Obj1).y'] <= 1562`
+    - If `<= 1562`:
+      7) Check `state['D(Obj3, Obj6).x'] <= 4`
+      - If `<= 4`: **return `NOOP`**
+      - Else: **return `DOWN`**
+    - Else (`> 1562`):
+      7) Check `state['Obj11.x#1'] <= 140`
+      - If `<= 140`: **return `UP`**
+      - Else: **return `DOWN`**
+  - Else (`> 48`):
+    6) Check `state['ED(Obj11, Obj3)'] <= 128`
+    - If `<= 128`:
+      7) Check `state['ED(Obj6, Obj1)'] <= 65`
+      - If `<= 65`: **return `DOWN`**
+      - Else: **return `NOOP`**
+    - Else (`> 128`):
+      7) Check `state['ED(Obj1, Obj7)'] <= 46`
+      - If `<= 46`: **return `DOWN`**
+      - Else: **return `NOOP`**
+
+---
+
+## 2) Else (root): If `LT(Obj1, Obj3).x > 0`
+2) Check `state['LT(Obj2, Obj1).y'] <= 636`
+
+### 2A) If `LT(Obj2, Obj1).y <= 636`
+3) Check `state['ED(Obj8, Obj4)'] <= 104`
+
+#### 2A.i) If `ED(Obj8, Obj4) <= 104`
+4) Check `state['D(Obj3, Obj8).x'] <= 93`
+
+- If `<= 93`:
+  5) Check `state['D(Obj8, Obj10).x'] <= -51`
+  - If `<= -51`:
+    6) Check `state['ED(Obj3, Obj9)'] <= 120`
+    - If `<= 120`:
+      7) Check `state['ED(Obj1, Obj3)'] <= 171`
+      - If `<= 171`: **return `UP`**
+      - Else: **return `DOWN`**
+    - Else (`> 120`):
+      7) Check `state['ED(Obj3, Obj6)'] <= 53`
+      - If `<= 53`: **return `UP`**
+      - Else: **return `UP`** (effectively `UP`)
+  - Else (`> -51`):
+    6) Check `state['ED(Obj10, Obj11)'] <= 115`
+    - If `<= 115`:
+      7) Check `state['C(Obj10, Obj6).x'] <= 96`
+      - If `<= 96`: **return `UP`**
+      - Else: **return `UP`** (effectively `UP`)
+    - Else (`> 115`):
+      7) Check `state['ED(Obj9, Obj1)'] <= 64`
+      - If `<= 64`: **return `NOOP`**
+      - Else: **return `UP`**
+- Else (`D(Obj3, Obj8).x > 93`):
+  5) Check `state['ED(Obj2, Obj10)'] <= 55`
+  - If `<= 55`:
+    6) Check `state['D(Obj10, Obj7).x'] <= -67`
+    - If `<= -67`:
+      7) Check `state['Obj12.x'] <= 156`
+      - If `<= 156`: **return `UP`**
+      - Else: **return `DOWN`**
+    - Else (`> -67`):
+      7) Check `state['LT(Obj7, Obj1).x'] <= 0`
+      - If `<= 0`: **return `UP`**
+      - Else: **return `DOWN`**
+  - Else (`> 55`):
+    6) Check `state['D(Obj9, Obj5).x'] <= -39`
+    - If `<= -39`:
+      7) Check `state['C(Obj12, Obj10).x'] <= 153`
+      - If `<= 153`: **return `DOWN`**
+      - Else: **return `DOWN`** (effectively `DOWN`)
+    - Else (`> -39`):
+      7) Check `state['ED(Obj4, Obj1)'] <= 151`
+      - If `<= 151`: **return `DOWN`**
+      - Else: **return `UP`**
+
+#### 2A.ii) Else (`ED(Obj8, Obj4) > 104`)
+4) Check `state['ED(Obj11, Obj1)'] <= 28`
+
+- If `<= 28`:
+  5) Check `state['Obj12.x#1'] <= -1`
+  - If `<= -1`:
+    6) Check `state['C(Obj7, Obj5).x'] <= 114`
+    - If `<= 114`: **return `NOOP`**
+    - Else:
+      7) Check `state['LT(Obj11, Obj1).y'] <= 15`
+      - If `<= 15`: **return `UP`**
+      - Else: **return `UP`** (effectively `UP`)
+  - Else (`> -1`):
+    6) Check `state['ED(Obj1, Obj3)'] <= 142`
+    - If `<= 142`:
+      7) Check `state['LT(Obj10, Obj1).y'] <= -295`
+      - If `<= -295`: **return `DOWN`**
+      - Else: **return `DOWN`** (effectively `DOWN`)
+    - Else (`> 142`):
+      7) Check `state['ED(Obj3, Obj1)'] <= 152`
+      - If `<= 152`: **return `DOWN`**
+      - Else: **return `DOWN`** (effectively `DOWN`)
+- Else (`> 28`):
+  5) Check `state['C(Obj12, Obj8).x'] <= 109`
+  - If `<= 109`:
+    6) Check `state['ED(Obj6, Obj12)'] <= 100`
+    - If `<= 100`:
+      7) Check `state['C(Obj7, Obj11).x'] <= 59`
+      - If `<= 59`: **return `UP`**
+      - Else: **return `DOWN`**
+    - Else (`> 100`):
+      7) Check `state['Obj3.x'] <= 28`
+      - If `<= 28`: **return `DOWN`**
+      - Else: **return `UP`**
+  - Else (`> 109`):
+    6) Check `state['ED(Obj10, Obj9)'] <= 68`
+    - If `<= 68`:
+      7) Check `state['D(Obj3, Obj6).x'] <= 36`
+      - If `<= 36`: **return `UP`**
+      - Else: **return `DOWN`**
+    - Else (`> 68`):
+      7) Check `state['ED(Obj9, Obj12)'] <= 87`
+      - If `<= 87`: **return `DOWN`**
+      - Else: **return `DOWN`** (effectively `DOWN`)
+
+### 2B) Else (`LT(Obj2, Obj1).y > 636`)
+3) Check `state['ED(Obj11, Obj12)'] <= 127`
+
+#### 2B.i) If `ED(Obj11, Obj12) <= 127`
+4) Check `state['C(Obj8, Obj6).x'] <= 47`
+
+- If `<= 47`:
+  5) Check `state['D(Obj5, Obj11).x'] <= 5`
+  - If `<= 5`:
+    6) Check `state['LT(Obj11, Obj1).y'] <= 26`
+    - If `<= 26`:
+      7) Check `state['C(Obj3, Obj1).x'] <= 100`
+      - If `<= 100`: **return `DOWN`**
+      - Else: **return `UP`**
+    - Else (`> 26`):
+      7) Check `state['LT(Obj1, Obj11).y'] <= -21`
+      - If `<= -21`: **return `UP`**
+      - Else: **return `NOOP`**
+  - Else (`> 5`):
+    6) Check `state['ED(Obj1, Obj11)'] <= 19`
+    - If `<= 19`:
+      7) Check `state['LT(Obj9, Obj1).y'] <= 2168`
+      - If `<= 2168`: **return `NOOP`**
+      - Else: **return `UP`**
+    - Else (`> 19`):
+      7) Check `state['LT(Obj4, Obj1).y'] <= 2716`
+      - If `<= 2716`: **return `UP`**
+      - Else: **return `UP`** (effectively `UP`)
+- Else (`> 47`):
+  5) Check `state['D(Obj10, Obj9).x'] <= 96`
+  - If `<= 96`:
+    6) Check `state['D(Obj11, Obj5).x'] <= -106`
+    - If `<= -106`:
+      7) Check `state['ED(Obj12, Obj3)'] <= 160`
+      - If `<= 160`: **return `NOOP`**
+      - Else: **return `UP`**
+    - Else (`> -106`):
+      7) Check `state['C(Obj10, Obj11).x'] <= 72`
+      - If `<= 72`: **return `UP`**
+      - Else: **return `UP`** (effectively `UP`)
+  - Else (`> 96`):
+    6) Check `state['ED(Obj1, Obj11)'] <= 21`
+    - If `<= 21`: **return `UP`**
+    - Else:
+      7) Check `state['C(Obj8, Obj12).x'] <= 71`
+      - If `<= 71`: **return `DOWN`**
+      - Else: **return `DOWN`** (effectively `DOWN`)
+
+#### 2B.ii) Else (`ED(Obj11, Obj12) > 127`)
+4) Check `state['ED(Obj5, Obj1)'] <= 153`
+
+- If `<= 153`:
+  5) Check `state['ED(Obj1, Obj10)'] <= 111`
+  - If `<= 111`:
+    6) Check `state['ED(Obj8, Obj11)'] <= 50`
+    - If `<= 50`:
+      7) Check `state['ED(Obj7, Obj1)'] <= 102`
+      - If `<= 102`: **return `UP`**
+      - Else: **return `UP`** (effectively `UP`)
+    - Else (`> 50`):
+      7) Check `state['LT(Obj2, Obj1).y'] <= 2552`
+      - If `<= 2552`: **return `NOOP`**
+      - Else: **return `DOWN`**
+  - Else (`> 111`):
+    6) Check `state['ED(Obj1, Obj6)'] <= 109`
+    - If `<= 109`:
+      7) Check `state['LT(Obj7, Obj1).y'] <= -739`
+      - If `<= -739`: **return `NOOP`**
+      - Else: **return `DOWN`**
+    - Else (`> 109`):
+      7) Check `state['ED(Obj1, Obj10)'] <= 114`
+      - If `<= 114`: **return `NOOP`**
+      - Else: **return `DOWN`**
+- Else (`ED(Obj5, Obj1) > 153`):
+  5) Check `state['ED(Obj12, Obj7)'] <= 81`
+  - If `<= 81`:
+    6) Check `state['ED(Obj1, Obj3)'] <= 157`
+    - If `<= 157`:
+      7) Check `state['ED(Obj1, Obj5)'] <= 155`
+      - If `<= 155`: **return `DOWN`**
+      - Else: **return `NOOP`**
+    - Else (`> 157`):
+      7) Check `state['ED(Obj12, Obj1)'] <= 89`
+      - If `<= 89`: **return `UP`**
+      - Else: **return `UP`** (effectively `UP`)
+  - Else (`> 81`):
+    6) Check `state['LT(Obj8, Obj1).y'] <= -49`
+    - If `<= -49`:
+      7) Check `state['ED(Obj1, Obj3)'] <= 149`
+      - If `<= 149`: **return `UP`**
+      - Else: **return `UP`** (effectively `UP`)
+    - Else (`> -49`):
+      7) Check `state['LT(Obj11, Obj1).y'] <= -1373`
+      - If `<= -1373`: **return `UP`**
+      - Else: **return `UP`** (effectively `UP`)
+
+---
+
+## What it “does”, concretely (purely from the code)
+- It is a **reactive classifier**: on every step it reads a set of pairwise relations/distances (`LT(...)`, `D(...)`, `ED(...)`, `C(...)`, plus a few raw coords like `Obj3.x`, `Obj12.x`, `Obj11.x#1`) and returns `UP`, `DOWN`, or `NOOP`.
+- **Most leaves return `UP`**, many return `DOWN`, and **`NOOP` happens only in specific guarded situations**, e.g.:
+  - `ED(Obj10, Obj11) <= 28` and `C(Obj9, Obj1).y <= 118` (in the `LT(Obj1,Obj3).x<=0`, `LT(Obj1,Obj4).x<=0`, `LT(Obj10,Obj1).y<=-3855`, `D(Obj3,Obj6).x<=55`, `ED(Obj3,Obj1)>79` subtree) ⇒ `NOOP`.
+  - `D(Obj3, Obj6).x <= 4` under `D(Obj5,Obj11).x>112`, `D(Obj12,Obj3).x<=48`, `LT(Obj12,Obj1).y<=1562` ⇒ `NOOP`.
+  - `ED(Obj9, Obj1) <= 64` under `LT(Obj1,Obj3).x>0`, `LT(Obj2,Obj1).y<=636`, `ED(Obj8,Obj4)<=104`, `D(Obj3,Obj8).x<=93`, `D(Obj8,Obj10).x>-51`, `ED(Obj10,Obj11)>115` ⇒ `NOOP`.
+  - Several others shown above (all explicitly guarded by thresholds).
+
+If you tell me what each `Obj#` corresponds to (or what `LT/D/ED/C` mean in your feature extractor), I can translate this exact same flow into “move up/down/stay” relative to the actual entities in the environment—without changing any of the branching logic.

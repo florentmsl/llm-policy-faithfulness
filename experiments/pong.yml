@@ -1,6 +1,6 @@
 defaults:
   game: pong
-  model: gpt-4o
+  model: gpt-5
   icl_file: 03_prompts/in_context/scobots.txt
   templates:
     q1: 03_prompts/templates/q1_research.txt
@@ -9,28 +9,35 @@ defaults:
     q4: 03_prompts/templates/q4_research.txt
 
 experiments:
-  - id: pg-q1-default-working-check
+  - id: pg-q1-aligned-full-context
     rq: q1
-    policy_file: 01_policies/scobots/pong/default.txt
+    policy_file: 01_policies/scobots/pong/aligned.txt
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
     reward_file: 02_contexts/reward_functions/pong_jaxatari.py
 
-  - id: pg-q2-default-no-reward
+  - id: pg-q2-aligned-full-context
     rq: q2
-    policy_file: 01_policies/scobots/pong/default.txt
+    policy_file: 01_policies/scobots/pong/aligned.txt
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
 
-  - id: pg-q3-default-alignment-check
+  - id: pg-q3-aligned-full-context
     rq: q3
-    policy_file: 01_policies/scobots/pong/default.txt
+    policy_file: 01_policies/scobots/pong/aligned.txt
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
 
-  - id: pg-q4-default-simplification
+  - id: pg-q4-aligned-slow-ball
     rq: q4
-    policy_file: 01_policies/scobots/pong/default.txt
+    policy_file: 01_policies/scobots/pong/aligned.txt
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
     simplification_file: 02_contexts/simplifications/pong_slow_ball.txt
+
+  - id: pg-q4-aligned-lazy-enemy
+    rq: q4
+    policy_file: 01_policies/scobots/pong/aligned.txt
+    env_file: 02_contexts/pong/environment.txt
+    task_file: 02_contexts/pong/task.txt
+    simplification_file: 02_contexts/simplifications/pong_lazy_enemy.txt

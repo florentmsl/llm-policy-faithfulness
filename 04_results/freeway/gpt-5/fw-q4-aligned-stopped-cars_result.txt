@@ -1,0 +1,45 @@
+Baseline (normal Freeway with moving cars)
+
+Goal: score by repeatedly moving `Chicken1` from bottom to top; chicken only moves vertically (`UP`, `DOWN`, or `NOOP`) while cars move horizontally and can collide/knock you back.
+
+What this policy mostly does (from the code structure):
+- It is **UP-biased**: most leaves return `1  # UP`.
+- It sometimes returns `2  # DOWN` or `0  # NOOP` when certain **proximity/relative-position thresholds** to cars are met (mostly `ED(..., Chicken1)` and some `LT(...).y` checks), i.e., it “hesitates” or “backs off” in states it classifies as risky.
+
+Representative baseline trace (a common “keep going up” path)
+- Check `LT(Chicken1, Car1).x <= 0` → assume **true** (go into first big block)
+- Check `LT(Chicken1, Car2).x <= 0` → assume **true**
+- Check `LT(Car8, Chicken1).y <= -3855` → assume **true**
+- Check `D(Car1, Car4).x <= 55` → assume **true**
+- Check `ED(Car1, Chicken1) <= 79` → assume **true**
+- Check `C(Car6, Car2).x <= 91` → assume **true**
+- Check `ED(Car10, Chicken1) <= 131` → assume **true**
+- First reached return → `1` (**UP**)
+
+Representative baseline trace (a “back off” decision caused by a threshold flip)
+Same prefix as above until the last check:
+- … `C(Car6, Car2).x <= 91` → **true**
+- Check `ED(Car10, Chicken1) <= 131` → now assume **false**
+- First reached return → `2` (**DOWN**)
+
+Why that matters in the baseline: because cars are moving, quantities like `ED(Car10, Chicken1)` and many `LT(...).x` / `D(...).x` comparisons **change over time even if the chicken doesn’t move much**, so “risky” conditions that trigger `DOWN/NOOP` can later become “safe” again, letting the policy resume `UP`.
+
+---
+
+Simplified setup (cars immobilized horizontally)
+
+Key dynamics change: all the policy tests involving **car x-positions / x-differences** (e.g., `LT(Chicken1, Car1).x`, `D(Car1, Car4).x`, `C(...).x`, `Car1.x`, `Car10.x#1`, etc.) become **constant over time** (they no longer “cycle” as traffic flows).
+
+Predicted behavioral change (policy stays the same; only dynamics change):
+- The policy will still be **UP-biased**, but it loses a major source of time-variation it implicitly relies on for timing: **moving traffic no longer changes the x-based gates**.
+- As a result, for a long stretch the policy tends to follow **one fixed subtree** determined by the initial x-orderings/distances, and only changes its action when *the chicken’s own movement* changes `y`-relations or `ED(..., Chicken1)` enough.
+- Concretely: if the initial x-based conditions route into an “UP-mostly” subtree (like the trace above), it will look closer to **“just keep pressing UP”** and cross more directly (which matches the simplification making timing unnecessary).
+- But if it ever lands in a state where it returns `DOWN`/`NOOP` due to a proximity threshold to a *now-static* car sprite, that “danger cue” may **not resolve by waiting**, because the car won’t move away; the policy can then **dither** (repeat `DOWN/NOOP`) until the chicken’s own position changes enough to exit that condition.
+
+Representative simplified trace (showing the “locked” nature of x-gating)
+- Check `LT(Chicken1, Car1).x <= 0` → whatever this is initially, it stays that way (car1.x doesn’t move)
+- Check `LT(Chicken1, Car2).x <= 0` → also fixed
+- Deeper checks like `D(Car1, Car4).x <= 55`, `C(Car6, Car2).x <= 91`, etc. → also fixed
+- So the policy repeatedly reaches the same kind of leaf (often `UP`) unless changing `Chicken1`’s `y` makes some `LT(...).y` / `D(...).y` / `ED(..., Chicken1)` test flip.
+
+In plain language: with frozen cars, this policy becomes **less of a “time the gaps” controller** and more of a **mostly-UP rule with occasional unnecessary backoffs**, because the x-based “traffic phase” signals it uses stop changing.

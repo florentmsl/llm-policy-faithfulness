@@ -1,0 +1,43 @@
+This policy is a (very large) nested `if/else` decision tree that *appears* to depend on many state features (relative positions/distances between `Chicken1`, `Chicken2`, and `Car1`…`Car10`). However, **every single leaf returns the same action**:
+
+- There are **no** `return 0`, `return 2`, etc.
+- Every branch ends in `return 1` (even where the comment says `# DOWN` or `# NOOP`).
+
+So, behaviorally, the policy is a **constant-action policy**: for *any* input `state`, it outputs action `1`.
+
+## Program flow (execution order)
+
+At runtime it still *checks* conditions top-to-bottom, but the result never changes the action.
+
+### Top-level split
+1. Check `state['LT(Chicken1, Car1).x'] <= 0`.
+   - If **true**: enter the big first subtree (many more checks on `LT(...)`, `D(...)`, `C(...)`, `ED(...)`, and some raw `Car*.x` features).
+   - If **false**: enter the second subtree (again many checks, e.g. `state['LT(Chicken2, Chicken1).y'] <= 636`, etc.).
+
+### Key fact in both subtrees
+- No matter which branches are taken, the first `return` reached is always `return 1`.
+
+## Concrete traces (two example paths)
+
+### Trace A (goes into the first subtree)
+- Check `LT(Chicken1, Car1).x <= 0` → **true** (take `if`)
+- Check `LT(Chicken1, Car2).x <= 0` → **true**
+- Check `LT(Car8, Chicken1).y <= -3855` → **true**
+- Check `D(Car1, Car4).x <= 55` → **true**
+- Check `ED(Car1, Chicken1) <= 79` → **true**
+- Check `C(Car6, Car2).x <= 91` → **true**
+- Check `ED(Car10, Chicken1) <= 131` → **true**
+- First reached return: `return 1`
+
+(If any of these checks flipped to false along the way, you’d take different `else` branches—but they still eventually hit `return 1`.)
+
+### Trace B (goes into the second subtree)
+- Check `LT(Chicken1, Car1).x <= 0` → **false** (take `else`)
+- Check `LT(Chicken2, Chicken1).y <= 636` → either **true** or **false** (doesn’t matter)
+- Continue through additional nested checks…
+- First reached return: `return 1`
+
+## What it does in Freeway
+- On **every timestep**, it outputs **action id `1`**.
+- If your environment’s action mapping is the common one suggested by some comments (`1 = UP`), then this is effectively an **“always move up”** policy (no intentional waiting/down moves), which will repeatedly push the chicken into traffic and rely on knockback/respawns.
+- Importantly: the policy code itself does **not** support the comments that claim `DOWN` or `NOOP`, because the returned value never changes.

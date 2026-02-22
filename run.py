@@ -15,6 +15,7 @@ OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 OPTIONAL_BLOCK_PATTERN = re.compile(r"{{#([A-Z0-9_]+)}}(.*?){{/\1}}", re.DOTALL)
 DRY_RUN_RESULT_TEXT = "---- This was a dry run\n"
 MODEL_KEY_TO_OPENROUTER = {
+    "gpt-5": "openai/gpt-5",
     "gpt-4o": "openai/gpt-4o",
 }
 
@@ -116,6 +117,11 @@ def _load_experiment_file(path: Path) -> tuple[str, dict[str, str], str, list[Ex
     return model, template_by_rq, game, experiments
 
 
+def _to_model_dir_key(model_key: str) -> str:
+    sanitized = re.sub(r"[^A-Za-z0-9._-]+", "_", model_key).strip("_")
+    return sanitized or "model"
+
+
 def _build_prompt(experiment: Experiment, template_path: str) -> str:
     template = _read_file(template_path)
     env_text = _read_optional_file(experiment.env_file)
@@ -160,9 +166,10 @@ def _can_overwrite_result(result_file: Path) -> bool:
 def run(experiments_file: Path, dry: bool) -> None:
     model_key, template_by_rq, game, experiments = _load_experiment_file(experiments_file)
     openrouter_model = MODEL_KEY_TO_OPENROUTER.get(model_key, model_key)
+    model_dir_key = _to_model_dir_key(model_key)
 
-    prompts_dir = Path("03_prompts/sent") / game
-    results_dir = Path("04_results") / game
+    prompts_dir = Path("03_prompts/sent") / game / model_dir_key
+    results_dir = Path("04_results") / game / model_dir_key
     prompts_dir.mkdir(parents=True, exist_ok=True)
     results_dir.mkdir(parents=True, exist_ok=True)
 
@@ -175,10 +182,10 @@ def run(experiments_file: Path, dry: bool) -> None:
         template_path = template_by_rq[experiment.rq]
 
         prompt = _build_prompt(experiment, template_path=template_path)
-        prompt_file = prompts_dir / f"{experiment.experiment_id}_{model_key}_prompt.txt"
+        prompt_file = prompts_dir / f"{experiment.experiment_id}_prompt.txt"
         prompt_file.write_text(prompt, encoding="utf-8")
 
-        result_file = results_dir / f"{experiment.experiment_id}_{model_key}_result.txt"
+        result_file = results_dir / f"{experiment.experiment_id}_result.txt"
         can_overwrite = _can_overwrite_result(result_file)
         if not can_overwrite:
             status = "skipped_existing"
@@ -208,7 +215,7 @@ def run(experiments_file: Path, dry: bool) -> None:
         )
         print(f"{status}: {experiment.experiment_id}")
 
-    summary_path = results_dir / f"{model_key}_summary.csv"
+    summary_path = results_dir / "summary.csv"
     summary_path.parent.mkdir(parents=True, exist_ok=True)
     with summary_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(

@@ -229,17 +229,10 @@ Activision, Inc., 3255-2 Scott Blvd., Santa Clara, CA 95051
 Task objective:
 Move the controlled chicken from the bottom to the top of the road repeatedly within the time limit while avoiding collisions with cars.
 
-Reward function used during training:
-```python
-def reward_fn(prev_state, state):
-    """
-    Representative Freeway-style reward:
-    +1 when Chicken1 completes a crossing, else 0.
-    """
-    if state["Chicken1_crossed_top"] and not prev_state["Chicken1_crossed_top"]:
-        return 1.0
-    return 0.0
-```
+# Environment Simplification
+
+Simplification setup:
+Simplification: all cars are completely immobilized (no horizontal movement). The chicken can cross the road without needing to time gaps in traffic.
 
 # The Policy
 Here is the symbolic policy obtained after training:
@@ -621,7 +614,6 @@ def play(state):
 ```
 
 # Example (only for reference)
-
 Here is an example of how to analyze and explain a symbolic policy (only for reference):
 Policy:
 ```python
@@ -654,9 +646,16 @@ Worked traces:
   - Fall through to final return: `0` (NOOP)
 
 # Your Task
-Explain what this policy does in the environment.
+Predict how this exact policy's behavior changes under the simplification. Explain in plain language.
+
+Clarification:
+- "Simplification" means a change to the environment dynamics/conditions, not a simpler policy.
+- The symbolic policy stays exactly the same; only the environment changes.
 
 # Answer Rules
 - The explanation must be specific and concrete.
 - Trace the program flow in execution order (which conditions are checked, which branches are taken, and which actions are returned).
 - Your explanations should be entirely based on the policy.
+- First describe expected behavior in the baseline setup.
+- Then describe expected behavior in the simplified setup.
+- Explain the behavioral change by linking it to concrete policy conditions/actions.

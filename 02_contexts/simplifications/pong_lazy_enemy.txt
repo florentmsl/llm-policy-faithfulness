@@ -1,0 +1,1 @@
+Simplification: the opponent paddle becomes "lazy" (stops moving) whenever the ball is on the player's side of the screen. This reduces the need to precisely place shots, since the opponent will not react during the final approach.
