@@ -384,9 +384,8 @@ def play(state):
 ```
 
 # Your Task
-Explain what this policy does in the environment.
+Explain what this policy does overall in the environment.
 
 # Answer Rules
 - The explanation must be specific and concrete.
-- Trace the program flow in execution order (which conditions are checked, which branches are taken, and which actions are returned).
-- Your explanations should be entirely based on the policy.
+- Focus on what the agent/policy does in the environment.

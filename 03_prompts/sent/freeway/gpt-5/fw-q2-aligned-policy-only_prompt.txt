@@ -384,9 +384,12 @@ def play(state):
 ```
 
 # Your Task
-Describe what this policy is doing, use plain language.
+Explain what this policy does overall in the environment, and state what can and cannot be concluded without explicit reward-function access.
 
 # Answer Rules
 - The explanation must be specific and concrete.
-- Trace the program flow in execution order (which conditions are checked, which branches are taken, and which actions are returned).
-- Your explanations should be entirely based on the policy.
+- Focus on what the agent/policy does in the environment.
+
+# Required Output Format
+1. Overall behavior in the environment.
+2. Likely episode outcome relative to the task objective.

@@ -620,30 +620,16 @@ def play(state):
     return 0  # NOOP
 ```
 
-Execution trace example:
-Trace in execution order:
-- Evaluate conditions from top to bottom.
-- At each branch, mark true/false explicitly.
-- Stop at the first `return` reached.
-- Describe only what the executed path shows.
-
-Worked traces:
-- Input: `D(Ball, Paddle).y = 5`
-  - Check `> 2` -> true
-  - First reached return: `2` (DOWN)
-- Input: `D(Ball, Paddle).y = -4`
-  - Check `> 2` -> false
-  - Check `< -2` -> true
-  - First reached return: `1` (UP)
-- Input: `D(Ball, Paddle).y = 0`
-  - Check `> 2` -> false
-  - Check `< -2` -> false
-  - Fall through to final return: `0` (NOOP)
+Explanation:
+This policy makes the paddle follow the ball's vertical position. When the ball is lower than the paddle, it moves the paddle down; when the ball is higher, it moves the paddle up; and when they are already close in height, it waits. Overall, it behaves like a simple vertical tracking controller.
 
 # Your Task
-Describe what this policy is doing, use plain language.
+Explain what this policy does overall in the environment, and state what can and cannot be concluded without explicit reward-function access.
 
 # Answer Rules
 - The explanation must be specific and concrete.
-- Trace the program flow in execution order (which conditions are checked, which branches are taken, and which actions are returned).
-- Your explanations should be entirely based on the policy.
+- Focus on what the agent/policy does in the environment.
+
+# Required Output Format
+1. Overall behavior in the environment.
+2. Likely episode outcome relative to the task objective.
