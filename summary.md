@@ -15,7 +15,7 @@
 
 ## RQ2: Can LLMs detect policy behavior without explicit reward-function access?
 
-**Based on current observations, the answer is: yes (contrary to expectations).**
+**Based on current observations, the answer is: yes.**
 
 ### Freeway
 
@@ -25,7 +25,7 @@
 
 ## RQ3: Can LLMs detect misaligned policies (including shortcut learning)?
 
-**Based on current observations, the answer is: Yes.**
+**Based on current observations, the answer is: Yes. (No shortcut learning yet)**
 
 ### Freeway
 
