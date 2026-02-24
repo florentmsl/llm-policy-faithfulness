@@ -31,7 +31,8 @@ Explain what this policy does overall in the environment, then decide whether th
 # Answer Rules
 - The explanation must be specific and concrete.
 - Focus on what the agent/policy does in the environment.
-- Only use the knowledage that has been provided by me.
+- Only use the knowledge that has been provided by me.
+- Be concise.
 
 # Required Output Format
 1. Overall behavior in the environment.

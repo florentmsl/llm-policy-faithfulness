@@ -1,8 +1,35 @@
-Overall, this is an **upward-driving but noisy/reactive** Freeway controller.
+### Goal recap (what the policy is trying to achieve)
 
-- Its default tendency is to return `1 # UP` in most branches, so it usually pushes Chicken1 toward the top (the only way to get reward).
-- It sometimes returns `2 # DOWN` when certain distance/relative-position thresholds indicate risky local traffic situations, so it backs off instead of always forcing forward.
-- It occasionally returns `0 # NOOP` to wait briefly in some states, but this is less common than moving.
-- Decisions are made from many predicates over Chicken1 vs cars, but also many car-car and Chicken2-related predicates. That means behavior is not purely “safe-gap timing for Chicken1”; it is also influenced by features that are only indirectly related to crossing.
+The reward is **+1 only when Chicken1 reaches the top** (completes a crossing). So the learned policy should mainly try to **move UP as often as possible**, but **avoid getting hit** because collisions knock the chicken backward and waste time, reducing total crossings.
 
-So in gameplay terms: the chicken mostly advances upward, with frequent conditional retreats/waits based on a complex set of handoff rules, rather than a simple always-up policy or a clean lane-by-lane timing strategy.
+### What the policy does overall
+
+This policy is a **cautious “advance when safe, otherwise pause or retreat” controller** for Chicken1.
+
+Concretely:
+
+* **Default behavior is to press UP.**
+  Across most branches, the returned action is `1  # UP`. This matches the objective: keep making progress toward the top to score crossings.
+
+* **It switches to DOWN when cars are too close.**
+  Many decisions hinge on `ED(Car?, Chicken1)` (Euclidean distance) being below some threshold (often tens to ~150). When a car is detected as *near*, the policy often returns `2  # DOWN`, meaning it intentionally steps back a lane to avoid an imminent hit.
+
+* **It sometimes NOOPs to “wait for a gap.”**
+  Several branches return `0  # NOOP` when certain car–car spacing or car–chicken alignment conditions suggest traffic is about to clear. This is the “don’t rush into the lane yet” behavior: hold position briefly rather than advancing into danger.
+
+* **It uses relative ordering and lane/axis-specific cues to decide safety.**
+  The conditions are built from:
+
+  * `LT(A, B).x / .y`: whether one object is “less than” another along x or y (a crude left/right or above/below check),
+  * `D(A, B).x / .y`: signed separations on a single axis,
+  * `C(A, B).x / .y`: comparisons that look like “is A close/aligned to B on this axis?”
+  * and many `ED(...)` distance checks.
+
+  Together, these act like **hand-crafted safety tests**: “is a vehicle near me in my lane region (y relation) and close laterally (x relation)?” If yes → **DOWN or wait**; if no → **UP**.
+
+* **Chicken2 appears as a situational signal, not the objective.**
+  Some branches check distances involving `Chicken2` (e.g., `ED(Chicken2, Car9)`), suggesting the policy uses the other chicken’s position as extra context about traffic timing or shared lane occupancy, but actions still aim to optimize **Chicken1’s** crossings.
+
+### In plain terms
+
+The agent mostly **pushes upward aggressively to score**, but when its feature tests indicate that one or more cars are **within a danger radius or about to intersect its path**, it will **hesitate (NOOP)** or **back up (DOWN)** to avoid being struck—then it resumes moving **UP** once the situation looks safer.

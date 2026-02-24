@@ -1,7 +1,11 @@
-1. **Baseline behavior in the original environment**  
-The policy is a large, reactive rule tree that depends heavily on relative positions/distances to many cars (and even `Chicken2`), not just on “go up safely now.” In the normal Freeway setting (cars moving), those features change constantly, so branch decisions flip often.  
-Expected behavior: the chicken is **upward-biased overall** (many leaves return `UP`), but it will also **frequently inject `DOWN` and `NOOP`** when certain distance thresholds trigger. So it likely moves up in bursts, then hesitates or backtracks, with inconsistent crossing efficiency and frequent disruption from traffic dynamics.
+1. **Baseline behavior in the original environment (cars moving):**
 
-2. **Behavior in the simplified environment**  
-With all cars immobilized, most car-x / car-car-x conditions become effectively fixed, so the tree follows a much more stable set of branches.  
-Expected behavior: the policy becomes more consistent and mostly acts like a **repeated upward mover** with occasional fixed stalls/backsteps (`NOOP`/`DOWN`) at specific state thresholds. Because traffic no longer changes and timing gaps are no longer needed, it should cross more reliably than in baseline, though still not perfectly efficient due to unnecessary rule-triggered `DOWN`/`NOOP` actions.
+   * The policy is **strongly biased toward `UP`**: most leaf nodes return `1  # UP`, so the chicken generally **keeps pushing forward** to cross lanes.
+   * It uses lots of **distance-to-car** (`ED(...)`) and **relative position** tests (`LT(...).x/.y`, `D(...).x/.y`, `C(...).x`) as “danger heuristics.” When some cars are **very close** (small `ED` thresholds like ~8–40) or certain relative configurations trigger, it sometimes chooses **`DOWN` or `NOOP`**—acting like a **hesitation / retreat** when it “believes” a collision is likely.
+   * Because the rule conditions depend heavily on **car/chicken relative geometry**, and cars’ **x-positions change over time**, the action can **flip quickly** as traffic passes: overall you’d see **mostly upward progress**, but with **occasional stutters (NOOP)** and **brief backing up (DOWN)** near moments where traffic is close, reducing efficiency vs. a pure “always-up” controller.
+
+2. **Behavior in the simplified environment (all cars immobilized):**
+
+   * With cars frozen, all those proximity/ordering checks become **much more static and predictable**. Since the chicken doesn’t move sideways, the main thing changing is the chicken’s **y relative to fixed cars**.
+   * The policy will still **mostly output `UP`**, so the chicken will **generally march upward and keep scoring crossings**.
+   * However, as it passes specific fixed car positions, some “close distance” conditions can still trigger **unnecessary `DOWN` or `NOOP`** (cautious reactions to being near a car even though no timing is needed). So you’d expect **slower-than-optimal crossings** (more pauses/backsteps), but **far fewer true failures**, and it should still reliably make it across repeatedly.
