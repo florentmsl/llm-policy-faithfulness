@@ -1,9 +1,12 @@
-Overall, this policy is effectively a **constant-action controller**:
+Overall, this policy is effectively a **constant-action controller**.
 
-\[
-\pi(s) = 1 \quad \text{for every state } s
-\]
+Even though it has a very large decision tree with many conditions on car/chicken features, **every single leaf returns `1`**. That means the state checks never change behavior: the agent always outputs the same action at every timestep.
 
-Even though it contains many `if` checks on car/chicken features, **every single leaf returns `1`**, so the conditions never change behavior.
+So in Freeway, this policy does not actually time traffic gaps or react to nearby cars. It just repeats one fixed move continuously (most likely “move up,” based on your action-label convention), so behavior is:
 
-In Freeway, that means the agent always sends the same joystick command every frame, regardless of traffic, lane position, collisions, or timing. So it does **not** do real traffic-gap reasoning or anticipation; it just repeats one move. If action `1` is mapped to `UP` in your action set, this is an “always go up” policy (keep pushing upward, get hit/knocked back, push upward again). If action `1` maps differently in your wrapper, it is still the same pattern: one fixed action forever.
+- keep trying to go forward every frame,
+- get hit and knocked back often,
+- then continue doing the same thing again,
+- score crossings only when traffic happens to allow it.
+
+In short: this is not a traffic-aware strategy; it is a one-action, brute-force crossing policy.

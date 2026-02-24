@@ -1,15 +1,15 @@
-This policy is effectively a **constant-action policy**.
+Overall, this is effectively a **constant-action policy**.
 
-Every single branch returns `1`, so all those state checks do not change behavior. It is equivalent to:
+Even though the code has a very large decision tree with many state conditions, **every single leaf returns `1`**.  
+So in actual behavior:
+
+- The agent always outputs the same action ID: `1`
+- The observed state features (cars/chickens distances, comparisons, etc.) do **not** change what it does
+- The whole tree is behaviorally equivalent to:
 
 ```python
 def play(state):
     return 1
 ```
 
-So in the environment, the agent **always takes action `1` at every timestep**, regardless of car positions or any other feature.
-
-If this is Freeway’s usual mapping (`1 = UP`), then the chicken just keeps trying to move upward continuously:
-- it does not truly react to traffic,
-- it does not choose to wait or dodge based on state,
-- any progress comes from persistence/luck through gaps, not context-sensitive control.
+The `# UP / # DOWN / # NOOP` comments are inconsistent with the actual return value and do not affect execution. The policy’s real behavior is fully determined by returning action `1` in all situations.

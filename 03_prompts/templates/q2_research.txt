@@ -26,12 +26,9 @@ Here is an example of how to analyze and explain a symbolic policy (only for ref
 {{/IN_CONTEXT_LEARNING_EXAMPLE}}
 
 # Your Task
-Explain what this policy does overall in the environment, and state what can and cannot be concluded without explicit reward-function access.
+Explain what this policy does overall in the environment.
 
 # Answer Rules
 - The explanation must be specific and concrete.
 - Focus on what the agent/policy does in the environment.
-
-# Required Output Format
-1. Overall behavior in the environment.
-2. Likely episode outcome relative to the task objective.
+- Only use the knowledage that has been provided by me.

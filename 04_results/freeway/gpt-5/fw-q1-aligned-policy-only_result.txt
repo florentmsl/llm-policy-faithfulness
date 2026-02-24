@@ -1,16 +1,8 @@
-Assuming this is **Freeway** (which matches the `Chicken`/`Car` objects and `UP/DOWN/NOOP` actions), this policy behaves like a **mostly-upward crossing policy with reactive corrections**:
+Overall, this policy is a **mostly-upward controller with reactive corrections**.
 
-1. **Primary behavior: go up almost all the time.**  
-   Most leaf nodes return `1 # UP`, including many branches where both outcomes still return `UP`. So the default strategy is strong forward progress toward the top.
+- It outputs only three actions: `UP` (1), `DOWN` (2), and `NOOP` (0).  
+- Across the tree, `UP` is by far the dominant leaf action, so the default behavior is to keep moving the chicken upward.
+- `DOWN` is chosen in many “risk-like” local situations, typically when distance/relative-position thresholds involving `Chicken1` and nearby cars are crossed (many `ED(...)`, `D(...).x/.y`, `LT(...)` checks).
+- `NOOP` appears rarely, in a few narrow branches, so pausing is an exception rather than a strategy.
 
-2. **Secondary behavior: occasionally move down when local risk triggers fire.**  
-   `2 # DOWN` appears in narrower branches, usually gated by proximity/relative-position features like `ED(..., Chicken1)` or `LT/D(...)` involving nearby cars. This looks like short retreat/reposition moves when traffic is judged dangerous.
-
-3. **Rare behavior: brief pauses (`NOOP`).**  
-   `0 # NOOP` is uncommon and only under specific conjunctions (often involving tight thresholds). These are likely hesitation states rather than a main strategy.
-
-4. **What this means in the environment:**  
-   The agent likely **pushes upward aggressively**, with intermittent down-steps or pauses to dodge traffic, then resumes upward motion. In practice this would look like mostly climbing lanes with occasional jitter/backtracking near cars.
-
-5. **Important policy characteristic:**  
-   The tree depends on many seemingly indirect features (car-car distances, `Chicken2` terms, odd thresholds), suggesting a **brittle/overfit rule set** rather than a clean human-interpretable “safe gap timing” strategy.
+Concretely, this is not a simple “always up” rule: it is a large threshold tree that switches between up/down/pause based on many relational features. But many splits use car-car or `Chicken2` relations that are only indirectly tied to `Chicken1`’s immediate movement, so behavior is likely **up-biased but somewhat noisy/fragile**, with occasional downward or pause corrections triggered by specific feature combinations.

@@ -41,6 +41,7 @@ Clarification:
 # Answer Rules
 - The explanation must be specific and concrete.
 - Focus on what the agent/policy does in the environment.
+- Only use the knowledage that has been provided by me.
 - Describe expected behavior in the baseline setup.
 - Describe expected behavior in the simplified setup.
 

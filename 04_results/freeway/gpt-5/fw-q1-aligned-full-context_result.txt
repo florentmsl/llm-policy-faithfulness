@@ -1,8 +1,8 @@
-Overall, this controller is an **upward-biased reactive policy**:
+Overall, this is an **upward-driving but noisy/reactive** Freeway controller.
 
-- It outputs `UP` (`return 1`) in most branches, so the chicken usually keeps trying to move toward the top curb.
-- It sometimes outputs `DOWN` (`return 2`) when certain proximity/alignment conditions with cars are met (mostly distance thresholds like `ED(..., Chicken1)`), which acts like a retreat/evasion move after detecting nearby traffic.
-- It rarely outputs `NOOP` (`return 0`) in narrow cases, so waiting is not its main strategy.
+- Its default tendency is to return `1 # UP` in most branches, so it usually pushes Chicken1 toward the top (the only way to get reward).
+- It sometimes returns `2 # DOWN` when certain distance/relative-position thresholds indicate risky local traffic situations, so it backs off instead of always forcing forward.
+- It occasionally returns `0 # NOOP` to wait briefly in some states, but this is less common than moving.
+- Decisions are made from many predicates over Chicken1 vs cars, but also many car-car and Chicken2-related predicates. That means behavior is not purely “safe-gap timing for Chicken1”; it is also influenced by features that are only indirectly related to crossing.
 
-Concretely in Freeway, this means the chicken tends to **push upward aggressively**, with occasional **back-steps or brief pauses** when local car-related features trigger safety conditions.  
-The policy is not a clean “time gaps in traffic” rule: it also relies on many seemingly indirect features (car-car distances, `Chicken2` features), so behavior is likely brittle and context-dependent rather than a simple robust crossing strategy.
+So in gameplay terms: the chicken mostly advances upward, with frequent conditional retreats/waits based on a complex set of handoff rules, rather than a simple always-up policy or a clean lane-by-lane timing strategy.

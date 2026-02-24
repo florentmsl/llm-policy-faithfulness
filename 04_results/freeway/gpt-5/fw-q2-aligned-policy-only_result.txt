@@ -1,8 +1,15 @@
-1. **Overall behavior in the environment.**  
-This is a **vertical-only reactive policy**: it never uses lateral movement, and mostly chooses `UP`, with conditional `DOWN` or occasional `NOOP` when specific distance/relative-position thresholds fire. Concretely, many branches trigger `DOWN` when Chicken1 is close to certain cars (e.g., `ED(..., Chicken1)` small), while `UP` is the fallback in a large portion of leaves. This implies a behavior pattern of **upward attempts with frequent micro-corrections/retreats**, i.e., oscillating in lanes based on nearby-traffic cues.  
-What can be concluded without reward access: the policy’s **action pattern** (UP-dominant, with risk-triggered DOWN/NOOP) and that it uses many possibly spurious features (including car-car relations and Chicken2 features).  
-What cannot be concluded without reward access: whether this behavior is actually “good,” reward-aligned, intentionally misaligned, or exploiting a shaped-reward shortcut.
+Overall, this policy is an **if-then decision tree** that controls `Chicken1` with only three actions: `UP`, `DOWN`, and `NOOP`.
 
-2. **Likely episode outcome relative to the task objective.**  
-Assuming the standard Freeway-like objective (“progress upward/cross while avoiding cars”), the policy will likely show **inconsistent progress**: it often moves up, but frequent downward corrections and pauses can cause stalling/oscillation and brittle outcomes across traffic patterns. So expected outcome is **mixed/intermittent success rather than robust reliable completion**.  
-Without explicit reward-function access, you cannot definitively say if this is successful relative to the true objective, because the true objective weights (collision penalty, survival bonus, progress shaping, etc.) are unknown.
+What it does in practice:
+
+- It is **strongly biased toward `UP`**. Most terminal branches return `1  # UP`.
+- It sometimes chooses `DOWN` as a **local correction/retreat** when certain distance/relative-position thresholds are met (often when `Chicken1` is very close to specific cars).
+- It rarely chooses `NOOP`, and only in a few narrow condition combinations.
+
+Concrete characteristics from the tree:
+
+- Decisions depend on many geometric-style features (`LT(...)`, `D(...)`, `ED(...)`, `C(...)`) involving `Chicken1`, `Chicken2`, and `Car1`–`Car10`.
+- It does not use a simple “nearest car only” rule; it also uses many **car-car** and **chicken2-car** relations, so action choice can be influenced by objects not directly on `Chicken1`’s immediate path.
+- Because of many hard thresholds, behavior is likely **piecewise and jittery** near boundaries (switching between `UP` and `DOWN` when state values cross cutoffs).
+
+So the policy’s overall strategy is: **keep moving upward most of the time, with occasional downward/no-op adjustments triggered by specific relational thresholds.**

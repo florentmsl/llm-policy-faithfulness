@@ -1,7 +1,7 @@
 1. Overall behavior in the environment.  
-This policy is an **upward-biased but noisy traffic-reactive controller**: across most branches it outputs `UP`, and it switches to `DOWN`/`NOOP` in many local situations (often when `ED(..., Chicken1)` to cars is small). In practice, that means Chicken1 tends to push upward, then frequently pauses or retreats when traffic features trigger safety-like rules. It uses many weak/indirect cues (including car-car relations), so behavior is brittle and sometimes inconsistent.
+The policy is an **upward-biased, reactive traffic-navigation policy** for `Chicken1`: it returns `UP` in most branches, but switches to `DOWN` (and occasionally `NOOP`) in specific conditions, often when `Chicken1` is close to cars (`ED(..., Chicken1)` thresholds) or when certain lane/relative-position conditions are met. Concretely, it tends to push upward by default, then back off or pause in some local danger-like situations. It also uses many unrelated-looking signals (car-car distances, `Chicken2` features), so behavior is not cleanly goal-minimal and can look jittery or inconsistent.
 
 2. Likely episode outcome relative to the task objective.  
-Relative to Freeway’s objective (cross upward to score), this likely produces **slow, inconsistent progress with some successful crossings**: the upward bias should eventually yield points, but frequent reactive `DOWN`/`NOOP` decisions reduce efficiency and can cause oscillation in lanes.
+Relative to the apparent objective (advance `Chicken1` upward through traffic), this policy should often make upward progress but with frequent corrective retreats. So outcomes are likely **mixed but generally progress-oriented**: some successful advances/crossings, plus inefficient oscillations and occasional failures from noisy branch logic.
 
 VERDICT: YES

@@ -624,12 +624,9 @@ Explanation:
 This policy makes the paddle follow the ball's vertical position. When the ball is lower than the paddle, it moves the paddle down; when the ball is higher, it moves the paddle up; and when they are already close in height, it waits. Overall, it behaves like a simple vertical tracking controller.
 
 # Your Task
-Explain what this policy does overall in the environment, and state what can and cannot be concluded without explicit reward-function access.
+Explain what this policy does overall in the environment.
 
 # Answer Rules
 - The explanation must be specific and concrete.
 - Focus on what the agent/policy does in the environment.
-
-# Required Output Format
-1. Overall behavior in the environment.
-2. Likely episode outcome relative to the task objective.
+- Only use the knowledage that has been provided by me.

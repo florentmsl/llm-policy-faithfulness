@@ -1,7 +1,7 @@
-1. **Overall behavior in the environment.**  
-This controller is an **upward-biased, reactive policy**: most leaves return `UP`, so the chicken usually keeps advancing toward the top. It sometimes returns `DOWN` or `NOOP` when distance/relative-position thresholds with cars are triggered (for example `ED(Car?, Chicken1)` and `LT/D(..., Chicken1)` checks), so it will occasionally back off or pause near traffic. It also depends on many weakly relevant signals (car-car relations and `Chicken2` features), so decisions will look somewhat noisy and inconsistent rather than clean lane-by-lane timing.
+1. Overall behavior in the environment.  
+This policy is a highly complex, reactive controller that mostly tries to move the chicken `UP`, but it also frequently issues `DOWN` and occasional `NOOP` based on many relational checks (distances/orderings) involving cars, the controlled chicken, and even the other chicken. In practice, it looks like a noisy traffic-avoidance policy: it advances upward often, but sometimes hesitates or backtracks when certain proximity/position thresholds are triggered.
 
-2. **Likely episode outcome relative to the task objective.**  
-It will likely produce **some successful crossings** because of the strong `UP` bias, but with frequent unnecessary stalls/backtracks and extra collisions from noisy branching. So performance is probably moderate and unstable, not optimal, but still generally pursuing the crossing objective.
+2. Likely episode outcome relative to the task objective.  
+It will likely achieve some successful crossings because upward movement is common, but performance is probably inconsistent and suboptimal due to many unnecessary reversals (`DOWN`) and pauses (`NOOP`) driven by brittle/spurious conditions. So it appears directionally aimed at crossing while avoiding danger, but not in a clean or robust way.
 
 VERDICT: YES

@@ -1,6 +1,6 @@
-1. **Baseline behavior in the original environment.**  
-This exact policy is effectively a **constant-action policy**: every leaf returns `1`, so the state checks do not change behavior.  
-In your Freeway setup, this behaves like **always pressing UP**. The chicken repeatedly pushes upward through traffic, gets hit often in moving-car lanes, is knocked back (or reset, depending on difficulty), then keeps pushing up again. Result: it can sometimes complete crossings by brute persistence, but performance is unstable and generally inefficient because it does not wait for safe gaps.
+1. **Baseline behavior in the original environment**  
+The policy is effectively **state-agnostic**: every branch returns `1`, so it always outputs the same action.  
+Using the provided action labels/example (`1` as UP), this behaves like an **always-move-up** chicken: it keeps pushing upward without waiting for safe gaps. In normal Freeway traffic, that means frequent collisions/knockbacks, with occasional successful crossings when timing happens to work out. So it is likely inconsistent and non-robust.
 
-2. **Behavior in the simplified environment.**  
-The policy is unchanged, so it still always outputs action `1` (always UP). With cars immobilized and no timing needed, this becomes much more effective: the chicken just climbs straight to the top repeatedly, then restarts and does it again. Expected outcome: **much higher and more consistent scoring** than baseline, since the policy no longer needs traffic-timing decisions.
+2. **Behavior in the simplified environment**  
+The policy is unchanged (still always action `1`). With cars immobilized and no timing needed, this becomes very effective: the chicken keeps moving upward and can cross repeatedly with little/no waiting. Expected behavior is much more consistent, with many successful crossings.
