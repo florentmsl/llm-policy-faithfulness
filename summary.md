@@ -8,8 +8,8 @@
 
 ### Freeway
 
-- **Full-Context**: The SCoBots policy crosses the road as fast as possible to score. The LLM says it does exactly that.
-- **Ungrounded - Only-Policy**: The SCoBots policy advances Obj1 and avoids collisions. The LLM says it does exactly that.
+- **Full-Context**: The SCoBots policy crosses the road as fast as possible to score. The LLM says it does exactly that. ✅
+- **Ungrounded - Only-Policy**: The SCoBots policy advances Obj1 and avoids collisions. The LLM says it does exactly that. ✅
 
 ---
 
@@ -19,7 +19,7 @@
 
 ### Freeway
 
-- The SCoBots policy crosses the road as fast as possible to score. The LLM says it does exactly that.
+- The SCoBots policy crosses the road as fast as possible to score. The LLM says it does exactly that. ✅
 
 ---
 
@@ -29,7 +29,7 @@
 
 ### Freeway
 
-- The SCoBots policy always goes up and hits anything until it scores. The LLM finds it.
+- The SCoBots policy always goes up and hits anything until it scores. The LLM finds it. ✅
 
 ---
 
@@ -39,6 +39,6 @@
 
 ### Freeway (simplification: all cars stopped)
 
-- The SCoBots policy scores not reliably. The LLM says it does.
+- The SCoBots policy scores not reliably. The LLM says it does. 🛑
 
 ---
