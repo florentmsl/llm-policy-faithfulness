@@ -1,0 +1,6 @@
+logits_NOOP = 0
+
+logits_UP = 0
+
+logits_DOWN = 0.064*car_x_1 + 0.064*car_x_2 + 0.065*car_x_3 + 0.062*car_x_4 + 0.31
+

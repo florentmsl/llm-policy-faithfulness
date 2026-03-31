@@ -1,0 +1,12 @@
+logits_NOOP = 0.011*ball_x_2*ball_y_2 + 0.011*ball_x_2*enemy_y_3 + 0.01*ball_x_3*player_x_3 + 0.011*ball_x_4*player_x_1*player_x_2 + 0.019*ball_x_4*player_x_2 + 0.026*ball_x_4 + 0.024*ball_y_1 + 0.014*ball_y_2*player_x_2 + 0.018*ball_y_4*player_x_2 + 0.013*ball_y_4*player_y_2 + 0.015*ball_y_4 + 0.011*enemy_x_1 + 0.029*enemy_x_3 + 0.012*enemy_y_3*player_x_2 + 0.011*enemy_y_3*player_y_2 + 0.033*enemy_y_4 + 0.011*player_x_1 + 0.043*player_y_4
+
+logits_FIRE = 0.011*ball_x_2 + 0.017*ball_x_4 + 0.067*ball_y_1 + 0.011*ball_y_2*enemy_y_4 + 0.059*ball_y_2 + 0.019*ball_y_3 + 0.068*ball_y_4 + 0.029*enemy_x_1 + 0.011*enemy_x_2 + 0.068*enemy_y_1 + 0.022*enemy_y_2 + 0.01*player_x_1*player_x_2 + 0.018*player_x_1 + 0.019*player_x_2 + 0.019*player_x_3
+
+logits_RIGHT = 0.015*ball_x_1*ball_y_3 + 0.017*ball_x_1*player_x_2 + 0.013*ball_x_1*player_y_2 + 0.011*ball_x_1 + 0.012*ball_x_2*ball_x_4 + 0.011*ball_x_2*enemy_x_2 + 0.01*ball_x_4*player_x_1*player_x_2 + 0.018*ball_x_4*player_x_2 + 0.013*ball_x_4*player_y_2 + 0.04*ball_x_4 + 0.025*ball_y_1 + 0.022*ball_y_2*player_x_2 + 0.013*ball_y_2*player_x_3 + 0.023*ball_y_2*player_y_2 + 0.033*ball_y_2 + 0.01*ball_y_4*player_x_1*player_x_2 + 0.011*ball_y_4*player_x_1 + 0.011*ball_y_4*player_x_2 + 0.045*ball_y_4 + 0.044*enemy_y_1 + 0.012*enemy_y_3*player_x_1 + 0.019*enemy_y_4*player_x_2 + 0.01*enemy_y_4*player_x_3 + 0.011*enemy_y_4*player_y_2 + 0.012*enemy_y_4*player_y_4 + 0.01*enemy_y_4 + 0.018*player_x_3 + 0.043*player_y_4 + 0.013
+
+logits_LEFT = 0.042*ball_x_4 + 0.054*ball_y_1 + 0.039*ball_y_2 + 0.011*ball_y_3 + 0.012*enemy_x_1 + 0.056*enemy_y_1 + 0.021*player_x_2 + 0.02*player_y_1 + 0.036*player_y_3 + 0.058*player_y_4
+
+logits_RIGHTFIRE = 0.015*ball_x_3 + 0.038*ball_y_1 + 0.019*enemy_x_1 + 0.052*enemy_x_2 + 0.022*enemy_x_3 + 0.028*enemy_x_4 + 0.057*enemy_y_4 + 0.108*player_x_1 + 0.023*player_x_2 + 0.028*player_x_4
+
+logits_LEFTFIRE = 0.047*ball_x_3 + 0.012*ball_y_2*player_y_2 + 0.051*ball_y_2 + 0.018*ball_y_3 + 0.016*enemy_x_1 + 0.039*player_y_1 + 0.048*player_y_4
+

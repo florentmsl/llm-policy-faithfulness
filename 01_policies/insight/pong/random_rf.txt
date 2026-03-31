@@ -1,0 +1,12 @@
+logits_NOOP = 0
+
+logits_FIRE = 0.013*player_y_4 + 0.064
+
+logits_RIGHT = 0.119000000000000
+
+logits_LEFT = 0.014*ball_x_3 + 0.014*ball_x_4 + 0.032*enemy_y_1 + 0.025*player_x_1 + 0.011*player_x_3 + 0.047*player_x_4 + 0.041*player_y_1 + 0.012*player_y_2 + 0.041*player_y_3 + 0.025*player_y_4 + 0.711
+
+logits_RIGHTFIRE = 0.029*enemy_y_1 + 0.037
+
+logits_LEFTFIRE = 0
+

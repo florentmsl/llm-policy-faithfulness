@@ -1,0 +1,6 @@
+logits_NOOP = 0.102*car_x_1 + 0.105*car_x_2 + 0.105*car_x_3 + 0.104*car_x_4 + 0.118*car_y_1 + 0.118*car_y_2 + 0.124*car_y_3 + 0.121*car_y_4 + 0.019*chicken_x_1 + 0.02*chicken_x_2 + 0.024*chicken_x_3 + 0.021*chicken_x_4 + 0.038*chicken_y_1 + 0.047*chicken_y_2 + 0.034*chicken_y_3 + 0.056*chicken_y_4
+
+logits_UP = 0.0920000000000000
+
+logits_DOWN = 0
+

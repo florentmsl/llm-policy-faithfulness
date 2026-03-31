@@ -1,0 +1,12 @@
+logits_NOOP = 0.013*ball_x_3 + 0.016*ball_y_2 + 0.022*player_y_3 + 0.124
+
+logits_FIRE = 0.012*player_y_1 + 0.011*player_y_3 + 0.177
+
+logits_RIGHT = 0.017*player_x_1 + 0.017*player_x_3
+
+logits_LEFT = 0.023*ball_x_4 + 0.012*player_x_2*player_y_4 + 0.027*player_x_2 + 0.024*player_x_3 + 0.011*player_y_1 + 0.01*player_y_2 + 0.014*player_y_3 + 0.101*player_y_4 + 0.11
+
+logits_RIGHTFIRE = 0.018*ball_y_1 + 0.046*enemy_y_1 + 0.019*enemy_y_4 + 0.028*player_x_1 + 0.019*player_y_1
+
+logits_LEFTFIRE = 0.02*ball_y_1 + 0.012*ball_y_2*player_x_3 + 0.025*ball_y_2 + 0.012*ball_y_4 + 0.073*enemy_y_1 + 0.028*enemy_y_3 + 0.015*enemy_y_4 + 0.02*player_y_4 + 0.031
+
