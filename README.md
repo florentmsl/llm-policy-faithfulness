@@ -104,6 +104,36 @@ Options:
 - Logs: `04_results/<game>/<model_key>/summary.csv`
   - Includes per-run flags: `uses_env`, `uses_task`, `uses_reward`, `uses_simplification`, `uses_icl`
 
+## Available Policies
+
+Trained aligned policies from `../master/policies/`. 12 out of 15 cells are non-degenerate.
+
+| Game | SCoBots (decision tree) | INSIGHT (polynomial eqs) | NUDGE (FOL rules) |
+|------|------------------------|--------------------------|-------------------|
+| Pong | `pong/scobots/policy.py` | `pong/insight/equations.txt` | `pong/nudge/rules.txt` |
+| Freeway | `freeway/scobots/policy.py` | degenerate (always DOWN) | degenerate (always UP) |
+| Kangaroo | `kangaroo/scobots/policy.py` | partial (coconut features only) | `kangaroo/nudge/rules.txt` |
+| Skiing | `skiing/scobots/policy.py` | degenerate (all zeros) | `skiing/nudge/rules.txt` |
+| Seaquest | `seaquest/scobots/policy.py` | missing (OCAtari bug) | `seaquest/nudge/rules.txt` |
+
+### Policy types
+
+- **SCoBots**: Decision trees (if/else Python). Features like `state['Player1.y']`, `state['Ball1.x']`.
+- **INSIGHT**: Polynomial equations. `logits_RIGHT = 0.12*ball_x_1*enemy_y_2 + ...`
+- **NUDGE/BlendRL**: First-order logic rules. `up_track(X):-ball_above(B,P),ball_approaching(B,P).`
+
+### Pre-recorded INSIGHT videos
+
+Located in `../master/insight/output/videos/`:
+
+| Game | Aligned (EQL) | Aligned (Neural) | Misaligned (basic_rf) |
+|------|--------------|------------------|----------------------|
+| Pong | `Pong..._oc_eql.mp4` | `Pong..._oc_neural.mp4` | `Pong..._basic_rf_oc_eql.mp4` |
+| Freeway | `Freeway..._oc_eql.mp4` | `Freeway..._oc_neural.mp4` | `Freeway..._basic_rf_oc_eql.mp4` |
+
+Additional Pong reward functions: `random_rf`, `up_and_down_rf`, `opposite_of_enemy_rf`, `close_but_no_hit_rf`.
+Additional Freeway reward functions: `random_rf`, `stay_in_middle_rf`.
+
 ## Contexts
 
 - Freeway [(AtariAge)](https://www.atariage.com/2600/manuals_old/freeway.html)
