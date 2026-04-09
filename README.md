@@ -106,33 +106,15 @@ Options:
 
 ## Available Policies
 
-Trained aligned policies from `../master/policies/`. 12 out of 15 cells are non-degenerate.
+12 / 15 are non-degenerate.
 
-| Game | SCoBots (decision tree) | INSIGHT (polynomial eqs) | NUDGE (FOL rules) |
-|------|------------------------|--------------------------|-------------------|
-| Pong | `pong/scobots/policy.py` | `pong/insight/equations.txt` | `pong/nudge/rules.txt` |
-| Freeway | `freeway/scobots/policy.py` | degenerate (always DOWN) | degenerate (always UP) |
-| Kangaroo | `kangaroo/scobots/policy.py` | partial (coconut features only) | `kangaroo/nudge/rules.txt` |
-| Skiing | `skiing/scobots/policy.py` | degenerate (all zeros) | `skiing/nudge/rules.txt` |
-| Seaquest | `seaquest/scobots/policy.py` | missing (OCAtari bug) | `seaquest/nudge/rules.txt` |
-
-### Policy types
-
-- **SCoBots**: Decision trees (if/else Python). Features like `state['Player1.y']`, `state['Ball1.x']`.
-- **INSIGHT**: Polynomial equations. `logits_RIGHT = 0.12*ball_x_1*enemy_y_2 + ...`
-- **NUDGE/BlendRL**: First-order logic rules. `up_track(X):-ball_above(B,P),ball_approaching(B,P).`
-
-### Pre-recorded INSIGHT videos
-
-Located in `../master/insight/output/videos/`:
-
-| Game | Aligned (EQL) | Aligned (Neural) | Misaligned (basic_rf) |
-|------|--------------|------------------|----------------------|
-| Pong | `Pong..._oc_eql.mp4` | `Pong..._oc_neural.mp4` | `Pong..._basic_rf_oc_eql.mp4` |
-| Freeway | `Freeway..._oc_eql.mp4` | `Freeway..._oc_neural.mp4` | `Freeway..._basic_rf_oc_eql.mp4` |
-
-Additional Pong reward functions: `random_rf`, `up_and_down_rf`, `opposite_of_enemy_rf`, `close_but_no_hit_rf`.
-Additional Freeway reward functions: `random_rf`, `stay_in_middle_rf`.
+| Game     | SCoBots (Great)              | INSIGHT (Only Pong works)       | NUDGE (Only Seaquest works)                            |
+| -------- | ---------------------------- | ------------------------------- | ------------------------------------------------------ |
+| Pong     | `pong/scobots/policy.py`     | `pong/insight/equations.txt`    | `pong/nudge/rules.txt` (not reliable)                  |
+| Freeway  | `freeway/scobots/policy.py`  | degenerate (always DOWN)        | degenerate (always UP)                                 |
+| Kangaroo | `kangaroo/scobots/policy.py` | partial (coconut features only) | `kangaroo/nudge/rules.txt` (Does not avoid collisions) |
+| Skiing   | `skiing/scobots/policy.py`   | degenerate (all zeros)          | `skiing/nudge/rules.txt` (Always Left)                 |
+| Seaquest | `seaquest/scobots/policy.py` | missing (OCAtari bug?)          | `seaquest/nudge/rules.txt` (Good)                      |
 
 ## Contexts
 
