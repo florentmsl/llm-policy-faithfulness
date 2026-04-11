@@ -1,0 +1,19 @@
+# NUDGE/BlendRL — Seaquest
+# Seed: 0, 10M steps, 16 envs, gamma=0.99, reasoner=nsfr
+# Final return: ~13964 (env_return)
+# Checkpoint: seaquest_softmax_blender_logic_lr_0.00025_..._20260403_232452
+
+==== Logic Policy ====
+C_0:  0.47 up_air(X):-oxygen_low(B).
+C_1:  0.29 up_rescue(X):-full_divers(X).
+C_2:  0.14 left_to_diver(X):-not_full_divers(X),right_of_diver(P,D),visible_diver(D).
+C_3:  0.36 right_to_diver(X):-left_of_diver(P,D),not_full_divers(X),visible_diver(D).
+C_4:  0.39 up_to_diver(X):-deeper_than_diver(P,D),not_full_divers(X),visible_diver(D).
+C_5:  0.38 down_to_diver(X):-higher_than_diver(P,D),not_full_divers(X),visible_diver(D).
+
+==== Blender Policy ====
+C_0:  0.99 neural_agent(X):-close_by_enemy(P,E).
+C_1:  1.0  neural_agent(X):-close_by_missile(P,M).
+C_2:  0.02 logic_agent(X):-visible_diver(D).
+C_3:  0.02 logic_agent(X):-oxygen_low(B).
+C_4:  0.02 logic_agent(X):-full_divers(X).

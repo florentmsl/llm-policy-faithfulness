@@ -1,0 +1,36 @@
+logits_NOOP = 0
+
+logits_FIRE = 0
+
+logits_UP = 0
+
+logits_RIGHT = 0
+
+logits_LEFT = 0.15*fallingcoconut_y_1 + 0.15*fallingcoconut_y_2 + 0.15*fallingcoconut_y_3 + 0.14*fallingcoconut_y_4 + 0.36
+
+logits_DOWN = 0.250000000000000
+
+logits_UPRIGHT = 0
+
+logits_UPLEFT = 0.130000000000000
+
+logits_DOWNRIGHT = 0
+
+logits_DOWNLEFT = 0.120000000000000
+
+logits_UPFIRE = 0
+
+logits_RIGHTFIRE = 0
+
+logits_LEFTFIRE = 0.230000000000000
+
+logits_DOWNFIRE = 0
+
+logits_UPRIGHTFIRE = 0
+
+logits_UPLEFTFIRE = 0
+
+logits_DOWNRIGHTFIRE = 0.77*fallingcoconut_y_1 + 0.77*fallingcoconut_y_2 + 0.76*fallingcoconut_y_3 + 0.75*fallingcoconut_y_4 + 0.13*monkey_o_1
+
+logits_DOWNLEFTFIRE = 0
+

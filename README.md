@@ -110,7 +110,7 @@ Options:
 
 | Game     | SCoBots (Great)              | INSIGHT (Only Pong works)       | NUDGE (Only Seaquest works)                            |
 | -------- | ---------------------------- | ------------------------------- | ------------------------------------------------------ |
-| Pong     | `pong/scobots/policy.py`     | `pong/insight/equations.txt`    | `pong/nudge/rules.txt` (not reliable)                  |
+| Pong     | `pong/scobots/policy.py`     | `pong/insight/aligned.txt`      | `pong/nudge/rules.txt` (not reliable)                  |
 | Freeway  | `freeway/scobots/policy.py`  | degenerate (always DOWN)        | degenerate (always UP)                                 |
 | Kangaroo | `kangaroo/scobots/policy.py` | partial (coconut features only) | `kangaroo/nudge/rules.txt` (Does not avoid collisions) |
 | Skiing   | `skiing/scobots/policy.py`   | degenerate (all zeros)          | `skiing/nudge/rules.txt` (Always Left)                 |

@@ -1,6 +1,6 @@
 logits_NOOP = 0
 
-logits_UP = 0.916000000000000
+logits_UP = 0
 
-logits_DOWN = 0
+logits_DOWN = 0.370000000000000
 

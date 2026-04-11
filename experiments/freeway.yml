@@ -10,7 +10,7 @@ defaults:
 experiments:
   - id: fw-q1-aligned-full-context
     rq: q1
-    policy_file: 01_policies/scobots/freeway/aligned.txt
+    policy_file: 01_policies/scobots/freeway/aligned.py
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
     reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
@@ -23,7 +23,7 @@ experiments:
 
   - id: fw-q2-aligned-full-context
     rq: q2
-    policy_file: 01_policies/scobots/freeway/aligned.txt
+    policy_file: 01_policies/scobots/freeway/aligned.py
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
     icl_file: 03_prompts/in_context/scobots.txt
@@ -37,7 +37,7 @@ experiments:
 
   - id: fw-q4-aligned-stopped-cars
     rq: q4
-    policy_file: 01_policies/scobots/freeway/aligned.txt
+    policy_file: 01_policies/scobots/freeway/aligned.py
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
     simplification_file: 02_contexts/simplifications/freeway_stopped_cars.txt

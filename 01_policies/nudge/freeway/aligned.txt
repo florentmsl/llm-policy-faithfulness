@@ -1,0 +1,15 @@
+# NUDGE/BlendRL — Freeway
+# Seed: 0, 10M steps, 16 envs, gamma=0.99, reasoner=nsfr
+# Final return: ~5.8 (env_return)
+# Checkpoint: freeway_softmax_blender_logic_lr_0.00025_..._20260403_235332
+
+==== Logic Policy ====
+C_0:  0.23 up(X):-.
+C_1:  0.53 noop_because_left(X):-above_row(02,01),bottom5car(02),closeby(O2,01),on_left(O2,O1),type(O1,chicken),type(O2,car).
+C_2:  0.21 noop_because_right(X):-above_row(02,01),closeby(O2,01),on_right(O2,O1),top5car(02),type(O1,chicken),type(O2,car).
+C_3:  0.36 down_because_left(X):-above_row(02,01),bottom5car(02),bottom5car(03),closeby(O2,01),closeby(O3,01),on_left(O2,O1),on_left(O3,O1),same_row(03,01),type(O1,chicken),type(O2,car),type(O3,car).
+C_4:  0.67 down_because_right(X):-above_row(02,01),closeby(O2,01),closeby(O3,01),on_right(O2,O1),on_right(O3,O1),same_row(03,01),top5car(02),top5car(03),type(O1,chicken),type(O2,car),type(O3,car).
+
+==== Blender Policy ====
+C_0:  0.01 logic_agent(X):-closeby(O2,O1).
+C_1:  1.0  neural_agent(X):-above_row(O2,O1).

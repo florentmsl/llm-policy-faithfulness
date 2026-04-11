@@ -1,0 +1,13 @@
+# NUDGE/BlendRL — Pong
+# Seed: 0, 10M steps, 16 envs, gamma=0.99, reasoner=nsfr
+# Final return: ~3.0 (env_return)
+# Checkpoint: pong_softmax_blender_logic_lr_0.00025_..._20260403_230217
+
+==== Logic Policy ====
+C_0:  0.6  up_track(X):-ball_above(B,P),ball_approaching(B,P).
+C_1:  0.4  down_track(X):-ball_approaching(B,P),ball_below(B,P).
+C_2:  0.27 fire_aligned(X):-ball_aligned(B,P),ball_approaching(B,P).
+
+==== Blender Policy ====
+C_0:  1.0  logic_agent(X):-ball_approaching(B,P).
+C_1:  0.01 neural_agent(X):-ball_far(B,P).

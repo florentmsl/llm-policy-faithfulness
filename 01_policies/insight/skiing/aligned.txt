@@ -1,6 +1,6 @@
-logits_logits_NOOP = 0.011*var_102 + 0.023*var_104 + 0.012*var_108 + 0.026*var_17 + 0.015*var_21 + 0.019*var_23 + 0.013*var_33 + 0.014*var_37 + 0.02*var_39 + 0.026*var_46 + 0.013*var_50 + 0.01*var_52 + 0.02*var_6 + 0.023*var_75 + 0.063
+logits_NOOP = 0
 
-logits_logits_RIGHT = 0.014*var_114 + 0.011*var_28 + 0.01*var_7 + 0.011*var_76 + 0.017*var_84 + 0.123
+logits_RIGHT = 0
 
-logits_logits_LEFT = 0
+logits_LEFT = 0
 

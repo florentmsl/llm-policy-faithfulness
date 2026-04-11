@@ -1,0 +1,13 @@
+# NUDGE/BlendRL — Kangaroo
+# Seed: 0, 10M steps, 16 envs, gamma=0.99, reasoner=nsfr, actor_mode=hybrid
+# Final return: ~15670 (env_return)
+
+==== Logic Policy ====
+C_0:  0.74 up_ladder(X):-on_ladder(P,L),same_level_ladder(P,L).
+C_1:  0.37 right_ladder(X):-left_of_ladder(P,L),same_level_ladder(P,L).
+C_2:  0.74 left_ladder(X):-right_of_ladder(P,L),same_level_ladder(P,L).
+
+==== Blender Policy ====
+C_0:  0.06 neural_agent(X):-close_by_monkey(P,M).
+C_1:  0.19 neural_agent(X):-close_by_throwncoconut(P,TC).
+C_2:  0.8  logic_agent(X):-nothing_around(X).

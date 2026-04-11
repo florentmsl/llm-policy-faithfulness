@@ -1,0 +1,14 @@
+# NUDGE/BlendRL — Skiing
+# Seed: 0, 10M steps, 16 envs, gamma=0.99, reasoner=nsfr, actor_mode=logic
+# Final return: ~-15000 to -20000 (env_return)
+
+==== Logic Policy ====
+C_0:  0.89 left_avoid(X):-close_by_obstacle(P,O),obstacle_ahead(P,O),obstacle_right(P,O).
+C_1:  0.74 right_avoid(X):-close_by_obstacle(P,O),obstacle_ahead(P,O),obstacle_left(P,O).
+C_2:  0.1  left_to_flag(X):-flag_ahead(P,F),flag_left(P,F).
+C_3:  0.03 right_to_flag(X):-flag_ahead(P,F),flag_right(P,F).
+
+==== Blender Policy ====
+C_0:  0.67 logic_agent(X):-obstacle_ahead(P,O),visible_obstacle(O).
+C_1:  0.12 logic_agent(X):-flag_ahead(P,F),visible_flag(F).
+C_2:  0.79 neural_agent(X):-.
