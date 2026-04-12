@@ -162,8 +162,10 @@ def _can_overwrite_result(result_file: Path) -> bool:
     return result_file.read_text(encoding="utf-8").strip() == DRY_RUN_RESULT_TEXT.strip()
 
 
-def run(experiments_file: Path, dry: bool) -> None:
+def run(experiments_file: Path, dry: bool, model_override: str | None = None) -> None:
     model_key, template_by_rq, game, experiments = _load_experiment_file(experiments_file)
+    if model_override:
+        model_key = model_override.strip()
     openrouter_model = MODEL_KEY_TO_OPENROUTER.get(model_key, model_key)
     model_dir_key = _to_model_dir_key(model_key)
 
@@ -254,6 +256,10 @@ def main() -> None:
         help="YAML experiments file path.",
     )
     parser.add_argument(
+        "--model",
+        help="Optional OpenRouter model ID override. If omitted, the experiments YAML default is used.",
+    )
+    parser.add_argument(
         "--dry",
         action="store_true",
         help="Build prompt files only (no API calls).",
@@ -263,6 +269,7 @@ def main() -> None:
     run(
         experiments_file=Path(args.file),
         dry=args.dry,
+        model_override=args.model,
     )
 
 

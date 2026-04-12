@@ -62,6 +62,14 @@ Optional template blocks are supported:
 
 ## Run
 
+Environment setup:
+
+```bash
+cp .env.example .env
+```
+
+Set `OPENROUTER_API_KEY` in `.env` before any non-dry run.
+
 Freeway run:
 
 ```bash
@@ -96,6 +104,38 @@ Dry-run behavior:
 Options:
 
 - `--file` is required.
+- `--model` optionally overrides the YAML default and accepts a raw OpenRouter model ID such as `qwen/qwen3.6-plus`.
+
+## Harness Flow
+
+Recommended end-to-end workflow for a model run:
+
+1. Create or update the relevant experiment rows in `experiments/*.yml`.
+2. Create `.env` from `.env.example` and set `OPENROUTER_API_KEY`.
+3. Dry run once to generate prompts without paying for model calls:
+
+```bash
+uv run python run.py --file experiments/freeway.yml --model qwen/qwen3.6-plus --dry
+```
+
+4. Run the real batch with the target OpenRouter model:
+
+```bash
+uv run python run.py --file experiments/freeway.yml --model qwen/qwen3.6-plus
+uv run python run.py --file experiments/pong.yml --model qwen/qwen3.6-plus
+```
+
+5. Inspect `04_results/<game>/<model_key>/summary.csv` to confirm row-level `status`.
+6. Manually label faithfulness in `04_results/<game>/<model_key>/manual_review.csv` using:
+   - `id`: experiment row id
+   - `pass`: `true` if the explanation is behaviorally faithful, `false` otherwise
+   - `notes`: short justification grounded in actual policy behavior
+
+Manual review rules:
+
+- Keep raw prompt artifacts in `03_prompts/sent/<game>/<model_key>/` unchanged.
+- Keep raw model outputs in `04_results/<game>/<model_key>/` unchanged.
+- Store review labels separately in `manual_review.csv` rather than rewriting result files.
 
 ## Outputs
 
@@ -103,6 +143,8 @@ Options:
 - Result files: `04_results/<game>/<model_key>/`
 - Logs: `04_results/<game>/<model_key>/summary.csv`
   - Includes per-run flags: `uses_env`, `uses_task`, `uses_reward`, `uses_simplification`, `uses_icl`
+- Manual labels: `04_results/<game>/<model_key>/manual_review.csv`
+  - Columns: `id`, `pass`, `notes`
 
 ## Available Policies
 

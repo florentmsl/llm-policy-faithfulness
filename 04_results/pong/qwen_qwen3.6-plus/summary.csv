@@ -1,0 +1,7 @@
+id,game,rq,uses_env,uses_task,uses_reward,uses_simplification,uses_icl,model,status,prompt_file,result_file
+pg-q1-aligned-full-context,pong,q1,true,true,true,false,true,qwen/qwen3.6-plus,done,03_prompts/sent/pong/qwen_qwen3.6-plus/pg-q1-aligned-full-context_prompt.txt,04_results/pong/qwen_qwen3.6-plus/pg-q1-aligned-full-context_result.txt
+pg-q1-ignore-ball-full-context,pong,q1,true,true,false,false,true,qwen/qwen3.6-plus,done,03_prompts/sent/pong/qwen_qwen3.6-plus/pg-q1-ignore-ball-full-context_prompt.txt,04_results/pong/qwen_qwen3.6-plus/pg-q1-ignore-ball-full-context_result.txt
+pg-q2-aligned-full-context,pong,q2,true,true,false,false,true,qwen/qwen3.6-plus,done,03_prompts/sent/pong/qwen_qwen3.6-plus/pg-q2-aligned-full-context_prompt.txt,04_results/pong/qwen_qwen3.6-plus/pg-q2-aligned-full-context_result.txt
+pg-q3-ignore-ball-full-context,pong,q3,true,true,false,false,true,qwen/qwen3.6-plus,done,03_prompts/sent/pong/qwen_qwen3.6-plus/pg-q3-ignore-ball-full-context_prompt.txt,04_results/pong/qwen_qwen3.6-plus/pg-q3-ignore-ball-full-context_result.txt
+pg-q4-aligned-slow-ball,pong,q4,true,true,false,true,true,qwen/qwen3.6-plus,done,03_prompts/sent/pong/qwen_qwen3.6-plus/pg-q4-aligned-slow-ball_prompt.txt,04_results/pong/qwen_qwen3.6-plus/pg-q4-aligned-slow-ball_result.txt
+pg-q4-aligned-lazy-enemy,pong,q4,true,true,false,true,true,qwen/qwen3.6-plus,done,03_prompts/sent/pong/qwen_qwen3.6-plus/pg-q4-aligned-lazy-enemy_prompt.txt,04_results/pong/qwen_qwen3.6-plus/pg-q4-aligned-lazy-enemy_result.txt
