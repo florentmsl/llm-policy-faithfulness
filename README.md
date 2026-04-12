@@ -68,7 +68,10 @@ Environment setup:
 cp .env.example .env
 ```
 
-Set `OPENROUTER_API_KEY` in `.env` before any non-dry run.
+Set these in `.env` before any non-dry run:
+
+- `OPENROUTER_API_KEY`
+- `OPENROUTER_MODEL` (for example `qwen/qwen3.6-plus`) if you want a default model outside the YAML files
 
 Freeway run:
 
@@ -104,14 +107,14 @@ Dry-run behavior:
 Options:
 
 - `--file` is required.
-- `--model` optionally overrides the YAML default and accepts a raw OpenRouter model ID such as `qwen/qwen3.6-plus`.
+- `--model` optionally overrides `OPENROUTER_MODEL` and the YAML default, and accepts a raw OpenRouter model ID such as `qwen/qwen3.6-plus`.
 
 ## Harness Flow
 
 Recommended end-to-end workflow for a model run:
 
 1. Create or update the relevant experiment rows in `experiments/*.yml`.
-2. Create `.env` from `.env.example` and set `OPENROUTER_API_KEY`.
+2. Create `.env` from `.env.example` and set `OPENROUTER_API_KEY`, plus optionally `OPENROUTER_MODEL`.
 3. Dry run once to generate prompts without paying for model calls:
 
 ```bash

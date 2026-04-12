@@ -164,6 +164,9 @@ def _can_overwrite_result(result_file: Path) -> bool:
 
 def run(experiments_file: Path, dry: bool, model_override: str | None = None) -> None:
     model_key, template_by_rq, game, experiments = _load_experiment_file(experiments_file)
+    env_model_override = _optional_string(os.getenv("OPENROUTER_MODEL"))
+    if env_model_override:
+        model_key = env_model_override
     if model_override:
         model_key = model_override.strip()
     openrouter_model = MODEL_KEY_TO_OPENROUTER.get(model_key, model_key)
@@ -257,7 +260,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--model",
-        help="Optional OpenRouter model ID override. If omitted, the experiments YAML default is used.",
+        help="Optional OpenRouter model ID override. If omitted, OPENROUTER_MODEL is used when set, otherwise the experiments YAML default is used.",
     )
     parser.add_argument(
         "--dry",
