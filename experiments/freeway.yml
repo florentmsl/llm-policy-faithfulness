@@ -16,6 +16,13 @@ experiments:
     reward_file: 02_contexts/reward_functions/freeway_jaxatari.py
     icl_file: 03_prompts/in_context/scobots.txt
 
+  - id: fw-q1-stay-bottom-full-context
+    rq: q1
+    policy_file: 01_policies/scobots/freeway/stay_bottom.py
+    env_file: 02_contexts/freeway/environment.txt
+    task_file: 02_contexts/freeway/task.txt
+    icl_file: 03_prompts/in_context/scobots.txt
+
   - id: fw-q1-aligned-ug-policy-only
     rq: q1
     policy_file: 01_policies/scobots/freeway/aligned_ug.txt
@@ -28,9 +35,9 @@ experiments:
     task_file: 02_contexts/freeway/task.txt
     icl_file: 03_prompts/in_context/scobots.txt
 
-  - id: fw-q3-alwaysup-full-context
+  - id: fw-q3-stay-bottom-full-context
     rq: q3
-    policy_file: 01_policies/scobots/freeway/alwaysup.txt
+    policy_file: 01_policies/scobots/freeway/stay_bottom.py
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
     icl_file: 03_prompts/in_context/scobots.txt

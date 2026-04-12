@@ -7,7 +7,6 @@ from pathlib import Path
 
 import yaml
 from dotenv import load_dotenv
-from openai import OpenAI
 
 load_dotenv()
 
@@ -148,7 +147,7 @@ def _build_prompt(experiment: Experiment, template_path: str) -> str:
     return _normalize_prompt(prompt)
 
 
-def _call_llm(client: OpenAI, model: str, prompt: str) -> str:
+def _call_llm(client, model: str, prompt: str) -> str:
     response = client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": prompt}],
@@ -175,6 +174,8 @@ def run(experiments_file: Path, dry: bool) -> None:
 
     client = None
     if not dry:
+        from openai import OpenAI
+
         client = OpenAI(base_url=OPENROUTER_BASE_URL, api_key=os.getenv("OPENROUTER_API_KEY"))
 
     summary_rows: list[dict[str, str]] = []
