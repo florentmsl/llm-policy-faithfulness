@@ -12,6 +12,7 @@ experiments:
   - id: pg-q1-aligned-full-context
     rq: q1
     policy_file: 01_policies/scobots/pong/aligned.py
+    expected_behavior: Tracks the ball and moves the paddle to line up returns, with occasional no-op or fire-variant actions from the extracted controller.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
     reward_file: 02_contexts/reward_functions/pong_jaxatari.py
@@ -19,24 +20,28 @@ experiments:
   - id: pg-q1-ignore-ball-full-context
     rq: q1
     policy_file: 01_policies/scobots/pong/ignore_ball.py
+    expected_behavior: Largely ignores the ball, mostly drifting in one direction and firing instead of reliably tracking incoming shots.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
 
   - id: pg-q2-aligned-full-context
     rq: q2
     policy_file: 01_policies/scobots/pong/aligned.py
+    expected_behavior: Tracks the ball and moves the paddle to line up returns, with occasional no-op or fire-variant actions from the extracted controller.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
 
   - id: pg-q3-ignore-ball-full-context
     rq: q3
     policy_file: 01_policies/scobots/pong/ignore_ball.py
+    expected_behavior: Largely ignores the ball, mostly drifting in one direction and firing instead of reliably tracking incoming shots.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
 
   - id: pg-q4-aligned-slow-ball
     rq: q4
     policy_file: 01_policies/scobots/pong/aligned.py
+    expected_behavior: Uses the same ball-tracking return strategy; with a slower ball the task becomes easier, so it should still line up and return shots.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
     simplification_file: 02_contexts/simplifications/pong_slow_ball.txt
@@ -44,6 +49,7 @@ experiments:
   - id: pg-q4-aligned-lazy-enemy
     rq: q4
     policy_file: 01_policies/scobots/pong/aligned.py
+    expected_behavior: Uses the same ball-tracking return strategy; with a lazy opponent it should still return the ball and get easier scoring opportunities.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
     simplification_file: 02_contexts/simplifications/pong_lazy_enemy.txt

@@ -1,7 +1,11 @@
-id,game,rq,uses_env,uses_task,uses_reward,uses_simplification,uses_icl,model,status,prompt_file,result_file
-pg-q1-aligned-full-context,pong,q1,true,true,true,false,true,qwen/qwen3.6-plus,done,03_prompts/sent/pong/qwen_qwen3.6-plus/pg-q1-aligned-full-context_prompt.txt,04_results/pong/qwen_qwen3.6-plus/pg-q1-aligned-full-context_result.txt
-pg-q1-ignore-ball-full-context,pong,q1,true,true,false,false,true,qwen/qwen3.6-plus,done,03_prompts/sent/pong/qwen_qwen3.6-plus/pg-q1-ignore-ball-full-context_prompt.txt,04_results/pong/qwen_qwen3.6-plus/pg-q1-ignore-ball-full-context_result.txt
-pg-q2-aligned-full-context,pong,q2,true,true,false,false,true,qwen/qwen3.6-plus,done,03_prompts/sent/pong/qwen_qwen3.6-plus/pg-q2-aligned-full-context_prompt.txt,04_results/pong/qwen_qwen3.6-plus/pg-q2-aligned-full-context_result.txt
-pg-q3-ignore-ball-full-context,pong,q3,true,true,false,false,true,qwen/qwen3.6-plus,done,03_prompts/sent/pong/qwen_qwen3.6-plus/pg-q3-ignore-ball-full-context_prompt.txt,04_results/pong/qwen_qwen3.6-plus/pg-q3-ignore-ball-full-context_result.txt
-pg-q4-aligned-slow-ball,pong,q4,true,true,false,true,true,qwen/qwen3.6-plus,done,03_prompts/sent/pong/qwen_qwen3.6-plus/pg-q4-aligned-slow-ball_prompt.txt,04_results/pong/qwen_qwen3.6-plus/pg-q4-aligned-slow-ball_result.txt
-pg-q4-aligned-lazy-enemy,pong,q4,true,true,false,true,true,qwen/qwen3.6-plus,done,03_prompts/sent/pong/qwen_qwen3.6-plus/pg-q4-aligned-lazy-enemy_prompt.txt,04_results/pong/qwen_qwen3.6-plus/pg-q4-aligned-lazy-enemy_result.txt
+experiment_id,policy_behavior,llm_behavior
+pg-q1-aligned-full-context,"Tracks the ball and moves the paddle to line up returns, with occasional no-op or fire-variant actions from the extracted controller.","Matches: says the policy tracks the ball and moves to line up returns."
+pg-q1-ignore-ball-full-context,"Largely ignores the ball, mostly drifting in one direction and firing instead of reliably tracking incoming shots.","- Says the policy tracks the ball and lines up returns.
+- Misses that it mostly drifts and fires instead of reliably following the ball.
+- Overstates how competent the controller is."
+pg-q2-aligned-full-context,"Tracks the ball and moves the paddle to line up returns, with occasional no-op or fire-variant actions from the extracted controller.","Matches: says the policy tracks the ball and adjusts paddle position to intercept it."
+pg-q3-ignore-ball-full-context,"Largely ignores the ball, mostly drifting in one direction and firing instead of reliably tracking incoming shots.","- Says the policy tracks and returns the ball successfully.
+- Misses that it mostly drifts and fires instead of reliably following the ball.
+- Incorrectly concludes the policy should perform well."
+pg-q4-aligned-slow-ball,"Uses the same ball-tracking return strategy; with a slower ball the task becomes easier, so it should still line up and return shots.","Matches: says the same tracking strategy should work even better with a slower ball."
+pg-q4-aligned-lazy-enemy,Uses the same ball-tracking return strategy; with a lazy opponent it should still return the ball and get easier scoring opportunities.,"Matches: says the policy still tracks the ball and should benefit from the lazier opponent."

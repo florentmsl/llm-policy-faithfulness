@@ -25,6 +25,7 @@ class Experiment:
     game: str
     rq: str
     policy_file: str
+    expected_behavior: str
     env_file: str | None
     task_file: str | None
     reward_file: str | None
@@ -56,6 +57,19 @@ def _resolve_optional_field(row: dict[str, object], field_name: str, default_val
     if field_name in row:
         return _optional_string(row.get(field_name))
     return default_value
+
+
+def _normalize_csv_text(value: str) -> str:
+    return re.sub(r"\s+", " ", value).strip()
+
+
+def _read_result_text(path: Path) -> str:
+    if not path.is_file():
+        return ""
+    result_text = path.read_text(encoding="utf-8").strip()
+    if result_text == DRY_RUN_RESULT_TEXT.strip():
+        return ""
+    return _normalize_csv_text(result_text)
 
 
 def _render_optional_blocks(template: str, replacements: dict[str, str]) -> str:
@@ -93,6 +107,7 @@ def _load_experiment_file(path: Path) -> tuple[str, dict[str, str], str, list[Ex
         experiment_id = str(row["id"]).strip()
         rq = str(row["rq"]).strip().lower()
         policy_file = str(row["policy_file"]).strip()
+        expected_behavior = str(row.get("expected_behavior", "")).strip()
         env_file = _resolve_optional_field(row, "env_file", default_env_file)
         task_file = _resolve_optional_field(row, "task_file", default_task_file)
         reward_file = _resolve_optional_field(row, "reward_file", default_reward_file)
@@ -105,6 +120,7 @@ def _load_experiment_file(path: Path) -> tuple[str, dict[str, str], str, list[Ex
                 game=game,
                 rq=rq,
                 policy_file=policy_file,
+                expected_behavior=expected_behavior,
                 env_file=env_file,
                 task_file=task_file,
                 reward_file=reward_file,
@@ -205,18 +221,9 @@ def run(experiments_file: Path, dry: bool, model_override: str | None = None) ->
 
         summary_rows.append(
             {
-                "id": experiment.experiment_id,
-                "game": experiment.game,
-                "rq": experiment.rq,
-                "uses_env": "true" if experiment.env_file else "false",
-                "uses_task": "true" if experiment.task_file else "false",
-                "uses_reward": "true" if experiment.reward_file else "false",
-                "uses_simplification": "true" if experiment.simplification_file else "false",
-                "uses_icl": "true" if experiment.icl_file else "false",
-                "model": model_key,
-                "status": status,
-                "prompt_file": str(prompt_file),
-                "result_file": str(result_file),
+                "experiment_id": experiment.experiment_id,
+                "policy_behavior": _normalize_csv_text(experiment.expected_behavior),
+                "llm_behavior": _read_result_text(result_file),
             }
         )
         print(f"{status}: {experiment.experiment_id}")
@@ -227,18 +234,9 @@ def run(experiments_file: Path, dry: bool, model_override: str | None = None) ->
         writer = csv.DictWriter(
             handle,
             fieldnames=[
-                "id",
-                "game",
-                "rq",
-                "uses_env",
-                "uses_task",
-                "uses_reward",
-                "uses_simplification",
-                "uses_icl",
-                "model",
-                "status",
-                "prompt_file",
-                "result_file",
+                "experiment_id",
+                "policy_behavior",
+                "llm_behavior",
             ],
         )
         writer.writeheader()

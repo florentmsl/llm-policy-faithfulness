@@ -128,7 +128,7 @@ uv run python run.py --file experiments/freeway.yml --model qwen/qwen3.6-plus
 uv run python run.py --file experiments/pong.yml --model qwen/qwen3.6-plus
 ```
 
-5. Inspect `04_results/<game>/<model_key>/summary.csv` to confirm row-level `status`.
+5. Inspect `04_results/<game>/<model_key>/summary.csv` to compare the grounded policy behavior against the saved LLM explanation.
 6. Manually label faithfulness in `04_results/<game>/<model_key>/manual_review.csv` using:
    - `id`: experiment row id
    - `pass`: `true` if the explanation is behaviorally faithful, `false` otherwise
@@ -145,21 +145,23 @@ Manual review rules:
 - Prompt artifacts: `03_prompts/sent/<game>/<model_key>/`
 - Result files: `04_results/<game>/<model_key>/`
 - Logs: `04_results/<game>/<model_key>/summary.csv`
-  - Includes per-run flags: `uses_env`, `uses_task`, `uses_reward`, `uses_simplification`, `uses_icl`
+  - Columns: `experiment_id`, `policy_behavior`, `llm_behavior`
 - Manual labels: `04_results/<game>/<model_key>/manual_review.csv`
   - Columns: `id`, `pass`, `notes`
 
 ## Available Policies
 
-12 / 15 are non-degenerate.
+Paths are relative to `01_policies/`. Status notes reflect policy quality, not file presence.
 
-| Game     | SCoBots (Great)              | INSIGHT (Only Pong works)       | NUDGE (Only Seaquest works)                            |
-| -------- | ---------------------------- | ------------------------------- | ------------------------------------------------------ |
-| Pong     | `pong/scobots/policy.py`     | `pong/insight/aligned.txt`      | `pong/nudge/rules.txt` (not reliable)                  |
-| Freeway  | `freeway/scobots/policy.py`  | degenerate (always DOWN)        | degenerate (always UP)                                 |
-| Kangaroo | `kangaroo/scobots/policy.py` | partial (coconut features only) | `kangaroo/nudge/rules.txt` (Does not avoid collisions) |
-| Skiing   | `skiing/scobots/policy.py`   | degenerate (all zeros)          | `skiing/nudge/rules.txt` (Always Left)                 |
-| Seaquest | `seaquest/scobots/policy.py` | missing (OCAtari bug?)          | `seaquest/nudge/rules.txt` (Good)                      |
+| Game     | SCoBots                       | INSIGHT                                               | NUDGE                                                       |
+| -------- | ----------------------------- | ----------------------------------------------------- | ----------------------------------------------------------- |
+| Pong     | `scobots/pong/aligned.py`     | `insight/pong/aligned.txt` (works)                    | `nudge/pong/rules.txt` (not reliable)                       |
+| Freeway  | `scobots/freeway/aligned.py`  | `insight/freeway/aligned.txt` (degenerate, always DOWN) | `nudge/freeway/rules.txt` (degenerate, always UP)         |
+| Kangaroo | `scobots/kangaroo/aligned.py` | `insight/kangaroo/aligned.txt` (partial, coconut only) | `nudge/kangaroo/rules.txt` (does not avoid collisions)    |
+| Skiing   | `scobots/skiing/aligned.py`   | `insight/skiing/aligned.txt` (degenerate, all zeros)  | `nudge/skiing/rules.txt` (always left)                      |
+| Seaquest | `scobots/seaquest/aligned.py` | missing (OCAtari bug?)                                | `nudge/seaquest/rules.txt` (works)                          |
+
+Misaligned / ablation variants (e.g. `instahit.txt`, `stay_bottom.py`, `ignore_ball.py`, `_ug` object-name-ablation files, `*_rf.*` reward-variant files) live alongside the aligned policy in each `<framework>/<game>/` directory.
 
 ## Contexts
 
