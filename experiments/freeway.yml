@@ -1,6 +1,6 @@
 defaults:
   game: freeway
-  model: gpt-5
+  model: "nvidia/nemotron-3-super-120b-a12b:free"
   templates:
     q1: 03_prompts/templates/q1_research.txt
     q2: 03_prompts/templates/q2_research.txt

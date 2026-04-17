@@ -1,0 +1,5 @@
+The policy moves the paddle up or down to track the ball’s vertical position: it moves the paddle up when the ball is high and far from the paddle, moves the paddle down when the ball is low, and occasionally presses the fire button (which has no effect during play). This resembles a simple tracking controller that attempts to intercept the ball when it arrives at the player’s side.
+
+By tracking the ball’s vertical position, the agent is able to hit the ball back more often than it misses, leading to a positive score difference and a higher likelihood of winning episodes against the computer opponent.
+
+VERDICT: YES

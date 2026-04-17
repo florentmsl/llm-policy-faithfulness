@@ -1,6 +1,0 @@
-This policy implements a **conditional tracking and hitting strategy** that adapts its behavior based on the ball's vertical position:
-
-- **Upper screen region (`Ball1.y <= 35`)**: The agent prioritizes vertical alignment. If the ball is close (`ED <= 110`) and relatively aligned with the paddle, it fires to hit/serve. If misaligned or distant, it moves the paddle (LEFT) to track the ball, using the paddle's velocity and previous position to decide when to stop (NOOP) and avoid overshooting.
-- **Lower screen region (`Ball1.y > 35`)**: The agent switches to a horizontal-position trigger. If the ball is on the left side of the screen (`Ball1.x <= 89`), it fires. Otherwise, it moves the paddle (RIGHT) to reposition for the return.
-
-**Overall**, the policy acts as a feedback-driven controller that aligns the paddle with the ball's trajectory, triggers a return when the ball enters a hittable zone, and uses velocity/position history to stabilize paddle movement and prevent overshooting. (Note: In this Atari Pong environment, LEFT/RIGHT actions control the paddle's vertical movement as specified in the manual.)
