@@ -31,6 +31,13 @@ experiments:
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
 
+  - id: pg-q2-ignore-ball-no-reward
+    rq: q2
+    policy_file: 01_policies/scobots/pong/ignore_ball.py
+    expected_behavior: Largely ignores the ball, mostly drifting in one direction and firing instead of reliably tracking incoming shots.
+    env_file: 02_contexts/pong/environment.txt
+    task_file: 02_contexts/pong/task.txt
+
   - id: pg-q3-ignore-ball-full-context
     rq: q3
     policy_file: 01_policies/scobots/pong/ignore_ball.py
@@ -41,7 +48,7 @@ experiments:
   - id: pg-q4-aligned-slow-ball
     rq: q4
     policy_file: 01_policies/scobots/pong/aligned.py
-    expected_behavior: Uses the same ball-tracking return strategy; with a slower ball the task becomes easier, so it should still line up and return shots.
+    expected_behavior: Policy likely degrades. Branches depending on ball velocity were fit to the original speed; at 35% slower speed the learned thresholds can fire at the wrong time and the paddle may not align reliably, even though the task is easier for a human. Rollout verification needed.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
     simplification_file: 02_contexts/simplifications/pong_slow_ball.txt
@@ -49,7 +56,7 @@ experiments:
   - id: pg-q4-aligned-lazy-enemy
     rq: q4
     policy_file: 01_policies/scobots/pong/aligned.py
-    expected_behavior: Uses the same ball-tracking return strategy; with a lazy opponent it should still return the ball and get easier scoring opportunities.
+    expected_behavior: Policy likely degrades. The aligned tree's branches use opponent-position and distance features; with the opponent frozen during the player's return phase those features stop varying as during training, so the learned thresholds can misfire. Rollout verification needed.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
     simplification_file: 02_contexts/simplifications/pong_lazy_enemy.txt

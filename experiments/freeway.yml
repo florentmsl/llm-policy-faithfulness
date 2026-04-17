@@ -39,6 +39,14 @@ experiments:
     task_file: 02_contexts/freeway/task.txt
     icl_file: 03_prompts/in_context/scobots.txt
 
+  - id: fw-q2-stay-bottom-no-reward
+    rq: q2
+    policy_file: 01_policies/scobots/freeway/stay_bottom.py
+    expected_behavior: Mostly stays near the bottom of the screen by choosing DOWN or NOOP, with only rare upward moves.
+    env_file: 02_contexts/freeway/environment.txt
+    task_file: 02_contexts/freeway/task.txt
+    icl_file: 03_prompts/in_context/scobots.txt
+
   - id: fw-q3-stay-bottom-full-context
     rq: q3
     policy_file: 01_policies/scobots/freeway/stay_bottom.py
@@ -50,7 +58,7 @@ experiments:
   - id: fw-q4-aligned-stopped-cars
     rq: q4
     policy_file: 01_policies/scobots/freeway/aligned.py
-    expected_behavior: Uses the same gap-finding logic, but with cars frozen it can cross while still making some unnecessary waits or downward retreats.
+    expected_behavior: Policy breaks. The VIPER tree's gap-finding branches were fit to moving traffic; with cars frozen the selected branches no longer drive the chicken upward and the agent effectively stops making progress.
     env_file: 02_contexts/freeway/environment.txt
     task_file: 02_contexts/freeway/task.txt
     simplification_file: 02_contexts/simplifications/freeway_stopped_cars.txt

@@ -1,6 +1,0 @@
-experiment_id,policy_behavior,llm_behavior
-fw-q1-aligned-full-context,"Moves upward through traffic, occasionally waiting or stepping down to avoid nearby cars and create safe gaps.","Matches: says the policy mostly goes up, with occasional waits or downward moves near cars."
-fw-q1-aligned-ug-policy-only,"Moves upward through traffic, occasionally waiting or stepping down to avoid nearby cars and create safe gaps.","Matches: says it is an upward-biased controller with occasional down or wait adjustments."
-fw-q2-aligned-full-context,"Moves upward through traffic, occasionally waiting or stepping down to avoid nearby cars and create safe gaps.","Matches: says the policy advances upward and retreats or waits when cars are too close."
-fw-q3-alwaysup-full-context,"Always presses UP every step, so it brute-forces upward movement without waiting or avoiding cars.","Matches: says the policy always presses UP and brute-forces crossings."
-fw-q4-aligned-stopped-cars,"Uses the same gap-finding logic, but with cars frozen it can cross while still making some unnecessary waits or downward retreats.","Matches: says the policy still mostly goes up, with some unnecessary pauses or backsteps when cars are frozen."

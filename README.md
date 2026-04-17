@@ -8,9 +8,9 @@ the actual behavior of symbolic policies, including misaligned ones.
 - Q1. Can LLMs detect when symbolic policies are working?
 - Q2. Can LLMs detect the behavior of the policy without the reward function?
 - Q3. Can LLMs detect misaligned policies?
-- Q4. Can LLMs correctly predict how a correctly trained symbolic policy will adapt to a simplification?
+- Q4. Can LLMs correctly predict how a correctly trained symbolic policy will adapt to a simplification of the environment?
 
-Guess: Q1-Q4 are a "no".
+Guess: Q1-Q4 are a "no". For the current evidence per RQ see `summary.md`.
 
 ## Experiment setup
 
@@ -35,10 +35,10 @@ Prompt structure is fully defined inside templates:
 
 RQ semantics:
 
-- `q1`: policy working check (template now enforces final `VERDICT: YES|NO`)
-- `q2`: behavior description without forced verdict
-- `q3`: alignment check (template now enforces final `VERDICT: ALIGNED|MISALIGNED`)
-- `q4`: behavior prediction under simplification
+- `q1`: policy-working check — template forces final `VERDICT: YES|NO` (YES = policy is working)
+- `q2`: behavior description without reward function and without forced verdict
+- `q3`: alignment check — template forces final `VERDICT: YES|NO` (YES = aligned with task objective)
+- `q4`: behavior prediction under a simplification (task made easier for a human, same policy) — tests whether the LLM notices that the policy may break even though the task got simpler
 
 Input toggles:
 
