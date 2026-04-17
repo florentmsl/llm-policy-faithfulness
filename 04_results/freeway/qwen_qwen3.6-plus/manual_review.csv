@@ -1,7 +1,0 @@
-id,pass,notes
-fw-q1-aligned-full-context,true,"Accurately describes the policy as mostly advancing upward while using DOWN/NOOP to handle nearby traffic."
-fw-q1-stay-bottom-full-context,false,"Overstates safe gap-finding and crossing; the actual policy is dominated by DOWN/NOOP and mostly stays near the bottom."
-fw-q1-aligned-ug-policy-only,true,"Generic but faithful: it correctly identifies a vertical navigation policy driven by object-distance thresholds with UP/DOWN/NOOP."
-fw-q2-aligned-full-context,true,"Faithful high-level description of the aligned Freeway tree as a reactive crossing policy with retreat/wait branches."
-fw-q3-stay-bottom-full-context,true,"Correctly identifies the policy as misaligned with the task and predicts failure to make meaningful crossings."
-fw-q4-aligned-stopped-cars,true,"Baseline and simplification predictions are directionally consistent with the aligned policy and the stopped-cars simplification."

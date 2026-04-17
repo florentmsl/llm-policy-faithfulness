@@ -1,5 +1,4 @@
 import argparse
-import csv
 import os
 import re
 from dataclasses import dataclass
@@ -57,19 +56,6 @@ def _resolve_optional_field(row: dict[str, object], field_name: str, default_val
     if field_name in row:
         return _optional_string(row.get(field_name))
     return default_value
-
-
-def _normalize_csv_text(value: str) -> str:
-    return re.sub(r"\s+", " ", value).strip()
-
-
-def _read_result_text(path: Path) -> str:
-    if not path.is_file():
-        return ""
-    result_text = path.read_text(encoding="utf-8").strip()
-    if result_text == DRY_RUN_RESULT_TEXT.strip():
-        return ""
-    return _normalize_csv_text(result_text)
 
 
 def _render_optional_blocks(template: str, replacements: dict[str, str]) -> str:
@@ -199,7 +185,6 @@ def run(experiments_file: Path, dry: bool, model_override: str | None = None) ->
 
         client = OpenAI(base_url=OPENROUTER_BASE_URL, api_key=os.getenv("OPENROUTER_API_KEY"))
 
-    summary_rows: list[dict[str, str]] = []
     for experiment in experiments:
         template_path = template_by_rq[experiment.rq]
 
@@ -219,33 +204,11 @@ def run(experiments_file: Path, dry: bool, model_override: str | None = None) ->
             response_text = _call_llm(client, openrouter_model, prompt)
             result_file.write_text(response_text, encoding="utf-8")
 
-        summary_rows.append(
-            {
-                "experiment_id": experiment.experiment_id,
-                "policy_behavior": _normalize_csv_text(experiment.expected_behavior),
-                "llm_behavior": _read_result_text(result_file),
-            }
-        )
         print(f"{status}: {experiment.experiment_id}")
-
-    summary_path = results_dir / "summary.csv"
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    with summary_path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(
-            handle,
-            fieldnames=[
-                "experiment_id",
-                "policy_behavior",
-                "llm_behavior",
-            ],
-        )
-        writer.writeheader()
-        writer.writerows(summary_rows)
 
     print(f"Loaded experiments file: {experiments_file}")
     print(f"Experiments processed: {len(experiments)}")
     print(f"Prompt files: {prompts_dir}")
-    print(f"Summary file: {summary_path}")
     print(f"Result files: {results_dir}")
 
 

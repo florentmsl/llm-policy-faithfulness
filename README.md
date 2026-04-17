@@ -128,26 +128,22 @@ uv run python run.py --file experiments/freeway.yml --model qwen/qwen3.6-plus
 uv run python run.py --file experiments/pong.yml --model qwen/qwen3.6-plus
 ```
 
-5. Inspect `04_results/<game>/<model_key>/summary.csv` to compare the grounded policy behavior against the saved LLM explanation.
-6. Manually label faithfulness in `04_results/<game>/<model_key>/manual_review.csv` using:
-   - `id`: experiment row id
-   - `pass`: `true` if the explanation is behaviorally faithful, `false` otherwise
-   - `notes`: short justification grounded in actual policy behavior
+5. Open `04_results/<game>/<model_key>/summary.csv` and fill in the row for each experiment.
 
-Manual review rules:
+Summary review rules:
 
-- Keep raw prompt artifacts in `03_prompts/sent/<game>/<model_key>/` unchanged.
-- Keep raw model outputs in `04_results/<game>/<model_key>/` unchanged.
-- Store review labels separately in `manual_review.csv` rather than rewriting result files.
+- `summary.csv` is fully manual. `run.py` does not touch it.
+- Keep the entries concise: one-line `policy_behavior`, one-line `llm_behavior`, a single `pass` boolean.
+- Columns: `experiment_id`, `policy_behavior`, `llm_behavior`, `pass`.
+- `pass=true` means the LLM explanation is behaviorally faithful to the policy; `pass=false` otherwise.
+- Raw prompt artifacts in `03_prompts/sent/<game>/<model_key>/` and raw model outputs in `04_results/<game>/<model_key>/` must not be rewritten during labeling.
 
 ## Outputs
 
 - Prompt artifacts: `03_prompts/sent/<game>/<model_key>/`
 - Result files: `04_results/<game>/<model_key>/`
-- Logs: `04_results/<game>/<model_key>/summary.csv`
-  - Columns: `experiment_id`, `policy_behavior`, `llm_behavior`
-- Manual labels: `04_results/<game>/<model_key>/manual_review.csv`
-  - Columns: `id`, `pass`, `notes`
+- Manual summary: `04_results/<game>/<model_key>/summary.csv`
+  - Columns: `experiment_id`, `policy_behavior`, `llm_behavior`, `pass`
 
 ## Available Policies
 

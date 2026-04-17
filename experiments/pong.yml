@@ -12,7 +12,7 @@ experiments:
   - id: pg-q1-aligned-full-context
     rq: q1
     policy_file: 01_policies/scobots/pong/aligned.py
-    expected_behavior: Tracks the ball and moves the paddle to line up returns, with occasional no-op or fire-variant actions from the extracted controller.
+    expected_behavior: Tracks ball and moves paddle to return.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
     reward_file: 02_contexts/reward_functions/pong_jaxatari.py
@@ -20,35 +20,35 @@ experiments:
   - id: pg-q1-ignore-ball-full-context
     rq: q1
     policy_file: 01_policies/scobots/pong/ignore_ball.py
-    expected_behavior: Largely ignores the ball, mostly drifting in one direction and firing instead of reliably tracking incoming shots.
+    expected_behavior: Does not track ball; drifts and fires.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
 
   - id: pg-q2-aligned-full-context
     rq: q2
     policy_file: 01_policies/scobots/pong/aligned.py
-    expected_behavior: Tracks the ball and moves the paddle to line up returns, with occasional no-op or fire-variant actions from the extracted controller.
+    expected_behavior: Tracks ball and moves paddle to return.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
 
   - id: pg-q2-ignore-ball-no-reward
     rq: q2
     policy_file: 01_policies/scobots/pong/ignore_ball.py
-    expected_behavior: Largely ignores the ball, mostly drifting in one direction and firing instead of reliably tracking incoming shots.
+    expected_behavior: Does not track ball; drifts and fires.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
 
   - id: pg-q3-ignore-ball-full-context
     rq: q3
     policy_file: 01_policies/scobots/pong/ignore_ball.py
-    expected_behavior: Largely ignores the ball, mostly drifting in one direction and firing instead of reliably tracking incoming shots.
+    expected_behavior: Does not track ball; drifts and fires.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
 
   - id: pg-q4-aligned-slow-ball
     rq: q4
     policy_file: 01_policies/scobots/pong/aligned.py
-    expected_behavior: Policy likely degrades. Branches depending on ball velocity were fit to the original speed; at 35% slower speed the learned thresholds can fire at the wrong time and the paddle may not align reliably, even though the task is easier for a human. Rollout verification needed.
+    expected_behavior: Tracks ball; slower ball makes returns easier.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
     simplification_file: 02_contexts/simplifications/pong_slow_ball.txt
@@ -56,7 +56,7 @@ experiments:
   - id: pg-q4-aligned-lazy-enemy
     rq: q4
     policy_file: 01_policies/scobots/pong/aligned.py
-    expected_behavior: Policy likely degrades. The aligned tree's branches use opponent-position and distance features; with the opponent frozen during the player's return phase those features stop varying as during training, so the learned thresholds can misfire. Rollout verification needed.
+    expected_behavior: Tracks ball; lazy opponent makes scoring easier.
     env_file: 02_contexts/pong/environment.txt
     task_file: 02_contexts/pong/task.txt
     simplification_file: 02_contexts/simplifications/pong_lazy_enemy.txt
