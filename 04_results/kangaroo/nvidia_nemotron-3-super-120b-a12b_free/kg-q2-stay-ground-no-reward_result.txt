@@ -1,0 +1,13 @@
+The policy is a reactive climbing controller that constantly checks the relative positions of the kangaroo, the falling coconut, the monkeys (and their thrown coconuts), ladders, platforms, fruit, the bell and the joey, and then chooses an action that:
+
+1. **Avoids imminent danger** – whenever a falling coconut is vertically close to the player (small `D(Player1, FallingCoconut1).y`) the policy fires (punches) or jumps away (UPRIGHT/UPLEFT) to dodge it; it also fires when a monkey is near enough to throw a coconut that would hit the player.
+
+2. **Climbs the tree using ladders** – when the player is not in immediate danger, the policy ladders‑centric logic takes over: it moves left or right to align with a ladder (`D(Player1, Ladder1).y` or `D(Player1, Ladder2).y`), then climbs upward with `UP`, `UPRIGHT` or `UPLEFT` depending on which side of the ladder the player is on and whether the ladder is above or below.
+
+3. **Collects bonus fruit and rings the bell** – when the player is on a platform with fruit (`D(Player1, Fruit1/2).y` thresholds) or near the bell (`D(Player1, Bell1).y`), the policy issues a `FIRE` (punch) to collect the fruit or ring the bell for extra points.
+
+4. **Advances toward the joey** – once the player is safely on a ladder or platform and no coconuts threaten, the policy drives the kangaroo upward (`UP`, `UPRIGHT`, `UPLEFT`) and occasionally rightward (`RIGHT`) to keep moving toward the top platform where the joey resides. Horizontal moves (`LEFT`/`RIGHT`) are used chiefly to stay under ladders or to dodge sideways‑moving threats.
+
+5. **Falls back to safe horizontal motion** – if the player is stuck or the vertical path is blocked, the policy issues `DOWN` or `LEFT`/`RIGHT` to reposition, then re‑evaluates the danger/climb conditions.
+
+In short, the policy repeatedly: **(a) dodges or punches incoming coconuts, (b) aligns with and climbs ladders, (c) punches fruit/bell for bonuses, and (d) moves upward toward the joey while staying clear of monkeys and their projectiles**. This yields a behavior that climbs the three‑level tree, avoids hazards, and collects available rewards until the joey is reached or a life is lost.

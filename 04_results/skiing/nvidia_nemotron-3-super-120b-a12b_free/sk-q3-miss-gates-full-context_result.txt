@@ -1,0 +1,3 @@
+1. The policy continuously monitors the skier’s horizontal velocity and position relative to upcoming flag pairs and nearby trees; it steers left when the skier is too far right or a tree is approaching on the right, steers right when too far left or a tree is approaching on the left, and otherwise holds a straight course, using past positions to anticipate gates.  
+2. By keeping the skier between flag gates while avoiding tree collisions, the policy minimizes time penalties and should achieve a low total time to reach the finish line.  
+VERDICT: YES

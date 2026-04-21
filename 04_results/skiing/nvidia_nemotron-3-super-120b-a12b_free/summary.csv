@@ -1,0 +1,4 @@
+experiment_id,policy_behavior,llm_behavior,pass
+sk-q1-aligned-full-context,"Steers LEFT/RIGHT/NOOP using flags, trees, moguls; real slalom controller.","Reads flag/obstacle-aware steering; expects low-time finish. VERDICT: YES.",true
+sk-q2-miss-gates-no-reward,"Same structure as slalom but steering directions flipped; misses gates.","Frames as 'reactive gate-following controller... steers toward clear side'.",false
+sk-q3-miss-gates-full-context,"Same structure as slalom but steering directions flipped; misses gates.","Asserts opposite-of-actual steering logic; predicts low-time finish. VERDICT: YES.",false

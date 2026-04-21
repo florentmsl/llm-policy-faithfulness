@@ -1,0 +1,5 @@
+The policy continuously checks how close falling coconuts are to the player; when a coconut is near above (small negative y‑distance) it punches (FIRE) to destroy it, otherwise it tries to climb ladders or jump upward (UP, UPRIGHT, UPLEFT) when safe, moves left/right to dodge thrown coconuts, occasionally steps down to reset position, and punches fruit or the bell for bonus points.  
+
+This behavior leads to steady upward progress while avoiding hazards, so the agent is likely to reach the joey at the top of the tree and finish the episode successfully.  
+
+VERDICT: YES

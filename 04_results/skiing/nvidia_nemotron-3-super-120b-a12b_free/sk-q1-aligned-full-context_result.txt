@@ -1,0 +1,5 @@
+The policy steers the skier left when its horizontal velocity is zero or negative, using the positions of upcoming flags, trees and moguls to decide whether to turn left or hold course; when the skier’s horizontal velocity is positive (moving right), it analogously steers right or holds course based on the same kinds of feature checks. In effect, it follows a rule‑based heuristic that turns toward the next gate while avoiding nearby trees, otherwise going straight.
+
+Given that the policy directly references gate and obstacle positions to choose LEFT, RIGHT, or NOOP, it is likely to pass between flags and avoid collisions, thereby accumulating gate bonuses and finishing the run with a low time penalty.
+
+VERDICT: YES

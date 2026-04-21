@@ -1,0 +1,1 @@
+Ski to the finish line as quickly as possible, steering between each pair of flags and avoiding trees.

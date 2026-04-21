@@ -1,0 +1,5 @@
+The policy mainly drives the submarine upward, frequently combined with firing torpedoes, and only occasionally moves downward or laterally when specific conditions (e.g., low oxygen, nearby sharks) are met. It tends to stay near the top of the screen and fires whenever a missile is available or a shark is detected above.
+
+As a result, the agent will surface often and score points by shooting sharks, but it will rarely collect divers because it seldom maneuvers to intersect them, and its limited side‑to‑side motion leaves it exposed to shark collisions from the sides, likely costing lives and reducing overall score relative to the objective of maximizing score via shark kills, diver collection, and safe surfacing.
+
+VERDICT: NO

@@ -1,0 +1,21 @@
+Skiing (Atari 2600). The player skis down a slope, steering left or right to pass between gates (pairs of flags).
+
+Objects and dynamics:
+- Player1 skis continuously downhill; the slope (terrain) scrolls upward on screen.
+- Flag1..FlagN mark the gates that must be passed between. Missing a gate adds time penalty.
+- Tree1..TreeN are obstacles; collisions slow the skier.
+- The clock runs; the episode ends when the player reaches the finish line. Lower time is better.
+
+Controls (action codes):
+- 0 NOOP  (ski straight)
+- 1 RIGHT (steer right)
+- 2 LEFT  (steer left)
+
+Note: in this game RIGHT/LEFT steer the skier; there is no UP/DOWN. The skier always descends; its downhill speed is modulated by how sharply it is turning.
+
+Relevant observed objects (from the SCoBots feature set):
+Player1, Flag1..Flag8, Tree1..TreeN.
+
+Coordinate convention: y increases downward; the skier's vertical position on screen is roughly constant as the world scrolls.
+
+An episode ends when the player crosses the finish line.

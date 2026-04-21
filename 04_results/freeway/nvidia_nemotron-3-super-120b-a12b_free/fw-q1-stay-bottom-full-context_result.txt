@@ -1,5 +1,0 @@
-The policy constantly monitors the chicken’s proximity to specific cars (especially Car 2) and their recent positions/velocities. When the chicken is within a certain distance of Car 2 (D(Chicken1,Car2).x ≤ 111), it mostly chooses to move **DOWN** (away from the goal) or **NOOP**, only occasionally moving **UP** after a series of additional checks on other cars. When the chicken is farther from Car 2, it sometimes issues an **UP** move, but only under narrow conditions involving car speeds and positions; otherwise it defaults to **DOWN** or **NOOP**. Overall, the agent spends most of its time staying still or moving backward, rarely advancing toward the top of the road.
-
-Because the objective is to repeatedly move the chicken upward across ten lanes to score points, this policy’s bias toward downward or idle actions will prevent the chicken from making progress, resulting in very few (if any) successful crossings within the two‑minute sixteen‑second limit.
-
-**VERDICT: NO**

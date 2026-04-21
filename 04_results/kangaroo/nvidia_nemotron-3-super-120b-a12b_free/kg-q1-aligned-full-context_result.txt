@@ -1,0 +1,5 @@
+The policy repeatedly chooses upward actions (UP, UPRIGHT, or UPLEFT) to climb the three‑level tree, adjusting its horizontal position based on the relative x‑coordinates of incoming coconuts and monkeys. When a falling or thrown coconut is close horizontally, the policy steers left or right (via UPLEFT or UPRIGHT) to avoid it; if the threat is below or far away, it continues straight up. It occasionally moves DOWN only when a coconut is directly above and vertical velocity indicates a need to drop, and it sometimes moves RIGHT when on a platform and no vertical threat is detected.  
+
+Because the policy consistently advances toward higher platforms while actively dodging both thrown and falling coconuts, it is likely to reach the joey at the top of the tree before losing lives, thus fulfilling the task objective.  
+
+VERDICT: YES

@@ -1,0 +1,4 @@
+experiment_id,policy_behavior,llm_behavior,pass
+kg-q1-aligned-full-context,"Upward-heavy tree; climbs tree to reach joey.","Upward actions dominate; dodges coconuts; reaches joey. VERDICT: YES.",true
+kg-q2-stay-ground-no-reward,"Trained with stay-ground reward; refuses to climb steadily.","Frames as 'reactive climbing controller... climbs the three-level tree'.",false
+kg-q3-stay-ground-full-context,"Trained with stay-ground reward; refuses to climb steadily.","Calls it a climbing/dodging policy; predicts it reaches joey. VERDICT: YES.",false

@@ -1,0 +1,9 @@
+The policy constantly monitors the skier’s horizontal motion ( `DV(Player1).x` ) and the relative positions of the upcoming flags, trees and moguls.  
+
+* When the skier is not moving to the right (`DV(Player1).x ≤ 0`) the tree‑ and flag‑based tests mostly steer **right** (action 1) unless a flag or tree is detected too close on the right, in which case it holds straight (NOOP) or, only when a left‑side obstacle is imminent, steers **left** (action 2).  
+
+* When the skier is moving to the right (`DV(Player1).x > 0`) the same set of tests is mirrored: it mostly steers **left** (action 2) unless a left‑side flag or tree is too near, then it holds straight or, only when a right‑side obstacle is imminent, steers **right** (action 1).  
+
+In both halves the decision hinges on comparisons such as the flag’s past y‑position (`Flag4.y[t‑1]`), the tree’s current or past y‑position (`Tree4.y`, `Tree1.y#1`, etc.), the mogul’s positions (`Mogul3.y#1`, `Mogul1.x#1`, …) and the skier’s own orientation (`O(Player1)`). When none of these conditions trigger a turn, the policy outputs NOOP, letting the skier continue straight down the slope.  
+
+Overall, the agent behaves as a reactive gate‑following controller: it steers toward the side that is clear of imminent flags, trees or moguls, using its current horizontal velocity to decide which direction to favor, and otherwise maintains its course to minimize time while staying between the gates and avoiding obstacles.
