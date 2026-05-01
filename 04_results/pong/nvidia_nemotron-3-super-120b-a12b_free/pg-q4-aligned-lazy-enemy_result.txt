@@ -1,0 +1,12 @@
+**Baseline behavior (original Pong with an active opponent)**  
+The policy acts as a vertical‑tracking controller.  
+- When the ball is on the player’s side of the screen, the agent repeatedly checks the vertical distance `D(Player1,Ball1).y` (and related predicates) and issues **LEFT** or **RIGHT** actions that move the paddle up or down so that the paddle’s y‑position stays close to the ball’s y‑position.  
+- If the ball is far away or the paddle is already aligned, the agent mostly emits **NOOP** (0) or occasionally presses the **FIRE** button (1) to serve the ball after a point has been scored.  
+- The combination **RIGHTFIRE** (4) or **LEFTFIRE** (5) is used only when the agent needs to serve while also moving the paddle to a favorable vertical offset.  
+Overall, the agent continuously tracks the ball, returns it reliably, and only uses the button to put the ball back into play after scoring.
+
+**Behavior in the simplified environment (lazy opponent when the ball is on the player’s side)**  
+Because the opponent paddle stops moving as soon as the ball crosses to the player’s half, the agent can afford to be less precise and more aggressive:  
+- The same vertical‑tracking logic still runs, so the agent will still move the paddle toward the ball when it is nearby.  
+- However, since the opponent will not attempt to return the ball, the policy’s occasional **LEFT/RIGHT** movements (or the combined **FIRE** actions) are more likely to send the ball past the stationary opponent, producing a higher scoring rate.  
+- The agent still uses **NOOP** when the ball is far or already aligned, and still presses **FIRE** to serve after each point, but the overall result is more frequent successful returns and fewer missed hits compared with the baseline.

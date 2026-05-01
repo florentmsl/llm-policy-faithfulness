@@ -1,1 +1,1 @@
-Simplification: all cars are completely immobilized (no horizontal movement). The chicken can cross the road without needing to time gaps in traffic.
+Simplification: use the HackAtari `stop_all_cars_tunnel` modification. The cars are stopped and arranged into a static tunnel-like traffic layout. The symbolic policy is unchanged; only the environment dynamics/conditions change.

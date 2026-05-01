@@ -155,6 +155,9 @@ def _call_llm(client, model: str, prompt: str) -> str:
         messages=[{"role": "user", "content": prompt}],
         temperature=0,
     )
+    if not response.choices:
+        dump = response.model_dump_json(indent=2) if hasattr(response, "model_dump_json") else repr(response)
+        raise RuntimeError(f"LLM response did not contain choices: {dump}")
     return response.choices[0].message.content or ""
 
 
@@ -200,9 +203,13 @@ def run(experiments_file: Path, dry: bool, model_override: str | None = None) ->
             status = "dry"
             result_file.write_text(DRY_RUN_RESULT_TEXT, encoding="utf-8")
         else:
-            status = "done"
-            response_text = _call_llm(client, openrouter_model, prompt)
-            result_file.write_text(response_text, encoding="utf-8")
+            try:
+                response_text = _call_llm(client, openrouter_model, prompt)
+            except Exception as exc:
+                status = f"failed: {type(exc).__name__}: {exc}"
+            else:
+                status = "done"
+                result_file.write_text(response_text, encoding="utf-8")
 
         print(f"{status}: {experiment.experiment_id}")
 

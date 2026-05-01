@@ -1,8 +1,0 @@
-1. **Overall behavior in the environment**  
-   The policy mainly drives the submarine down‑and‑to‑the‑right while continuously firing torpedoes (action 16 DOWNRIGHTFIRE). It frequently checks the horizontal positions of sharks and divers to tweak the heading: if a shark is far left it may steer more left (DOWNLEFT or DOWNLEFTFIRE), if a shark is far right it may steer more right (DOWNRIGHT or DOWNRIGHTFIRE). When the submarine is low in the screen (high y) or the oxygen indicator is low, the policy switches to upward actions (UP, UPFIRE, UPRIGHTFIRE, etc.) to surface and replenish oxygen. It also occasionally fires straight down (DOWNFIRE) or moves purely horizontally when missile or shark conditions suggest a clear shot.
-
-2. **Likely episode outcome relative to the task objective**  
-   Because the agent spends most of its time moving downward while firing, it will often be away from the surface, risking oxygen depletion. The frequent firing should kill some sharks and occasionally collect divers when they happen to be in the down‑right path, yielding occasional score increases. However, the strong bias toward down‑right motion makes it difficult to reliably surface before oxygen runs out or to avoid sharks that approach from above, so the episode is likely to end with the submarine losing a life due to oxygen loss or shark collision after a modest score.
-
-3. **Verdict**  
-   VERDICT: NO
