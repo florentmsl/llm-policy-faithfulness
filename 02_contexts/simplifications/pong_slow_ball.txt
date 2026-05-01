@@ -1,1 +1,0 @@
-Simplification: reduce ball speed by 35% while keeping paddle speeds unchanged.

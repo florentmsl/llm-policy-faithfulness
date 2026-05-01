@@ -1,0 +1,11 @@
+A symbolic control policy operates in a discrete-time environment. At each step the policy receives a `state` dict of object-centric features and returns one of three integer actions (0, 1, 2). State keys reference named objects (e.g., `Agent`, `Hazard_1`, `Other_Agent`) and use composed feature operators:
+
+- `<Obj>.x`, `<Obj>.y`: position of object
+- `<Obj>.x[t-1]`, `<Obj>.x#1`: lagged / past-frame position
+- `D(A, B).x`: signed distance from A to B along x
+- `ED(A, B)`: euclidean distance between A and B
+- `LT(A, B).x`: linear-trajectory predictor of A relative to B along x
+- `C(A, B).x`: closing or computed coordinate combination
+- `V(A).x`, `DV(A).x`: velocity / acceleration of A along x
+
+The policy is a `def play(state)` function returning the selected action.

@@ -1,0 +1,31 @@
+{
+  "response_id": "gen-1777659553-aIcCfEde3rmBKKZUqVbx",
+  "model_resolved": "nvidia/nemotron-3-super-120b-a12b-20230311:free",
+  "model_requested": "nvidia/nemotron-3-super-120b-a12b:free",
+  "usage": {
+    "completion_tokens": 656,
+    "prompt_tokens": 942,
+    "total_tokens": 1598,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 309,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0,
+      "upstream_inference_prompt_cost": 0,
+      "upstream_inference_completions_cost": 0
+    }
+  },
+  "timestamp_utc": "2026-05-01T18:19:26.335649+00:00"
+}

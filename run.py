@@ -1,4 +1,6 @@
 import argparse
+import datetime as _dt
+import json
 import os
 import re
 from dataclasses import dataclass
@@ -149,7 +151,7 @@ def _build_prompt(experiment: Experiment, template_path: str) -> str:
     return _normalize_prompt(prompt)
 
 
-def _call_llm(client, model: str, prompt: str) -> str:
+def _call_llm(client, model: str, prompt: str) -> tuple[str, dict]:
     response = client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": prompt}],
@@ -158,7 +160,15 @@ def _call_llm(client, model: str, prompt: str) -> str:
     if not response.choices:
         dump = response.model_dump_json(indent=2) if hasattr(response, "model_dump_json") else repr(response)
         raise RuntimeError(f"LLM response did not contain choices: {dump}")
-    return response.choices[0].message.content or ""
+    text = response.choices[0].message.content or ""
+    metadata = {
+        "response_id": getattr(response, "id", None),
+        "model_resolved": getattr(response, "model", None),
+        "model_requested": model,
+        "usage": response.usage.model_dump() if getattr(response, "usage", None) else None,
+        "timestamp_utc": _dt.datetime.now(_dt.timezone.utc).isoformat(),
+    }
+    return text, metadata
 
 
 def _can_overwrite_result(result_file: Path) -> bool:
@@ -204,12 +214,14 @@ def run(experiments_file: Path, dry: bool, model_override: str | None = None) ->
             result_file.write_text(DRY_RUN_RESULT_TEXT, encoding="utf-8")
         else:
             try:
-                response_text = _call_llm(client, openrouter_model, prompt)
+                response_text, response_meta = _call_llm(client, openrouter_model, prompt)
             except Exception as exc:
                 status = f"failed: {type(exc).__name__}: {exc}"
             else:
                 status = "done"
                 result_file.write_text(response_text, encoding="utf-8")
+                meta_file = results_dir / f"{experiment.experiment_id}_meta.json"
+                meta_file.write_text(json.dumps(response_meta, indent=2) + "\n", encoding="utf-8")
 
         print(f"{status}: {experiment.experiment_id}")
 

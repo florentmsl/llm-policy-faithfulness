@@ -1,0 +1,65 @@
+**Policy summary (grounded in the code)**  
+
+The policy is a decision‑tree that looks at the signed x‑distance from the Agent to **Hazard 2** and then, depending on that distance, examines a handful of other hazard features (positions, lagged positions, velocities) to pick one of three actions {0, 1, 2}.
+
+---
+
+### 1. When the Agent is **close to Hazard 2**  
+`state['D(Agent, Hazard_2).x'] <= 111`
+
+| Sub‑condition (checked in order) | Action taken | Why (code reference) |
+|----------------------------------|--------------|----------------------|
+| `Hazard_3.x <= 146` **and** `Hazard_9.x[t-1] <= 156` **and** `Hazard_6.x[t-1] <= 154` | **2** | first three nested `if`s → `return 2` |
+| `Hazard_3.x <= 146` **and** `Hazard_9.x[t-1] <= 156` **and** `Hazard_6.x[t-1] > 154` **and** `Hazard_9.x <= 98` | **2** | else‑branch of the `Hazard_6` test → `return 2` |
+| `Hazard_3.x <= 146` **and** `Hazard_9.x[t-1] <= 156` **and** `Hazard_6.x[t-1] > 154` **and** `Hazard_9.x > 98` **and** `Hazard_1.x[t-1] <= 109` | **2** | else‑branch of the `Hazard_9.x` test → `return 2` |
+| `Hazard_3.x <= 146` **and** `Hazard_9.x[t-1] <= 156` **and** `Hazard_6.x[t-1] > 154` **and** `Hazard_9.x > 98` **and** `Hazard_1.x[t-1] > 109` **and** `D(Agent, Hazard_3).x <= 32` | **2** | else‑branch of the `Hazard_1.x[t-1]` test → `return 2` |
+| `Hazard_3.x <= 146` **and** `Hazard_9.x[t-1] <= 156` **and** `Hazard_6.x[t-1] > 154` **and** `Hazard_9.x > 98` **and** `Hazard_1.x[t-1] > 109` **and** `D(Agent, Hazard_3).x > 32` | **0** | final `else` → `return 0` |
+| `Hazard_3.x <= 146` **and** `Hazard_9.x[t-1] > 156` **and** `Hazard_1.x#1 <= 109` | **2** | else‑branch of the `Hazard_9.x[t-1]` test → `return 2` |
+| `Hazard_3.x <= 146` **and** `Hazard_9.x[t-1] > 156` **and** `Hazard_1.x#1 > 109` **and** `V(Hazard_3).x <= 1` | **2** | else‑branch of the `Hazard_1.x#1` test → `return 2` |
+| `Hazard_3.x <= 146` **and** `Hazard_9.x[t-1] > 156` **and** `Hazard_1.x#1 > 109` **and** `V(Hazard_3).x > 1` | **0** | final `else` → `return 0` |
+| `Hazard_3.x > 146` **and** `Hazard_9.x#1 <= 118` **and** `Hazard_10.x[t-1] <= -2` **and** `D(Agent, Hazard_2).x <= 52` | **2** | nested `if`s → `return 2` |
+| `Hazard_3.x > 146` **and** `Hazard_9.x#1 <= 118` **and** `Hazard_10.x[t-1] <= -2` **and** `D(Agent, Hazard_2).x > 52` | **0** | else‑branch of the `D(Agent, Hazard_2).x` test → `return 0` |
+| `Hazard_3.x > 146` **and** `Hazard_9.x#1 <= 118` **and** `Hazard_10.x[t-1] > -2` | **2** | else‑branch of the `Hazard_10.x[t-1]` test → `return 2` |
+| `Hazard_3.x > 146` **and** `Hazard_9.x#1 > 118` **and** `Hazard_1.x[t-1] <= 74` | **2** | else‑branch of the `Hazard_9.x#1` test → `return 2` |
+| `Hazard_3.x > 146` **and** `Hazard_9.x#1 > 118` **and** `Hazard_1.x[t-1] > 74` **and** `Hazard_10.x#1 <= 17` **and** `Hazard_10.x[t-1] <= -1` | **0** | nested `if`s → `return 0` |
+| `Hazard_3.x > 146` **and** `Hazard_9.x#1 > 118` **and** `Hazard_1.x[t-1] > 74` **and** `Hazard_10.x#1 <= 17` **and** `Hazard_10.x[t-1] > -1` | **2** | else‑branch of the `Hazard_10.x[t-1]` test → `return 2` |
+| `Hazard_3.x > 146` **and** `Hazard_9.x#1 > 118` **and** `Hazard_1.x[t-1] > 74` **and** `Hazard_10.x#1 > 17` | **0** | final `else` → `return 0` |
+
+**Interpretation (close to Hazard 2):**  
+*Most branches return action 2.* Action 0 appears only when a combination of hazards is “far enough” or moving slowly enough to make the Agent safe to stop/turn left (e.g., Hazard 3 is close to the Agent, Hazard 1’s recent position is high, or Hazard 10’s recent position is negative while Hazard 2 is still relatively near).
+
+---
+
+### 2. When the Agent is **far from Hazard 2**  
+`state['D(Agent, Hazard_2).x'] > 111`
+
+| Sub‑condition (checked in order) | Action taken | Why (code reference) |
+|----------------------------------|--------------|----------------------|
+| `V(Hazard_1).x <= 59` **and** `Hazard_3.x <= 129` | **0** | first two `if`s → `return 0` |
+| `V(Hazard_1).x <= 59` **and** `Hazard_3.x > 129` **and** `Hazard_10.x#1 <= 110` | **1** | else‑branch of the `Hazard_3.x` test → `return 1` |
+| `V(Hazard_1).x <= 59` **and** `Hazard_3.x > 129` **and** `Hazard_10.x#1 > 110` | **0** | final `else` → `return 0` |
+| `V(Hazard_1).x > 59` **and** `Hazard_8.x[t-1] <= 77` **and** `Hazard_8.x#1 <= 25` | **1** | nested `if`s → `return 1` |
+| `V(Hazard_1).x > 59` **and** `Hazard_8.x[t-1] <= 77` **and** `Hazard_8.x#1 > 25` | **0** | else‑branch of the `Hazard_8.x#1` test → `return 0` |
+| `V(Hazard_1).x > 59` **and** `Hazard_8.x[t-1] > 77` | **2** | final `else` → `return 2` |
+
+**Interpretation (far from Hazard 2):**  
+*If Hazard 1 is slow (≤ 59):*  
+- When Hazard 3 is left‑of‑center (`x ≤ 129`) the policy chooses action 0.  
+- When Hazard 3 is farther right (`x > 129`) it looks at Hazard 10’s lagged position; if that lag is not too large (`≤ 110`) it picks action 1, otherwise action 0.  
+
+*If Hazard 1 is fast (> 59):*  
+- When Hazard 8’s recent position is not too far right (`x[t-1] ≤ 77`) and its lagged position is modest (`x#1 ≤ 25`) the policy chooses action 1.  
+- If Hazard 8’s lagged position is larger (`x#1 > 25`) it chooses action 0.  
+- If Hazard 8 is far right (`x[t-1] > 77`) the policy defaults to action 2.
+
+---
+
+### Overall behavior  
+
+- **Action 2** is the default “move‑forward / keep‑going” choice; it is returned in the majority of branches, especially when the Agent is near Hazard 2 or when certain hazards are within specific positional/velocity thresholds.  
+- **Action 0** (interpreted as a stopping/left‑turn‑like move) appears when hazards are sufficiently distant or moving slowly enough that the Agent can safely halt or turn left (e.g., Hazard 3 close to the Agent, Hazard 1’s recent position high, Hazard 10’s recent position negative, or Hazard 8 far right while Hazard 1 is fast).  
+- **Action 1** (interpreted as a right‑turn‑like move) is only selected in two narrow regimes:  
+  1. Agent far from Hazard 2, Hazard 1 slow, Hazard 3 to the right, and Hazard 10’s lag modest.  
+  2. Agent far from Hazard 2, Hazard 1 fast, Hazard 8 moderately right‑but‑not‑too‑far, and its lag small.  
+
+Thus the policy steers the Agent primarily forward (action 2), switching to a stop/left (action 0) when nearby hazards suggest danger, and only occasionally opting for a right turn (action 1) under very specific combinations of hazard positions and velocities.

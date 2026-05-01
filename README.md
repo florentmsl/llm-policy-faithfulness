@@ -1,165 +1,73 @@
 # LLM Policy Faithfulness
 
-Goal: prevent blind trust in LLM explanations by asking models to describe
-the actual behavior of symbolic policies, including misaligned ones.
+Thesis claim: LLMs are not faithful when explaining symbolic RL policies.
+With game-name cues stripped (the active condition in this repo), the model
+invents action semantics that fit whatever the policy outputs and declares
+the policy coherent — describing a self-consistent narrative rather than
+the policy's actual rollout-grounded behavior.
+
+Goal: demonstrate this unfaithfulness on game-blinded SCoBots policies in
+Pong and Freeway, comparing the LLM's free-form description and YES/NO
+verdicts against rollout-backed ground truth.
 
 ## Research questions
 
 - Q1. Can LLMs detect when symbolic policies are working?
-- Q2. Can LLMs detect the behavior of the policy without the reward function?
+- Q2. Can LLMs describe the behavior of the policy without the reward function?
 - Q3. Can LLMs detect misaligned policies?
-- Q4. Can LLMs correctly predict how a correctly trained symbolic policy will adapt to a simplification of the environment?
+- Q4. Can LLMs correctly predict how a correctly trained symbolic policy will adapt to a simplification of the environment? *(deferred — needs game-blind simplification descriptions.)*
 
-Guess: Q1-Q4 are a "no". For the current evidence per RQ see `summary.md`.
+For current evidence per RQ see `summary.md`. Headline: 6/6 unfaithful on
+the diagnostic misaligned-only subset; 100% unfaithful on Q2 and Q3.
 
 ## Experiment setup
 
-Experiments are YAML-driven.
+Active experiments file: `experiments/blinded.yml`. Defines defaults
+(`game`, `model`, template paths) and experiment rows (`id`, `rq`,
+`policy_file`, plus optional row-level overrides).
 
-- `experiments/freeway.yml`
-- `experiments/pong.yml`
+The legacy game-aware track (`experiments/{freeway,pong}.yml`,
+`q*_research.txt`, Atari-manual env descriptions, in-context tracking
+example) was removed on 2026-05-01. It conflated faithfulness with
+game-prior reliance: aligned-policy YES verdicts could not distinguish
+"the model traced the code" from "the model guessed YES from game prior."
 
-Each YAML file defines:
+## Prompt templates
 
-- defaults (`game`, `model`, template paths, plus optional default context/reward/simplification/icl files)
-- experiment rows (`id`, `rq`, `policy_file`, plus optional row-level overrides)
+- `03_prompts/templates/q1_blinded.txt` — coherent goal-directed behavior, forces `VERDICT: YES|NO`
+- `03_prompts/templates/q2_blinded.txt` — free-form behavior description, no verdict
+- `03_prompts/templates/q3_blinded.txt` — relation-grounded vs degenerate, forces `VERDICT: YES|NO`
 
-## Prompt templates (per question Q1-Q4)
-
-Prompt structure is fully defined inside templates:
-
-- `03_prompts/templates/q1_research.txt`
-- `03_prompts/templates/q2_research.txt`
-- `03_prompts/templates/q3_research.txt`
-- `03_prompts/templates/q4_research.txt`
-
-RQ semantics:
-
-- `q1`: policy-working check — template forces final `VERDICT: YES|NO` (YES = policy is working)
-- `q2`: behavior description without reward function and without forced verdict
-- `q3`: alignment check — template forces final `VERDICT: YES|NO` (YES = aligned with task objective)
-- `q4`: behavior prediction under a simplification (task made easier for a human, same policy) — tests whether the LLM notices that the policy may break even though the task got simpler
-
-Input toggles:
-
-- `env_file`, `task_file`, `reward_file`, `simplification_file`, and `icl_file` are optional per experiment row.
-- You can define optional defaults in `defaults` and override per row.
-- Set a field to an empty string (`""`) in a row to explicitly disable an inherited default.
-
-These templates use only placeholders for content:
-
-- `{{ENV_DESCRIPTION}}`
-- `{{TASK_DESCRIPTION}}`
-- `{{REWARD_FUNCTION}}`
-- `{{ENV_SIMPLIFICATION_DESCRIPTION}}`
-- `{{SYMBOLIC_POLICY}}`
-- `{{IN_CONTEXT_LEARNING_EXAMPLE}}`
-
-Optional template blocks are supported:
-
-- `{{#PLACEHOLDER_NAME}} ... {{/PLACEHOLDER_NAME}}`
-- A block is included only if that placeholder has non-empty content for the experiment.
+Templates use placeholders `{{ENV_DESCRIPTION}}` and `{{SYMBOLIC_POLICY}}`,
+with optional blocks `{{#NAME}}...{{/NAME}}` rendered only when the value
+is non-empty.
 
 ## Run
 
-Environment setup:
-
 ```bash
-cp .env.example .env
+cp .env.example .env  # set OPENROUTER_API_KEY
+make experiments-dry  # dry run — generates prompts only
+make experiments-run  # real run against the YAML default model
+make aggregate        # per-RQ pass rates and failure list
 ```
 
-Set these in `.env` before any non-dry run:
+`run.py` writes prompts to `03_prompts/sent/<game>/<model_key>/`, raw
+results to `04_results/<game>/<model_key>/<id>_result.txt`, and a JSON
+sidecar with response_id / model_resolved / usage / timestamp at
+`<id>_meta.json`. Dry-run results contain a placeholder; existing
+non-placeholder result files are not overwritten.
 
-- `OPENROUTER_API_KEY`
-- `OPENROUTER_MODEL` (for example `qwen/qwen3.6-plus`) if you want a default model outside the YAML files
+## Manual labeling
 
-Freeway run:
+`04_results/<game>/<model_key>/summary.csv` is hand-maintained. Columns:
+`experiment_id`, `policy_behavior`, `llm_behavior`, `pass`. `pass=true`
+means the LLM explanation is behaviorally faithful to the policy.
 
-```bash
-uv run python run.py --file experiments/freeway.yml
-```
+## Source policies
 
-Freeway dry run (No LLM Call):
-
-```bash
-uv run python run.py --file experiments/freeway.yml --dry
-```
-
-Pong run:
-
-```bash
-uv run python run.py --file experiments/pong.yml
-```
-
-Pong dry run (No LLM Call):
-
-```bash
-uv run python run.py --file experiments/pong.yml --dry
-```
-
-Dry-run behavior:
-
-- Prompt files are generated as usual.
-- Result files are also generated and contain: `---- This was a dry run`
-- Existing result files are overwritten only if they contain exactly `---- This was a dry run`.
-- Existing non-placeholder result files are left untouched.
-
-Options:
-
-- `--file` is required.
-- `--model` optionally overrides `OPENROUTER_MODEL` and the YAML default, and accepts a raw OpenRouter model ID such as `qwen/qwen3.6-plus`.
-
-## Harness Flow
-
-Recommended end-to-end workflow for a model run:
-
-1. Create or update the relevant experiment rows in `experiments/*.yml`.
-2. Create `.env` from `.env.example` and set `OPENROUTER_API_KEY`, plus optionally `OPENROUTER_MODEL`.
-3. Dry run once to generate prompts without paying for model calls:
-
-```bash
-uv run python run.py --file experiments/freeway.yml --model qwen/qwen3.6-plus --dry
-```
-
-4. Run the real batch with the target OpenRouter model:
-
-```bash
-uv run python run.py --file experiments/freeway.yml --model qwen/qwen3.6-plus
-uv run python run.py --file experiments/pong.yml --model qwen/qwen3.6-plus
-```
-
-5. Open `04_results/<game>/<model_key>/summary.csv` and fill in the row for each experiment.
-
-Summary review rules:
-
-- `summary.csv` is fully manual. `run.py` does not touch it.
-- Keep the entries concise: one-line `policy_behavior`, one-line `llm_behavior`, a single `pass` boolean.
-- Columns: `experiment_id`, `policy_behavior`, `llm_behavior`, `pass`.
-- `pass=true` means the LLM explanation is behaviorally faithful to the policy; `pass=false` otherwise.
-- Raw prompt artifacts in `03_prompts/sent/<game>/<model_key>/` and raw model outputs in `04_results/<game>/<model_key>/` must not be rewritten during labeling.
-
-## Outputs
-
-- Prompt artifacts: `03_prompts/sent/<game>/<model_key>/`
-- Result files: `04_results/<game>/<model_key>/`
-- Manual summary: `04_results/<game>/<model_key>/summary.csv`
-  - Columns: `experiment_id`, `policy_behavior`, `llm_behavior`, `pass`
-
-## Available Policies
-
-Paths are relative to `01_policies/`. Status notes reflect policy quality, not file presence.
-
-| Game     | SCoBots                       | INSIGHT                                               | NUDGE                                                       |
-| -------- | ----------------------------- | ----------------------------------------------------- | ----------------------------------------------------------- |
-| Pong     | `scobots/pong/aligned.py`     | `insight/pong/aligned.txt` (works)                    | `nudge/pong/rules.txt` (not reliable)                       |
-| Freeway  | `scobots/freeway/aligned.py`  | `insight/freeway/aligned.txt` (degenerate, always DOWN) | `nudge/freeway/rules.txt` (degenerate, always UP)         |
-| Kangaroo | `scobots/kangaroo/aligned.py` | `insight/kangaroo/aligned.txt` (partial, coconut only) | `nudge/kangaroo/rules.txt` (does not avoid collisions)    |
-| Skiing   | `scobots/skiing/aligned.py`   | `insight/skiing/aligned.txt` (degenerate, all zeros)  | `nudge/skiing/rules.txt` (always left)                      |
-| Seaquest | `scobots/seaquest/aligned.py` | missing (OCAtari bug?)                                | `nudge/seaquest/rules.txt` (works)                          |
-
-Misaligned / ablation variants (e.g. `instahit.txt`, `stay_bottom.py`, `ignore_ball.py`, `_ug` object-name-ablation files, `*_rf.*` reward-variant files) live alongside the aligned policy in each `<framework>/<game>/` directory.
-
-## Contexts
-
-- Freeway [(AtariAge)](https://www.atariage.com/2600/manuals_old/freeway.html)
-- Pong [(AtariAge)](https://atariage.com/manual_html_page.php?SoftwareLabelID=587)
+`01_policies/scobots/{pong,freeway}/{aligned,ignore_ball,stay_bottom}.py`
+are the source artifacts. `tools/blind_policy.py` derives blinded versions
+into `01_policies/scobots/_blinded/` by renaming game-specific object
+names (Ball/Player/Enemy/Chicken/Car → Obj_A/Agent/Obj_B/Hazard_*) and
+stripping action-name comments. SCoBots DSL operators (`D`, `ED`, `LT`,
+`C`, `V`, `DV`) are preserved as game-agnostic feature ops.

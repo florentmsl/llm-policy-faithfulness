@@ -1,5 +1,0 @@
-The policy constantly watches the horizontal gap between the chicken and car 2.  
-- If that gap is narrow (≤ 111), it looks at car 3’s position and then a chain of recent car positions (cars 9, 6, 1, etc.). In most of those sub‑cases it chooses **DOWN** (move the chicken back toward the curb) to avoid an imminent collision; only in a few very specific sub‑cases does it stay still (**NOOP**).  
-- If the gap to car 2 is wide (> 111), it checks car 1’s speed and other cars’ recent positions. When car 1 is slow enough (≤ 59) and car 3 is far enough, it sometimes chooses **UP** (move the chicken forward toward the far curb). It may also go **UP** when car 8’s recent position and its change are small; otherwise it either stays (**NOOP**) or retreats (**DOWN**) if the situation looks risky.  
-
-In short, the agent retreats when cars are too close horizontally, advances when it senses a clear, slow‑moving lead car and distant traffic, and otherwise holds its position to wait for a safer gap. UP moves the chicken toward the top curb (scoring), DOWN moves it back toward the bottom curb, and NOOP waits.

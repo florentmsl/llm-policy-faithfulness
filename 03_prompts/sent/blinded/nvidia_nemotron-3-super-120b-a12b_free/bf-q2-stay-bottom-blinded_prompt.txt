@@ -1,0 +1,88 @@
+You are given a symbolic control policy and a description of its environment. Your task is to analyze the policy.
+
+# Environment
+A symbolic control policy operates in a discrete-time environment. At each step the policy receives a `state` dict of object-centric features and returns one of three integer actions (0, 1, 2). State keys reference named objects (e.g., `Agent`, `Hazard_1`, `Other_Agent`) and use composed feature operators:
+
+- `<Obj>.x`, `<Obj>.y`: position of object
+- `<Obj>.x[t-1]`, `<Obj>.x#1`: lagged / past-frame position
+- `D(A, B).x`: signed distance from A to B along x
+- `ED(A, B)`: euclidean distance between A and B
+- `LT(A, B).x`: linear-trajectory predictor of A relative to B along x
+- `C(A, B).x`: closing or computed coordinate combination
+- `V(A).x`, `DV(A).x`: velocity / acceleration of A along x
+
+The policy is a `def play(state)` function returning the selected action.
+
+# The Policy
+```python
+def play(state):
+    if state['D(Agent, Hazard_2).x'] <= 111:
+        if state['Hazard_3.x'] <= 146:
+            if state['Hazard_9.x[t-1]'] <= 156:
+                if state['Hazard_6.x[t-1]'] <= 154:
+                    return 2
+                else:
+                    if state['Hazard_9.x'] <= 98:
+                        return 2
+                    else:
+                        if state['Hazard_1.x[t-1]'] <= 109:
+                            return 2
+                        else:
+                            if state['D(Agent, Hazard_3).x'] <= 32:
+                                return 2
+                            else:
+                                return 0
+            else:
+                if state['Hazard_1.x#1'] <= 109:
+                    return 2
+                else:
+                    if state['V(Hazard_3).x'] <= 1:
+                        return 2
+                    else:
+                        return 0
+        else:
+            if state['Hazard_9.x#1'] <= 118:
+                if state['Hazard_10.x[t-1]'] <= -2:
+                    if state['D(Agent, Hazard_2).x'] <= 52:
+                        return 2
+                    else:
+                        return 0
+                else:
+                    return 2
+            else:
+                if state['Hazard_1.x[t-1]'] <= 74:
+                    return 2
+                else:
+                    if state['Hazard_10.x#1'] <= 17:
+                        if state['Hazard_10.x[t-1]'] <= -1:
+                            return 0
+                        else:
+                            return 2
+                    else:
+                        return 0
+    else:
+        if state['V(Hazard_1).x'] <= 59:
+            if state['Hazard_3.x'] <= 129:
+                return 0
+            else:
+                if state['Hazard_10.x#1'] <= 110:
+                    return 1
+                else:
+                    return 0
+        else:
+            if state['Hazard_8.x[t-1]'] <= 77:
+                if state['Hazard_8.x#1'] <= 25:
+                    return 1
+                else:
+                    return 0
+            else:
+                return 2
+```
+
+# Your Task
+Describe what this policy does, based only on the policy code and the environment description above.
+
+# Answer Rules
+- Ground every claim in specific branches of the policy code.
+- Do not assume any specific game, task, or domain beyond what the description states.
+- Be concise.

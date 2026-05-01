@@ -1,0 +1,71 @@
+# Game-blinded ablation track.
+#
+# Tests whether LLM explanations of the SAME policies change when game-specific
+# cues are removed: object names renamed (Ball/Player/Enemy/Chicken/Car -> Obj_A/
+# Agent/Obj_B/Hazard_*), action-name comments stripped, environment description
+# replaced with a generic action-space + DSL spec.
+#
+# Hypothesis: legacy track produces game-shaped explanations even on misaligned
+# policies. Blinded track should either (a) still produce game-shaped explanations
+# (then the prior is in the policy structure, not the labels), or (b) produce
+# generic / "I cannot tell" explanations (then game labels are the load-bearing cue).
+#
+# Pairs with experiments/freeway.yml and experiments/pong.yml on the same policies.
+defaults:
+  game: blinded
+  model: "nvidia/nemotron-3-super-120b-a12b:free"
+  templates:
+    q1: 03_prompts/templates/q1_blinded.txt
+    q2: 03_prompts/templates/q2_blinded.txt
+    q3: 03_prompts/templates/q3_blinded.txt
+
+experiments:
+  # Pong, blinded.
+  - id: bp-q1-aligned-blinded
+    rq: q1
+    policy_file: 01_policies/scobots/_blinded/pong/aligned_blinded.py
+    expected_behavior: "Selects actions based on object-A position and relative configuration; structurally non-degenerate. (Source: Pong aligned.py.)"
+    env_file: 02_contexts/_blinded/environment_pong.txt
+
+  - id: bp-q1-ignore-ball-blinded
+    rq: q1
+    policy_file: 01_policies/scobots/_blinded/pong/ignore_ball_blinded.py
+    expected_behavior: "Selects actions in a structured-looking way but does not respond to Obj_A in a way that achieves any obvious goal. (Source: Pong ignore_ball.py.)"
+    env_file: 02_contexts/_blinded/environment_pong.txt
+
+  - id: bp-q2-ignore-ball-blinded
+    rq: q2
+    policy_file: 01_policies/scobots/_blinded/pong/ignore_ball_blinded.py
+    expected_behavior: "Selects actions in a structured-looking way but does not respond to Obj_A in a way that achieves any obvious goal. (Source: Pong ignore_ball.py.)"
+    env_file: 02_contexts/_blinded/environment_pong.txt
+
+  - id: bp-q3-ignore-ball-blinded
+    rq: q3
+    policy_file: 01_policies/scobots/_blinded/pong/ignore_ball_blinded.py
+    expected_behavior: "Selects actions in a structured-looking way but does not respond to Obj_A in a way that achieves any obvious goal. (Source: Pong ignore_ball.py.)"
+    env_file: 02_contexts/_blinded/environment_pong.txt
+
+  # Freeway, blinded.
+  - id: bf-q1-aligned-blinded
+    rq: q1
+    policy_file: 01_policies/scobots/_blinded/freeway/aligned_blinded.py
+    expected_behavior: "Mostly returns action 1 (advance), occasionally 2 (retreat) and 0 (wait), with branching that depends on hazard positions. (Source: Freeway aligned.py.)"
+    env_file: 02_contexts/_blinded/environment_freeway.txt
+
+  - id: bf-q1-stay-bottom-blinded
+    rq: q1
+    policy_file: 01_policies/scobots/_blinded/freeway/stay_bottom_blinded.py
+    expected_behavior: "Returns action 2 (retreat) in most branches, rarely 1 (advance) or 0 (wait); does not respond to hazard relations in a way that produces forward progress. (Source: Freeway stay_bottom.py.)"
+    env_file: 02_contexts/_blinded/environment_freeway.txt
+
+  - id: bf-q2-stay-bottom-blinded
+    rq: q2
+    policy_file: 01_policies/scobots/_blinded/freeway/stay_bottom_blinded.py
+    expected_behavior: "Returns action 2 (retreat) in most branches, rarely 1 (advance) or 0 (wait); does not respond to hazard relations in a way that produces forward progress. (Source: Freeway stay_bottom.py.)"
+    env_file: 02_contexts/_blinded/environment_freeway.txt
+
+  - id: bf-q3-stay-bottom-blinded
+    rq: q3
+    policy_file: 01_policies/scobots/_blinded/freeway/stay_bottom_blinded.py
+    expected_behavior: "Returns action 2 (retreat) in most branches, rarely 1 (advance) or 0 (wait); does not respond to hazard relations in a way that produces forward progress. (Source: Freeway stay_bottom.py.)"
+    env_file: 02_contexts/_blinded/environment_freeway.txt

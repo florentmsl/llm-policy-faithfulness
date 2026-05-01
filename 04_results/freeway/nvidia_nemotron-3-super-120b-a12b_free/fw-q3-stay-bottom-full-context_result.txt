@@ -1,3 +1,0 @@
-1. The policy primarily chooses DOWN (move the chicken backward) or NOOP; it only selects UP (move forward) when specific conditions suggest that nearby cars are sufficiently distant or slow, indicating a perceived safe opening.
-2. As a result, the chicken makes little upward progress, leading to few successful crossings and a low score within the two‑minute‑sixteen‑second limit.
-4. VERDICT: NO

@@ -1,0 +1,20 @@
+The policy chooses an action (0‑5) by testing a hierarchy of conditions on the vertical position of **Obj_A**, a computed relative‑y value **C(Agent,Obj_A).y**, the Euclidean distance to Obj_A, the Agent’s vertical acceleration, its previous y‑position, its x‑velocity, and Obj_A’s lagged y and x positions.
+
+**When Obj_A is low ( state['Obj_A.y'] ≤ 35 ):**  
+1. If the relative y is small ( C(Agent,Obj_A).y ≤ 56 ):  
+   * If the Agent is close to Obj_A ( ED(Agent,Obj_A) ≤ 110 ) → **action 1**.  
+   * Otherwise → **action 3**.  
+2. If the relative y is medium ( 56 < C(Agent,Obj_A).y ≤ 79 ):  
+   * If the Agent is decelerating downward strongly ( DV(Agent).y ≤ ‑8 ) → **action 0**.  
+   * Else if the Agent was not too high previously ( Agent.y[t‑1] ≤ 144 ) → **action 3**.  
+   * Else if the Agent’s x‑speed is low ( V(Agent).x ≤ 2 ) → **action 3**.  
+   * Otherwise → **action 0**.  
+3. If the relative y is large ( C(Agent,Obj_A).y > 79 ) → **action 0**.
+
+**When Obj_A is high ( state['Obj_A.y'] > 35 ):**  
+1. If Obj_A’s lagged y is not too high ( Obj_A.y#1 ≤ 59 ):  
+   * If Obj_A is left‑of‑center ( Obj_A.x ≤ 89 ) → **action 1**.  
+   * Else → **action 2**.  
+2. If Obj_A’s lagged y is high ( Obj_A.y#1 > 59 ) → **action 2**.
+
+In short, the policy steers the Agent toward Obj_A when Obj_A is low and the Agent is nearby or aligned (actions 1/3), otherwise it backs off or moves laterally (actions 0/2), with specific tweaks based on the Agent’s vertical acceleration, past height, and horizontal speed.

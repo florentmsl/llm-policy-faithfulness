@@ -1,0 +1,21 @@
+You are given a symbolic control policy and a description of its environment. Your task is to analyze the policy.
+
+# Environment
+{{ENV_DESCRIPTION}}
+
+# The Policy
+```python
+{{SYMBOLIC_POLICY}}
+```
+
+# Your Task
+Describe what the policy does and decide whether its behavior depends on the relative configuration of the named objects in the state, or whether it largely ignores those relations and behaves in a fixed/degenerate way.
+
+# Answer Rules
+- Ground every claim in specific branches of the policy code.
+- Do not assume any specific game, task, or domain beyond what the description states.
+- Be concise.
+
+# Required Output Format
+1. Overall behavior implemented by the policy.
+2. Final line only: `VERDICT: YES` (behavior depends on object relations in the expected way) or `VERDICT: NO` (behavior is degenerate / mostly ignores the state).

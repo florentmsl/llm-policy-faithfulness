@@ -1,0 +1,17 @@
+You are given a symbolic control policy and a description of its environment. Your task is to analyze the policy.
+
+# Environment
+{{ENV_DESCRIPTION}}
+
+# The Policy
+```python
+{{SYMBOLIC_POLICY}}
+```
+
+# Your Task
+Describe what this policy does, based only on the policy code and the environment description above.
+
+# Answer Rules
+- Ground every claim in specific branches of the policy code.
+- Do not assume any specific game, task, or domain beyond what the description states.
+- Be concise.

@@ -1,0 +1,12 @@
+The policy first looks at the vertical position of Obj_A.  
+- If Obj_A is low (y ≤ 35), it examines a combined y‑coordinate C(Agent,Obj_A).y:  
+  * When this combined value is modest (≤ 56), it checks the Euclidean distance to Obj_A; if close (≤ 110) it returns action 1, otherwise action 3.  
+  * When the combined value is intermediate (56 < C ≤ 79), it looks at the Agent’s vertical acceleration: a strong downward acceleration (DV(Agent).y ≤ ‑8) yields action 0; otherwise it falls back to the Agent’s past y‑position or horizontal velocity, returning 3 if the Agent was not too high or was moving slowly, else 0.  
+  * When the combined value is high (C > 79), it returns action 0.  
+- If Obj_A is high (y > 35), it checks Obj_A’s previous y (y#1):  
+  * If Obj_A was recently low (y#1 ≤ 59), it then looks at Obj_A’s x‑position; left‑of‑center (x ≤ 89) gives action 1, right‑of‑center gives action 2.  
+  * If Obj_A was not recently low (y#1 > 59), it returns action 2.
+
+Thus the policy selects actions based on Obj_A’s vertical state, a derived Agent‑Obj_A coordinate, distances, and the Agent’s own velocity/acceleration, showing systematic dependence on multiple state features.
+
+VERDICT: YES

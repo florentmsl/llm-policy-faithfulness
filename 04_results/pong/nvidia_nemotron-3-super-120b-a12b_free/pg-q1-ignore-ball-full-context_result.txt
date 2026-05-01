@@ -1,7 +1,0 @@
-1. **Overall behavior:**  
-   The policy watches the ball’s vertical position. When the ball is high (near the top of the screen) it tries to “FIRE” (i.e., strike the ball) if the ball is sufficiently close to the paddle; otherwise it moves the paddle upward (LEFT). If the ball is farther away vertically, it adjusts the paddle’s upward motion based on the paddle’s current speed and past position, sometimes holding still (NOOP). When the ball is lower, the policy looks at where the ball will be after its next bounce: if the ball will be low and on the left side of the screen it fires; if it will be low but on the right side it moves the paddle downward (RIGHT); if the ball will be higher after the bounce it always moves the paddle downward. In effect, the policy attempts to intercept the ball and hit it back toward the opponent.
-
-2. **Likely episode outcome:**  
-   By consistently moving to meet the ball and firing when the ball is within reach, the policy should return the ball more often than it misses, leading to a positive score differential over episodes.
-
-**VERDICT: YES**

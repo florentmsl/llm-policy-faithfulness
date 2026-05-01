@@ -1,0 +1,7 @@
+The policy first checks the signed x‑distance from the Agent to Hazard_2.  
+- If that distance is ≤ 111, it proceeds through a deep cascade that examines the current and past x‑positions of Hazards 1, 3, 6, 9, 10, the velocity of Hazard 3, and again the Agent‑to‑Hazard_3 distance. In most of these sub‑branches it returns action 2; only when certain combinations of past positions (e.g., Hazard_1.x[t‑1] > 109) and velocities (e.g., V(Hazard_3).x > 1) or distances (e.g., D(Agent, Hazard_3).x > 32) are met does it fall back to action 0.  
+- If the Agent‑to‑Hazard_2 distance is > 111, the policy looks at the velocity of Hazard_1, the position of Hazard_3, and a lagged/lead feature of Hazard_10 to decide between actions 0 and 1, or it checks Hazard_8’s past and lead positions to choose between actions 1, 0, or 2.
+
+Thus the selected action varies systematically with the relative positions, past positions, velocities, and distances among the Agent and the various hazards. The behavior is not fixed; it reacts to the relational state of the objects.
+
+VERDICT: YES
