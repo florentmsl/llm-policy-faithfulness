@@ -201,27 +201,28 @@ def run(experiments_file: Path, dry: bool, model_override: str | None = None) ->
     for experiment in experiments:
         template_path = template_by_rq[experiment.rq]
 
-        prompt = _build_prompt(experiment, template_path=template_path)
-        prompt_file = prompts_dir / f"{experiment.experiment_id}_prompt.txt"
-        prompt_file.write_text(prompt, encoding="utf-8")
-
         result_file = results_dir / f"{experiment.experiment_id}_result.txt"
         can_overwrite = _can_overwrite_result(result_file)
         if not can_overwrite:
             status = "skipped_existing"
-        elif dry:
-            status = "dry"
-            result_file.write_text(DRY_RUN_RESULT_TEXT, encoding="utf-8")
         else:
-            try:
-                response_text, response_meta = _call_llm(client, openrouter_model, prompt)
-            except Exception as exc:
-                status = f"failed: {type(exc).__name__}: {exc}"
+            prompt = _build_prompt(experiment, template_path=template_path)
+            prompt_file = prompts_dir / f"{experiment.experiment_id}_prompt.txt"
+            prompt_file.write_text(prompt, encoding="utf-8")
+
+            if dry:
+                status = "dry"
+                result_file.write_text(DRY_RUN_RESULT_TEXT, encoding="utf-8")
             else:
-                status = "done"
-                result_file.write_text(response_text, encoding="utf-8")
-                meta_file = results_dir / f"{experiment.experiment_id}_meta.json"
-                meta_file.write_text(json.dumps(response_meta, indent=2) + "\n", encoding="utf-8")
+                try:
+                    response_text, response_meta = _call_llm(client, openrouter_model, prompt)
+                except Exception as exc:
+                    status = f"failed: {type(exc).__name__}: {exc}"
+                else:
+                    status = "done"
+                    result_file.write_text(response_text, encoding="utf-8")
+                    meta_file = results_dir / f"{experiment.experiment_id}_meta.json"
+                    meta_file.write_text(json.dumps(response_meta, indent=2) + "\n", encoding="utf-8")
 
         print(f"{status}: {experiment.experiment_id}")
 

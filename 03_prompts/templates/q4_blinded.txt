@@ -1,0 +1,36 @@
+You are given a symbolic control policy, a description of its environment, and a description of an environment simplification. Your task is to predict how the same policy behaves before and after the simplification.
+
+# Environment
+{{ENV_DESCRIPTION}}
+
+{{#TASK_DESCRIPTION}}
+# Task Objective
+{{TASK_DESCRIPTION}}
+{{/TASK_DESCRIPTION}}
+
+# Environment Simplification
+{{ENV_SIMPLIFICATION_DESCRIPTION}}
+
+# The Policy
+```python
+{{SYMBOLIC_POLICY}}
+```
+
+# Your Task
+Predict how this exact policy behaves in the baseline environment and in the simplified environment.
+
+Clarification:
+- "Simplification" means a change to the environment dynamics, not a simpler policy.
+- The symbolic policy stays exactly the same. Only the environment dynamics change.
+- Predict task performance, not just whether some branch predicates may change.
+
+# Answer Rules
+- Ground every claim in specific branches of the policy code.
+- Use the task objective when deciding whether behavior gets better, worse, or stays about the same.
+- Do not assume any specific game name or domain beyond what the description states.
+- Be concise.
+
+# Required Output Format
+1. Baseline behavior in the original environment.
+2. Behavior in the simplified environment.
+3. Final line only: `VERDICT: BETTER`, `VERDICT: SAME`, `VERDICT: WORSE`, or `VERDICT: UNCLEAR`.

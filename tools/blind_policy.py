@@ -38,6 +38,11 @@ JOBS = [
         "renames": PONG_RENAMES,
     },
     {
+        "src": "01_policies/scobots/pong/chase_enemy.py",
+        "dst": "01_policies/scobots/_blinded/pong/chase_enemy_blinded.py",
+        "renames": PONG_RENAMES,
+    },
+    {
         "src": "01_policies/scobots/freeway/aligned.py",
         "dst": "01_policies/scobots/_blinded/freeway/aligned_blinded.py",
         "renames": FREEWAY_RENAMES,
@@ -45,6 +50,16 @@ JOBS = [
     {
         "src": "01_policies/scobots/freeway/stay_bottom.py",
         "dst": "01_policies/scobots/_blinded/freeway/stay_bottom_blinded.py",
+        "renames": FREEWAY_RENAMES,
+    },
+    {
+        "src": "01_policies/scobots/freeway/alwaysup.txt",
+        "dst": "01_policies/scobots/_blinded/freeway/alwaysup_blinded.py",
+        "renames": FREEWAY_RENAMES,
+    },
+    {
+        "src": "01_policies/scobots/freeway/instahit.txt",
+        "dst": "01_policies/scobots/_blinded/freeway/instahit_blinded.py",
         "renames": FREEWAY_RENAMES,
     },
 ]

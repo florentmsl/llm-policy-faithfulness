@@ -1,0 +1,1 @@
+Task objective: keep `Agent` aligned with `Obj_A` so `Obj_A` is intercepted or returned instead of passing the Agent. Successful behavior should react to `Obj_A`'s position or trajectory. Tracking only `Obj_B` is not sufficient, because `Obj_B` is not the object that must be intercepted.

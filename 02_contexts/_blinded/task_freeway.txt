@@ -1,0 +1,1 @@
+Task objective: move `Agent` upward to the goal side while avoiding `Hazard_*` contacts. Successful behavior should make net upward progress, using waiting or downward retreat only when it helps avoid hazards. A policy that mostly moves downward, ignores hazards, or moves toward hazards is not successful.

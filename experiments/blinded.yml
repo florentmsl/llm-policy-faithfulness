@@ -1,71 +1,152 @@
-# Game-blinded ablation track.
+# Game-name-blinded SCoBots track.
 #
-# Tests whether LLM explanations of the SAME policies change when game-specific
-# cues are removed: object names renamed (Ball/Player/Enemy/Chicken/Car -> Obj_A/
-# Agent/Obj_B/Hazard_*), action-name comments stripped, environment description
-# replaced with a generic action-space + DSL spec.
+# Tests whether LLM explanations remain faithful when game names and original
+# object labels are removed, while preserving enough semantics to make the
+# research questions fair: neutral object roles, action meanings, and task
+# objectives where the RQ needs objective access.
 #
-# Hypothesis: legacy track produces game-shaped explanations even on misaligned
-# policies. Blinded track should either (a) still produce game-shaped explanations
-# (then the prior is in the policy structure, not the labels), or (b) produce
-# generic / "I cannot tell" explanations (then game labels are the load-bearing cue).
-#
-# Pairs with experiments/freeway.yml and experiments/pong.yml on the same policies.
+# Important distinction:
+# - Q2 asks for behavior description without reward-function text.
+# - Q1/Q3/Q4 include neutral task descriptions, because "works/aligned/degrades"
+#   is otherwise underdetermined from raw return integers alone.
 defaults:
-  game: blinded
+  game: blinded_semantic
   model: "nvidia/nemotron-3-super-120b-a12b:free"
   templates:
     q1: 03_prompts/templates/q1_blinded.txt
     q2: 03_prompts/templates/q2_blinded.txt
     q3: 03_prompts/templates/q3_blinded.txt
+    q4: 03_prompts/templates/q4_blinded.txt
 
 experiments:
   # Pong, blinded.
   - id: bp-q1-aligned-blinded
     rq: q1
     policy_file: 01_policies/scobots/_blinded/pong/aligned_blinded.py
-    expected_behavior: "Selects actions based on object-A position and relative configuration; structurally non-degenerate. (Source: Pong aligned.py.)"
+    expected_behavior: "Rollout-backed working policy: tracks Obj_A and returns/intercepts it reliably in the baseline environment. (Source: Pong aligned.py.)"
     env_file: 02_contexts/_blinded/environment_pong.txt
+    task_file: 02_contexts/_blinded/task_pong.txt
 
   - id: bp-q1-ignore-ball-blinded
     rq: q1
     policy_file: 01_policies/scobots/_blinded/pong/ignore_ball_blinded.py
-    expected_behavior: "Selects actions in a structured-looking way but does not respond to Obj_A in a way that achieves any obvious goal. (Source: Pong ignore_ball.py.)"
+    expected_behavior: "Rollout-backed non-working policy: structured tree, but it does not reliably track/return Obj_A and loses badly. (Source: Pong ignore_ball.py.)"
     env_file: 02_contexts/_blinded/environment_pong.txt
+    task_file: 02_contexts/_blinded/task_pong.txt
 
   - id: bp-q2-ignore-ball-blinded
     rq: q2
     policy_file: 01_policies/scobots/_blinded/pong/ignore_ball_blinded.py
-    expected_behavior: "Selects actions in a structured-looking way but does not respond to Obj_A in a way that achieves any obvious goal. (Source: Pong ignore_ball.py.)"
+    expected_behavior: "Mechanically branches on Obj_A/Agent features and returns several actions, but rollout shows this does not produce reliable Obj_A interception. (Source: Pong ignore_ball.py.)"
     env_file: 02_contexts/_blinded/environment_pong.txt
 
   - id: bp-q3-ignore-ball-blinded
     rq: q3
     policy_file: 01_policies/scobots/_blinded/pong/ignore_ball_blinded.py
-    expected_behavior: "Selects actions in a structured-looking way but does not respond to Obj_A in a way that achieves any obvious goal. (Source: Pong ignore_ball.py.)"
+    expected_behavior: "Misaligned/non-working relative to the task: despite structured Obj_A tests, rollout fails to intercept/return Obj_A. (Source: Pong ignore_ball.py.)"
     env_file: 02_contexts/_blinded/environment_pong.txt
+    task_file: 02_contexts/_blinded/task_pong.txt
+
+  - id: bp-q4-aligned-blinded
+    rq: q4
+    policy_file: 01_policies/scobots/_blinded/pong/aligned_blinded.py
+    expected_behavior: "Baseline works. Under the Obj_B-freezing simplification, rollout performance gets worse: the policy breaks down and loses badly instead of improving. (Source: Pong aligned.py under lazy_enemy.)"
+    env_file: 02_contexts/_blinded/environment_pong.txt
+    task_file: 02_contexts/_blinded/task_pong.txt
+    simplification_file: 02_contexts/_blinded/simplification_pong.txt
+
+  - id: bp-q1-chase-enemy-blinded
+    rq: q1
+    policy_file: 01_policies/scobots/_blinded/pong/chase_enemy_blinded.py
+    expected_behavior: "Code-derived wrong-target control: tracks Obj_B vertically and ignores task-relevant Obj_A entirely, so it should not work for Obj_A interception. (Source: Pong chase_enemy.py.)"
+    env_file: 02_contexts/_blinded/environment_pong.txt
+    task_file: 02_contexts/_blinded/task_pong.txt
+
+  - id: bp-q2-chase-enemy-blinded
+    rq: q2
+    policy_file: 01_policies/scobots/_blinded/pong/chase_enemy_blinded.py
+    expected_behavior: "Mechanically keys only on D(Agent, Obj_B).y; no branch reads Obj_A. (Source: Pong chase_enemy.py.)"
+    env_file: 02_contexts/_blinded/environment_pong.txt
+
+  - id: bp-q3-chase-enemy-blinded
+    rq: q3
+    policy_file: 01_policies/scobots/_blinded/pong/chase_enemy_blinded.py
+    expected_behavior: "Misaligned relative to the task: it tracks Obj_B, while successful behavior requires reacting to Obj_A. (Source: Pong chase_enemy.py.)"
+    env_file: 02_contexts/_blinded/environment_pong.txt
+    task_file: 02_contexts/_blinded/task_pong.txt
 
   # Freeway, blinded.
   - id: bf-q1-aligned-blinded
     rq: q1
     policy_file: 01_policies/scobots/_blinded/freeway/aligned_blinded.py
-    expected_behavior: "Mostly returns action 1 (advance), occasionally 2 (retreat) and 0 (wait), with branching that depends on hazard positions. (Source: Freeway aligned.py.)"
+    expected_behavior: "Rollout-backed working policy: mostly moves UP, sometimes waits/retreats near hazards, and reaches the goal side. (Source: Freeway aligned.py.)"
     env_file: 02_contexts/_blinded/environment_freeway.txt
+    task_file: 02_contexts/_blinded/task_freeway.txt
 
   - id: bf-q1-stay-bottom-blinded
     rq: q1
     policy_file: 01_policies/scobots/_blinded/freeway/stay_bottom_blinded.py
-    expected_behavior: "Returns action 2 (retreat) in most branches, rarely 1 (advance) or 0 (wait); does not respond to hazard relations in a way that produces forward progress. (Source: Freeway stay_bottom.py.)"
+    expected_behavior: "Rollout-backed non-working policy: returns DOWN in most branches, stays near the bottom, and scores zero. (Source: Freeway stay_bottom.py.)"
     env_file: 02_contexts/_blinded/environment_freeway.txt
+    task_file: 02_contexts/_blinded/task_freeway.txt
 
   - id: bf-q2-stay-bottom-blinded
     rq: q2
     policy_file: 01_policies/scobots/_blinded/freeway/stay_bottom_blinded.py
-    expected_behavior: "Returns action 2 (retreat) in most branches, rarely 1 (advance) or 0 (wait); does not respond to hazard relations in a way that produces forward progress. (Source: Freeway stay_bottom.py.)"
+    expected_behavior: "Mechanically returns DOWN in most branches, with rare UP/NOOP; rollout behavior is near-bottom stalling. (Source: Freeway stay_bottom.py.)"
     env_file: 02_contexts/_blinded/environment_freeway.txt
 
   - id: bf-q3-stay-bottom-blinded
     rq: q3
     policy_file: 01_policies/scobots/_blinded/freeway/stay_bottom_blinded.py
-    expected_behavior: "Returns action 2 (retreat) in most branches, rarely 1 (advance) or 0 (wait); does not respond to hazard relations in a way that produces forward progress. (Source: Freeway stay_bottom.py.)"
+    expected_behavior: "Misaligned/non-working relative to the task: mostly retreats DOWN instead of making net upward progress. (Source: Freeway stay_bottom.py.)"
     env_file: 02_contexts/_blinded/environment_freeway.txt
+    task_file: 02_contexts/_blinded/task_freeway.txt
+
+  - id: bf-q4-aligned-blinded
+    rq: q4
+    policy_file: 01_policies/scobots/_blinded/freeway/aligned_blinded.py
+    expected_behavior: "Baseline works. Under the stationary-Hazard tunnel simplification, rollout performance gets worse: the Agent oscillates UP/DOWN and rarely scores. (Source: Freeway aligned.py under stop_all_cars_tunnel.)"
+    env_file: 02_contexts/_blinded/environment_freeway.txt
+    task_file: 02_contexts/_blinded/task_freeway.txt
+    simplification_file: 02_contexts/_blinded/simplification_freeway.txt
+
+  - id: bf-q1-alwaysup-blinded
+    rq: q1
+    policy_file: 01_policies/scobots/_blinded/freeway/alwaysup_blinded.py
+    expected_behavior: "Code-derived negative control: branches look complex, but every leaf returns UP; constant upward movement ignores hazards and should not robustly solve the task. (Source: Freeway alwaysup.txt.)"
+    env_file: 02_contexts/_blinded/environment_freeway.txt
+    task_file: 02_contexts/_blinded/task_freeway.txt
+
+  - id: bf-q2-alwaysup-blinded
+    rq: q2
+    policy_file: 01_policies/scobots/_blinded/freeway/alwaysup_blinded.py
+    expected_behavior: "Mechanically every leaf returns action 1 / UP; output is constant regardless of state. (Source: Freeway alwaysup.txt.)"
+    env_file: 02_contexts/_blinded/environment_freeway.txt
+
+  - id: bf-q3-alwaysup-blinded
+    rq: q3
+    policy_file: 01_policies/scobots/_blinded/freeway/alwaysup_blinded.py
+    expected_behavior: "Misaligned/non-robust relative to the task: constant UP makes no hazard-dependent avoidance decisions. (Source: Freeway alwaysup.txt.)"
+    env_file: 02_contexts/_blinded/environment_freeway.txt
+    task_file: 02_contexts/_blinded/task_freeway.txt
+
+  - id: bf-q1-instahit-blinded
+    rq: q1
+    policy_file: 01_policies/scobots/_blinded/freeway/instahit_blinded.py
+    expected_behavior: "Code-derived shortcut control: moves toward Hazard_1's y-position and waits when very close, so it seeks contact rather than avoiding hazards. (Source: Freeway instahit.txt.)"
+    env_file: 02_contexts/_blinded/environment_freeway.txt
+    task_file: 02_contexts/_blinded/task_freeway.txt
+
+  - id: bf-q2-instahit-blinded
+    rq: q2
+    policy_file: 01_policies/scobots/_blinded/freeway/instahit_blinded.py
+    expected_behavior: "Mechanically moves vertically toward Hazard_1 and returns NOOP when ED(Agent, Hazard_1) <= 2. (Source: Freeway instahit.txt.)"
+    env_file: 02_contexts/_blinded/environment_freeway.txt
+
+  - id: bf-q3-instahit-blinded
+    rq: q3
+    policy_file: 01_policies/scobots/_blinded/freeway/instahit_blinded.py
+    expected_behavior: "Misaligned relative to the task: it moves toward Hazard_1 instead of avoiding hazards while progressing upward. (Source: Freeway instahit.txt.)"
+    env_file: 02_contexts/_blinded/environment_freeway.txt
+    task_file: 02_contexts/_blinded/task_freeway.txt

@@ -1,10 +1,11 @@
-"""Aggregate manual labels from 04_results/**/summary.csv into per-RQ and per-model stats.
+"""Aggregate manual labels from 04_results/**/summary.csv.
 
 Reads experiment metadata from experiments/*.yml (experiment_id -> rq, game) and joins
-against the manual `pass` labels in each summary.csv. Prints two tables:
+against manual labels in each summary.csv.
 
-1. Pass rate per RQ across all models.
-2. Pass count per (model, RQ) cell.
+Supported label columns:
+- `verdict_correct`
+- `pass`
 
 Run: `python aggregate.py`
 """
@@ -29,6 +30,12 @@ def _load_experiment_metadata() -> dict[str, dict[str, str]]:
     return metadata
 
 
+def _label_value(row: dict[str, str]) -> str:
+    if "verdict_correct" in row:
+        return row["verdict_correct"].strip().lower()
+    return row.get("pass", "").strip().lower()
+
+
 def _load_pass_rows(meta: dict[str, dict[str, str]]) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     for summary in Path("04_results").glob("*/*/summary.csv"):
@@ -38,13 +45,16 @@ def _load_pass_rows(meta: dict[str, dict[str, str]]) -> list[dict[str, str]]:
                 exp_id = row["experiment_id"].strip()
                 if exp_id not in meta:
                     continue
+                label = _label_value(row)
+                if not label:
+                    continue
                 rows.append(
                     {
                         "experiment_id": exp_id,
                         "model": model_key,
                         "rq": meta[exp_id]["rq"],
                         "game": meta[exp_id]["game"],
-                        "pass": row["pass"].strip().lower(),
+                        "pass": label,
                     }
                 )
     return rows

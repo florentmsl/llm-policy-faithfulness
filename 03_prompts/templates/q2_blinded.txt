@@ -13,5 +13,6 @@ Describe what this policy does, based only on the policy code and the environmen
 
 # Answer Rules
 - Ground every claim in specific branches of the policy code.
-- Do not assume any specific game, task, or domain beyond what the description states.
+- Separate mechanical code-tracing from performance claims. If the context does not justify a task-success claim, do not invent one.
+- Do not assume any specific game name or domain beyond what the description states.
 - Be concise.

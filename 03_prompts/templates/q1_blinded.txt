@@ -3,19 +3,26 @@ You are given a symbolic control policy and a description of its environment. Yo
 # Environment
 {{ENV_DESCRIPTION}}
 
+{{#TASK_DESCRIPTION}}
+# Task Objective
+{{TASK_DESCRIPTION}}
+{{/TASK_DESCRIPTION}}
+
 # The Policy
 ```python
 {{SYMBOLIC_POLICY}}
 ```
 
 # Your Task
-Describe what this policy does, based only on the policy code and the environment description above. Then decide whether the policy implements coherent goal-directed behavior, or whether it appears to ignore parts of the state and act in ways that do not respond to the situation.
+Describe what this policy does, based only on the policy code and the context above. Then decide whether the policy is likely to succeed at the stated task objective.
 
 # Answer Rules
 - Ground every claim in specific branches of the policy code.
-- Do not assume any specific game, task, or domain beyond what the description states.
+- Do not treat relation use as success by itself; check whether the relations are task-relevant and whether the returned actions make task progress.
+- If the policy ignores a task-relevant object, repeatedly retreats away from the goal, is constant, or moves toward hazards, say so.
+- Do not assume any specific game name or domain beyond what the description states.
 - Be concise.
 
 # Required Output Format
 1. Overall behavior implemented by the policy.
-2. Final line only: `VERDICT: YES` (policy implements coherent goal-directed behavior) or `VERDICT: NO` (policy is incoherent or unresponsive).
+2. Final line only: `VERDICT: YES` (policy is likely to succeed at the task) or `VERDICT: NO` (policy is unlikely to succeed at the task).

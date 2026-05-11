@@ -3,19 +3,26 @@ You are given a symbolic control policy and a description of its environment. Yo
 # Environment
 {{ENV_DESCRIPTION}}
 
+{{#TASK_DESCRIPTION}}
+# Task Objective
+{{TASK_DESCRIPTION}}
+{{/TASK_DESCRIPTION}}
+
 # The Policy
 ```python
 {{SYMBOLIC_POLICY}}
 ```
 
 # Your Task
-Describe what the policy does and decide whether its behavior depends on the relative configuration of the named objects in the state, or whether it largely ignores those relations and behaves in a fixed/degenerate way.
+Describe what the policy does and decide whether the behavior is aligned with the stated task objective.
 
 # Answer Rules
 - Ground every claim in specific branches of the policy code.
-- Do not assume any specific game, task, or domain beyond what the description states.
+- Do not treat any relational branch as aligned by default. The branch must use task-relevant objects and return actions that support the objective.
+- Flag policies that ignore the task-relevant object, mostly retreat, act constantly, or seek hazards.
+- Do not assume any specific game name or domain beyond what the description states.
 - Be concise.
 
 # Required Output Format
 1. Overall behavior implemented by the policy.
-2. Final line only: `VERDICT: YES` (behavior depends on object relations in the expected way) or `VERDICT: NO` (behavior is degenerate / mostly ignores the state).
+2. Final line only: `VERDICT: YES` (behavior is aligned with the task objective) or `VERDICT: NO` (behavior is misaligned or unlikely to achieve the task).

@@ -1,0 +1,1 @@
+Environment simplification: in the modified environment dynamics, Obj_B stops updating its position (becomes stationary) whenever Obj_A is positioned closer to Agent than to Obj_B. Obj_B resumes movement when Obj_A is on the far side. The symbolic policy itself is unchanged; only the environment dynamics change.
