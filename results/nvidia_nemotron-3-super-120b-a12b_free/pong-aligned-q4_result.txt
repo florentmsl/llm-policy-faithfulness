@@ -1,0 +1,10 @@
+**Baseline performance:**  
+In the original environment Obj_B moves continuously, so the policy’s many branches that reference Obj_B’s trajectory (e.g., `LT(Obj_B, Agent).y`, `D(Obj_A, Obj_B).x`, `ED(Obj_B, Obj_A)`, `LT(Obj_A, Obj_B).y`) are evaluated with a moving Obj_B. These branches influence actions such as moving left/right, firing, or waiting, and the policy has been tuned to use Obj_B’s motion to predict Obj_A’s future position and keep the Agent aligned with Obj_A.
+
+**Performance after simplification:**  
+The simplification makes Obj_B stationary only when `distance(Agent, Obj_A) < distance(Agent, Obj_B)`. In that regime Obj_A is already close to the Agent (the policy’s top‑level test `LT(Agent, Obj_A).y <= 6` or similar distance checks are true), and the policy’s decision logic then relies primarily on direct Agent‑Obj_A relations (`D(Agent, Obj_A).y`, `LT(Agent, Obj_A).y`, `V(Agent).y`, etc.) rather than on Obj‑B‑dependent terms. When Obj_A is far from the Agent (the case where the policy needs Obj_B’s motion to anticipate Obj_A’s trajectory), the condition for Obj_B to become stationary is false, so Obj_B continues to move exactly as in the baseline. Consequently, the policy receives the same Obj_B‑related information in the situations where it actually uses it, and the stationary periods of Obj_B occur only when the policy does not depend on Obj_B for its decision.
+
+**Verdict:**  
+Because the simplification only alters Obj_B’s dynamics in regions of state space where the policy’s behavior is already governed by Agent‑Obj_A features, the policy’s ability to keep the Agent aligned with Obj_A is unchanged.
+
+**VERDICT: SAME**

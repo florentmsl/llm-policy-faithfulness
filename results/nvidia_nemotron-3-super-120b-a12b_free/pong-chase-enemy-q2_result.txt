@@ -1,0 +1,12 @@
+The policy first computes the signed vertical distance from the Agent to Obj_B:
+
+- `delta = state['D(Agent, Obj_B).y']`  
+  (positive delta → Agent is above Obj_B; negative delta → Agent is below Obj_B).
+
+Then it branches on that value:
+
+1. **If `delta > 4`** (Agent is more than 4 units above Obj_B) → returns **action 3 (LEFT)**.  
+2. **Else if `delta < -4`** (Agent is more than 4 units below Obj_B) → returns **action 2 (RIGHT)**.  
+3. **Otherwise** (|delta| ≤ 4) → returns **action 0 (NOOP)**, i.e., no horizontal movement.
+
+Thus, the policy moves the Agent left when it is significantly above Obj_B, moves it right when it is significantly below Obj_B, and does nothing when the Agent is roughly vertically aligned with Obj_B (within a ±4‑unit band). No claim about task success or performance is made; the description follows directly from the code’s mechanics.

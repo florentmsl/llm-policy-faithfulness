@@ -1,0 +1,43 @@
+**Mechanical tracing of the code**
+
+1. **Top‑level test** – `D(Agent, Hazard_2).x ≤ 111`  
+   *True* → the agent is “close” to Hazard 2 (its x‑distance is ≤111).  
+   *False* → the agent is “far” from Hazard 2.
+
+2. **When close to Hazard 2** (`D(Agent, Hazard_2).x ≤ 111`)  
+   - The policy almost always returns **action 2 (DOWN)**.  
+   - The only ways to get a different action are the explicit `else` clauses that return **action 0 (WAIT)**.  
+   - These `else` clauses are reached when one of the following conditions fails:  
+     * `Hazard_3.x ≤ 146` → go to the “far‑Hazard_3” sub‑tree.  
+     * `Hazard_9.x[t‑1] ≤ 156` → go to the “Hazard_9‑old” sub‑tree.  
+     * `Hazard_6.x[t‑1] ≤ 154` → go to the “Hazard_6‑old” sub‑tree.  
+     * `Hazard_9.x ≤ 98` → go to the “Hazard_9‑now” sub‑tree.  
+     * `Hazard_1.x[t‑1] ≤ 109` → go to the “Hazard_1‑old” sub‑tree.  
+     * `D(Agent, Hazard_3).x ≤ 32` → go to the “Agent‑Hazard_3 distance” sub‑tree.  
+     * `Hazard_1.x#1 ≤ 109` → go to the “Hazard_1‑lag2” sub‑tree.  
+     * `V(Hazard_3).x ≤ 1` → go to the “Hazard_3‑velocity” sub‑tree.  
+     * `Hazard_10.x[t‑1] ≤ -2` (and then `D(Agent, Hazard_2).x ≤ 52`) → go to the “Hazard_10‑old & close‑Hazard_2” sub‑tree.  
+     * `Hazard_1.x[t‑1] ≤ 74` → go to the “Hazard_1‑old‑2” sub‑tree.  
+     * `Hazard_10.x#1 ≤ 17` (and then `Hazard_10.x[t‑1] ≤ -1`) → go to the “Hazard_10‑lag2 & old‑1” sub‑tree.  
+
+   In every one of those sub‑trees the final `else` that is not covered by the above tests returns **0**; otherwise the branch returns **2**.
+
+3. **When far from Hazard 2** (`D(Agent, Hazard_2).x > 111`)  
+   - The policy first checks the velocity of Hazard 1: `V(Hazard_1).x ≤ 59`.  
+     *If true* →  
+        - If `Hazard_3.x ≤ 129` → **0 (WAIT)**.  
+        - Else → if `Hazard_10.x#1 ≤ 110` → **1 (UP)**; otherwise **0**.  
+     *If false* (`V(Hazard_1).x > 59`) →  
+        - If `Hazard_8.x[t‑1] ≤ 77` →  
+              * if `Hazard_8.x#1 ≤ 25` → **1 (UP)**; else **0**.  
+        - Else → **2 (DOWN)**.
+
+**Summary of behaviour (grounded in the code)**  
+
+- **DOWN (action 2)** is the default action in the majority of branches, especially when the agent is near Hazard 2 or when various hazard positions/velocities fall below the listed thresholds.  
+- **WAIT (action 0)** appears only as the fallback when none of the conditions that trigger DOWN (or, in the far‑Hazard_2 case, UP) are satisfied.  
+- **UP (action 1)** is selected only when the agent is far from Hazard 2 **and** either:  
+  * Hazard 1 is slow (`V(Hazard_1).x ≤ 59`) and Hazard 3 is to the right of 129 while Hazard 10’s lagged position is ≤110, **or**  
+  * Hazard 1 is fast (`V(Hazard_1).x > 59`), Hazard 8’s recent position is ≤77 and its older position is ≤25.  
+
+Thus, the policy tries to move the agent downward unless specific configurations of hazard positions, velocities, or distances indicate that waiting or moving upward is the safer alternative. No claim about task success (e.g., reaching a goal or avoiding collisions) is made, as the environment description does not provide a goal definition.

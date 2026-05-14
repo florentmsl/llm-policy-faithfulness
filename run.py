@@ -1,3 +1,11 @@
+"""Run LLM-policy-faithfulness experiments defined in experiments.yml.
+
+For each row: build the prompt from a template + policy + context files, call the LLM
+via OpenRouter, save the raw response. Labels are added by hand to results/labels.csv.
+
+Precedence for model selection: --model > OPENROUTER_MODEL env > YAML `defaults.model`.
+"""
+
 import argparse
 import datetime as _dt
 import json
@@ -23,15 +31,12 @@ MODEL_KEY_TO_OPENROUTER = {
 @dataclass(frozen=True)
 class Experiment:
     experiment_id: str
-    game: str
     rq: str
     policy_file: str
-    expected_behavior: str
     env_file: str | None
     task_file: str | None
     reward_file: str | None
     simplification_file: str | None
-    icl_file: str | None
 
 
 def _read_file(path: str) -> str:
@@ -54,101 +59,69 @@ def _optional_string(value: object | None) -> str | None:
     return stripped if stripped else None
 
 
-def _resolve_optional_field(row: dict[str, object], field_name: str, default_value: str | None) -> str | None:
-    if field_name in row:
-        return _optional_string(row.get(field_name))
-    return default_value
+def _resolve_optional(row: dict, field: str, default: str | None) -> str | None:
+    if field in row:
+        return _optional_string(row.get(field))
+    return default
 
 
 def _render_optional_blocks(template: str, replacements: dict[str, str]) -> str:
     def replace_block(match: re.Match[str]) -> str:
         key = match.group(1)
-        block_content = match.group(2)
-        value = replacements.get(key, "")
-        return block_content if value.strip() else ""
+        block = match.group(2)
+        return block if replacements.get(key, "").strip() else ""
 
     rendered = template
     while True:
-        next_rendered = OPTIONAL_BLOCK_PATTERN.sub(replace_block, rendered)
-        if next_rendered == rendered:
-            break
-        rendered = next_rendered
-    return rendered
+        nxt = OPTIONAL_BLOCK_PATTERN.sub(replace_block, rendered)
+        if nxt == rendered:
+            return rendered
+        rendered = nxt
 
 
-def _load_experiment_file(path: Path) -> tuple[str, dict[str, str], str, list[Experiment]]:
+def _load(path: Path) -> tuple[str, dict[str, str], list[Experiment]]:
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     defaults = data["defaults"]
-
     model = str(defaults["model"]).strip()
-    game = str(defaults["game"]).strip()
-    default_env_file = _optional_string(defaults.get("env_file"))
-    default_task_file = _optional_string(defaults.get("task_file"))
-    default_reward_file = _optional_string(defaults.get("reward_file"))
-    default_simplification_file = _optional_string(defaults.get("simplification_file"))
-    default_icl_file = _optional_string(defaults.get("icl_file"))
+    templates = {str(k).strip().lower(): str(v).strip() for k, v in defaults["templates"].items()}
+    default_env = _optional_string(defaults.get("env_file"))
+    default_task = _optional_string(defaults.get("task_file"))
+    default_reward = _optional_string(defaults.get("reward_file"))
+    default_simp = _optional_string(defaults.get("simplification_file"))
 
-    template_by_rq = {str(rq).strip().lower(): str(template_path).strip() for rq, template_path in defaults["templates"].items()}
-
-    experiments: list[Experiment] = []
-    for row in data.get("experiments", []):
-        experiment_id = str(row["id"]).strip()
-        rq = str(row["rq"]).strip().lower()
-        policy_file = str(row["policy_file"]).strip()
-        expected_behavior = str(row.get("expected_behavior", "")).strip()
-        env_file = _resolve_optional_field(row, "env_file", default_env_file)
-        task_file = _resolve_optional_field(row, "task_file", default_task_file)
-        reward_file = _resolve_optional_field(row, "reward_file", default_reward_file)
-        simplification_file = _resolve_optional_field(row, "simplification_file", default_simplification_file)
-        icl_file = _resolve_optional_field(row, "icl_file", default_icl_file)
-
-        experiments.append(
+    rows: list[Experiment] = []
+    for r in data.get("experiments", []):
+        rows.append(
             Experiment(
-                experiment_id=experiment_id,
-                game=game,
-                rq=rq,
-                policy_file=policy_file,
-                expected_behavior=expected_behavior,
-                env_file=env_file,
-                task_file=task_file,
-                reward_file=reward_file,
-                simplification_file=simplification_file,
-                icl_file=icl_file,
+                experiment_id=str(r["id"]).strip(),
+                rq=str(r["rq"]).strip().lower(),
+                policy_file=str(r["policy_file"]).strip(),
+                env_file=_resolve_optional(r, "env_file", default_env),
+                task_file=_resolve_optional(r, "task_file", default_task),
+                reward_file=_resolve_optional(r, "reward_file", default_reward),
+                simplification_file=_resolve_optional(r, "simplification_file", default_simp),
             )
         )
-
-    return model, template_by_rq, game, experiments
-
-
-def _to_model_dir_key(model_key: str) -> str:
-    sanitized = re.sub(r"[^A-Za-z0-9._-]+", "_", model_key).strip("_")
-    return sanitized or "model"
+    return model, templates, rows
 
 
-def _build_prompt(experiment: Experiment, template_path: str) -> str:
+def _model_dir_key(model_key: str) -> str:
+    return re.sub(r"[^A-Za-z0-9._-]+", "_", model_key).strip("_") or "model"
+
+
+def _build_prompt(exp: Experiment, template_path: str) -> str:
     template = _read_file(template_path)
-    env_text = _read_optional_file(experiment.env_file)
-    task_text = _read_optional_file(experiment.task_file)
-    policy_text = _read_file(experiment.policy_file)
-    icl_text = _read_optional_file(experiment.icl_file)
-    reward_text = _read_optional_file(experiment.reward_file)
-    simplification_text = _read_optional_file(experiment.simplification_file)
-
-    replacement_values = {
-        "ENV_DESCRIPTION": env_text,
-        "TASK_DESCRIPTION": task_text,
-        "REWARD_FUNCTION": reward_text,
-        "ENV_SIMPLIFICATION_DESCRIPTION": simplification_text,
-        "SYMBOLIC_POLICY": policy_text,
-        "IN_CONTEXT_LEARNING_EXAMPLE": icl_text,
+    replacements = {
+        "ENV_DESCRIPTION": _read_optional_file(exp.env_file),
+        "TASK_DESCRIPTION": _read_optional_file(exp.task_file),
+        "REWARD_FUNCTION": _read_optional_file(exp.reward_file),
+        "ENV_SIMPLIFICATION_DESCRIPTION": _read_optional_file(exp.simplification_file),
+        "SYMBOLIC_POLICY": _read_file(exp.policy_file),
     }
-
-    prompt = _render_optional_blocks(template, replacement_values)
-    for key, value in replacement_values.items():
-        placeholder = f"{{{{{key}}}}}"
-        prompt = prompt.replace(placeholder, value)
-
-    return _normalize_prompt(prompt)
+    rendered = _render_optional_blocks(template, replacements)
+    for key, value in replacements.items():
+        rendered = rendered.replace(f"{{{{{key}}}}}", value)
+    return _normalize_prompt(rendered)
 
 
 def _call_llm(client, model: str, prompt: str) -> tuple[str, dict]:
@@ -171,90 +144,65 @@ def _call_llm(client, model: str, prompt: str) -> tuple[str, dict]:
     return text, metadata
 
 
-def _can_overwrite_result(result_file: Path) -> bool:
+def _can_overwrite(result_file: Path) -> bool:
     if not result_file.is_file():
         return True
     return result_file.read_text(encoding="utf-8").strip() == DRY_RUN_RESULT_TEXT.strip()
 
 
-def run(experiments_file: Path, dry: bool, model_override: str | None = None) -> None:
-    model_key, template_by_rq, game, experiments = _load_experiment_file(experiments_file)
-    env_model_override = _optional_string(os.getenv("OPENROUTER_MODEL"))
-    if env_model_override:
-        model_key = env_model_override
+def run(yaml_path: Path, dry: bool, model_override: str | None = None) -> None:
+    model_key, templates, experiments = _load(yaml_path)
+    if env_override := _optional_string(os.getenv("OPENROUTER_MODEL")):
+        model_key = env_override
     if model_override:
         model_key = model_override.strip()
     openrouter_model = MODEL_KEY_TO_OPENROUTER.get(model_key, model_key)
-    model_dir_key = _to_model_dir_key(model_key)
+    model_dir = _model_dir_key(model_key)
 
-    prompts_dir = Path("03_prompts/sent") / game / model_dir_key
-    results_dir = Path("04_results") / game / model_dir_key
+    prompts_dir = Path("prompts/sent") / model_dir
+    results_dir = Path("results") / model_dir
     prompts_dir.mkdir(parents=True, exist_ok=True)
     results_dir.mkdir(parents=True, exist_ok=True)
 
     client = None
     if not dry:
         from openai import OpenAI
-
         client = OpenAI(base_url=OPENROUTER_BASE_URL, api_key=os.getenv("OPENROUTER_API_KEY"))
 
-    for experiment in experiments:
-        template_path = template_by_rq[experiment.rq]
-
-        result_file = results_dir / f"{experiment.experiment_id}_result.txt"
-        can_overwrite = _can_overwrite_result(result_file)
-        if not can_overwrite:
+    for exp in experiments:
+        template_path = templates[exp.rq]
+        result_file = results_dir / f"{exp.experiment_id}_result.txt"
+        if not _can_overwrite(result_file):
             status = "skipped_existing"
         else:
-            prompt = _build_prompt(experiment, template_path=template_path)
-            prompt_file = prompts_dir / f"{experiment.experiment_id}_prompt.txt"
-            prompt_file.write_text(prompt, encoding="utf-8")
-
+            prompt = _build_prompt(exp, template_path)
+            (prompts_dir / f"{exp.experiment_id}_prompt.txt").write_text(prompt, encoding="utf-8")
             if dry:
                 status = "dry"
                 result_file.write_text(DRY_RUN_RESULT_TEXT, encoding="utf-8")
             else:
                 try:
-                    response_text, response_meta = _call_llm(client, openrouter_model, prompt)
+                    text, meta = _call_llm(client, openrouter_model, prompt)
                 except Exception as exc:
                     status = f"failed: {type(exc).__name__}: {exc}"
                 else:
                     status = "done"
-                    result_file.write_text(response_text, encoding="utf-8")
-                    meta_file = results_dir / f"{experiment.experiment_id}_meta.json"
-                    meta_file.write_text(json.dumps(response_meta, indent=2) + "\n", encoding="utf-8")
+                    result_file.write_text(text, encoding="utf-8")
+                    (results_dir / f"{exp.experiment_id}_meta.json").write_text(
+                        json.dumps(meta, indent=2) + "\n", encoding="utf-8"
+                    )
+        print(f"{status}: {exp.experiment_id}")
 
-        print(f"{status}: {experiment.experiment_id}")
-
-    print(f"Loaded experiments file: {experiments_file}")
-    print(f"Experiments processed: {len(experiments)}")
-    print(f"Prompt files: {prompts_dir}")
-    print(f"Result files: {results_dir}")
+    print(f"Loaded: {yaml_path}  rows: {len(experiments)}  prompts: {prompts_dir}  results: {results_dir}")
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run experiments from a YAML experiment definition.")
-    parser.add_argument(
-        "--file",
-        required=True,
-        help="YAML experiments file path.",
-    )
-    parser.add_argument(
-        "--model",
-        help="Optional OpenRouter model ID override. If omitted, OPENROUTER_MODEL is used when set, otherwise the experiments YAML default is used.",
-    )
-    parser.add_argument(
-        "--dry",
-        action="store_true",
-        help="Build prompt files only (no API calls).",
-    )
+    parser = argparse.ArgumentParser(description="Run LLM-policy-faithfulness experiments.")
+    parser.add_argument("--file", default="experiments.yml", help="YAML experiment file (default: experiments.yml).")
+    parser.add_argument("--model", help="OpenRouter model override (else OPENROUTER_MODEL env, else YAML default).")
+    parser.add_argument("--dry", action="store_true", help="Build prompts only, no API calls.")
     args = parser.parse_args()
-
-    run(
-        experiments_file=Path(args.file),
-        dry=args.dry,
-        model_override=args.model,
-    )
+    run(Path(args.file), dry=args.dry, model_override=args.model)
 
 
 if __name__ == "__main__":

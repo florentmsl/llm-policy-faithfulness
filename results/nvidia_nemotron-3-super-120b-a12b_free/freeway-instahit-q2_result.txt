@@ -1,0 +1,9 @@
+The policy first checks how close the Agent is to `Hazard_1`:
+
+* **If** the Euclidean distance `ED(Agent, Hazard_1)` is ≤ 2, it returns **action 0** (NOOP/wait).  
+* **Otherwise**, it looks at the signed y‑distance `D(Agent, Hazard_1).y` (the difference `Hazard_1.y − Agent.y`):
+  * **If** this value is > 0 (the hazard is above the Agent), it returns **action 1** (UP).  
+  * **If** this value is < 0 (the hazard is below the Agent), it returns **action 2** (DOWN).  
+  * **If** the y‑distance is exactly 0 (the Agent and hazard share the same y‑coordinate), none of the above conditions fire and the function falls through to the final `return 0` (NOOP).
+
+In short, when the hazard is farther than 2 units away, the Agent moves vertically toward the hazard’s y‑position; when the hazard is within 2 units (or already aligned vertically), the Agent does nothing. No claim is made about task success or performance beyond this mechanical description.

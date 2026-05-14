@@ -1,46 +1,51 @@
 # LLM Policy Faithfulness
 
-Thesis claim: LLMs can trace transparent symbolic policies, but their explanations become behaviorally unfaithful when correct interpretation requires omitted-variable checks, task semantics, or closed-loop counterfactual prediction.
+Master's thesis harness. Asks: *do LLM natural-language explanations of symbolic RL policies actually describe what the policy does?*
 
-Active target: game-name-blinded semantic SCoBots policies for Pong and Freeway. Game names and original object labels are stripped; neutral object roles, action meanings, and task objectives are included where the research question requires them.
+**Claim:** they do not, in structurally predictable ways. LLMs trace transparent decision-tree code fine, then become unfaithful when correct interpretation requires (a) noticing an omitted task-relevant variable, (b) seeing past surface tree-structure on deep VIPER policies, or (c) predicting closed-loop behavior under changed environment dynamics.
 
-For current evidence status, see `summary.md`. For labeling rules, see `docs/labeling-rubric.md`.
+**Takeaway:** LLM-generated policy explanations cannot be used as ground truth without behavioral verification.
 
-## Research Questions
+## Research questions
 
-- Q1. Can LLMs detect when symbolic policies are working?
-- Q2. Can LLMs describe policy behavior without reward-function text?
-- Q3. Can LLMs detect misaligned policies?
-- Q4. Can LLMs correctly predict how a trained symbolic policy adapts to environment simplification?
+| RQ | Question | Output |
+| --- | --- | --- |
+| Q1 | Will this policy *succeed* in rollout? | `YES` / `NO` |
+| Q2 | What does this policy do? (no reward provided) | free-form description |
+| Q3 | Are the policy's actions *directed at* the task? | `YES` / `NO` |
+| Q4 | Performance direction under a simplification? | `BETTER` / `SAME` / `WORSE` / `UNCLEAR` |
 
-## Experiment Setup
+Q1 is outcome (will it work). Q3 is intent (is it trying). They are distinct probes.
 
-Active experiments file: `experiments/blinded.yml`.
+## Scope
 
-## Prompt Templates
-
-- `03_prompts/templates/q1_blinded.txt` — task-success verdict, `VERDICT: YES|NO`
-- `03_prompts/templates/q2_blinded.txt` — behavior description, no forced verdict
-- `03_prompts/templates/q3_blinded.txt` — task-alignment verdict, `VERDICT: YES|NO`
-- `03_prompts/templates/q4_blinded.txt` — simplification performance direction, `VERDICT: BETTER|SAME|WORSE|UNCLEAR`
-
-Templates use placeholders such as `{{ENV_DESCRIPTION}}`, `{{TASK_DESCRIPTION}}`, `{{ENV_SIMPLIFICATION_DESCRIPTION}}`, and `{{SYMBOLIC_POLICY}}`.
+- **Environments:** Pong, Freeway.
+- **Policy framework:** SCoBots (object-centric decision trees, Delfosse et al. 2024).
+- **Condition:** game names blinded; neutral object/action/task semantics preserved.
+- **Active policies:** 7 (4 rollout-backed VIPER + 3 hand-crafted diagnostic controls).
+- **Active rows:** 19 (`experiments.yml`).
 
 ## Run
 
 ```bash
-cp .env.example .env  # set OPENROUTER_API_KEY
-make experiments-dry  # dry run: generates prompts only
-make experiments-run  # real run against the YAML default model
-make aggregate        # current-label aggregation only
+cp .env.example .env       # set OPENROUTER_API_KEY
+make dry                   # build prompts only, no API calls
+make run                   # real run against YAML default model
 ```
 
-`run.py` writes prompts to `03_prompts/sent/<run_group>/<model_key>/`, raw results to `04_results/<run_group>/<model_key>/<id>_result.txt`, and metadata to `<id>_meta.json`. The active run group is `blinded_semantic`. Existing non-placeholder result files and their prompt artifacts are not overwritten.
+Override model with `--model` flag or `OPENROUTER_MODEL` env var. Outputs land in `results/<model>/`. Labels go in `results/labels.csv` (hand-edited).
 
-## Manual Labeling
+## Repository
 
-`04_results/<run_group>/<model_key>/summary.csv` is hand-maintained. Current labels should follow `docs/labeling-rubric.md`.
+```
+policies/<game>/*.py        symbolic policies (blinded canonical)
+contexts/<game>/            environment, task, simplification descriptions
+prompts/templates/q*.txt    one template per RQ
+ground_truth.csv            rollout-backed answer key
+experiments.yml             experiment definitions
+run.py                      batch runner via OpenRouter
+results/labels.csv          single labels file across all models
+AGENTS.md                   agent-facing repo contract
+```
 
-## Source Policies
-
-Source policies live in `01_policies/scobots/{pong,freeway}/`. `tools/blind_policy.py` derives neutralized versions into `01_policies/scobots/_blinded/` by renaming object identifiers and stripping action-name comments from policy code.
+See `AGENTS.md` for the full thesis framing, labeling rubric, policy provenance, and workflow.

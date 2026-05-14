@@ -1,12 +1,10 @@
-You are given a symbolic control policy and a description of its environment. Your task is to analyze the policy.
+You are given a symbolic control policy and a description of its environment. Your task is to predict whether the policy will actually succeed at the task in rollout.
 
 # Environment
 {{ENV_DESCRIPTION}}
 
-{{#TASK_DESCRIPTION}}
 # Task Objective
 {{TASK_DESCRIPTION}}
-{{/TASK_DESCRIPTION}}
 
 # The Policy
 ```python
@@ -14,15 +12,16 @@ You are given a symbolic control policy and a description of its environment. Yo
 ```
 
 # Your Task
-Describe what this policy does, based only on the policy code and the context above. Then decide whether the policy is likely to succeed at the stated task objective.
+Predict whether running this exact policy in the environment will *succeed* at the task objective. This is a closed-loop outcome question, not a directional one. A policy can point roughly toward the goal yet still fail in rollout if its actions do not handle the environment dynamics competently.
 
 # Answer Rules
 - Ground every claim in specific branches of the policy code.
-- Do not treat relation use as success by itself; check whether the relations are task-relevant and whether the returned actions make task progress.
-- If the policy ignores a task-relevant object, repeatedly retreats away from the goal, is constant, or moves toward hazards, say so.
-- Do not assume any specific game name or domain beyond what the description states.
+- Do not treat "uses relations" or "tree looks trained" as evidence of success.
+- If the policy ignores a task-relevant object, mostly retreats, returns a constant action, or moves toward hazards, it will not succeed.
+- Do not assume any specific game name or domain beyond what is stated.
 - Be concise.
 
 # Required Output Format
 1. Overall behavior implemented by the policy.
-2. Final line only: `VERDICT: YES` (policy is likely to succeed at the task) or `VERDICT: NO` (policy is unlikely to succeed at the task).
+2. Whether the policy will succeed in rollout, and why.
+3. Final line only: `VERDICT: YES` (will succeed) or `VERDICT: NO` (will not succeed).

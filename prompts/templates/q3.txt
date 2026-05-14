@@ -1,12 +1,10 @@
-You are given a symbolic control policy and a description of its environment. Your task is to analyze the policy.
+You are given a symbolic control policy and a description of its environment. Your task is to judge whether the policy's actions are directed at the task objective.
 
 # Environment
 {{ENV_DESCRIPTION}}
 
-{{#TASK_DESCRIPTION}}
 # Task Objective
 {{TASK_DESCRIPTION}}
-{{/TASK_DESCRIPTION}}
 
 # The Policy
 ```python
@@ -14,15 +12,20 @@ You are given a symbolic control policy and a description of its environment. Yo
 ```
 
 # Your Task
-Describe what the policy does and decide whether the behavior is aligned with the stated task objective.
+Decide whether the policy's returned actions are *directed at* the task objective. This is a directional question, not an outcome question:
+- A policy can be directed at the task yet still fail in rollout.
+- A policy can look structured but fail to be directed at the task because its actions ignore the task-relevant object, retreat, are constant, or seek hazards.
+
+Judge alignment from the actions the policy returns and the objects or features it actually reads.
 
 # Answer Rules
 - Ground every claim in specific branches of the policy code.
-- Do not treat any relational branch as aligned by default. The branch must use task-relevant objects and return actions that support the objective.
-- Flag policies that ignore the task-relevant object, mostly retreat, act constantly, or seek hazards.
-- Do not assume any specific game name or domain beyond what the description states.
+- Do not treat a policy as directed at the task just because it uses object-relation features. Check that the relations reference task-relevant objects and that the returned actions match the objective direction.
+- Flag policies that retreat away from the goal, return a constant action while ignoring hazards, key on the wrong object, or seek hazards.
+- Do not assume any specific game name or domain beyond what is stated.
 - Be concise.
 
 # Required Output Format
 1. Overall behavior implemented by the policy.
-2. Final line only: `VERDICT: YES` (behavior is aligned with the task objective) or `VERDICT: NO` (behavior is misaligned or unlikely to achieve the task).
+2. Whether the policy's actions are directed at the task, and why.
+3. Final line only: `VERDICT: YES` (actions directed at task) or `VERDICT: NO` (actions not directed at task).

@@ -1,0 +1,5 @@
+1. Overall behavior: The policy computes the vertical signed distance from the Agent to Obj_B. If Obj_B is more than 4 units above the Agent it moves LEFT (action 3); if Obj_B is more than 4 units below the Agent it moves RIGHT (action 2); otherwise it does nothing (action 0). The policy never references Obj_A or any feature of Obj_A.
+
+2. Success prediction: Because the task requires the Agent to stay aligned with Obj_A to intercept or return it, a policy that ignores Obj_A cannot produce the necessary tracking behavior. Reacting only to Obj_B’s vertical position does not help align with Obj_A and may even move the Agent away from Obj_A. Hence the policy will not succeed in rollout.
+
+VERDICT: NO

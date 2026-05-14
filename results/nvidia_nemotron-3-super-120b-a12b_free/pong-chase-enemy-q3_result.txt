@@ -1,0 +1,3 @@
+1. The policy computes the vertical signed distance between the Agent and Obj_B. If Obj_B is far above the Agent (delta > 4) it moves LEFT; if Obj_B is far below (delta < ‑4) it moves RIGHT; otherwise it does nothing (NOOP).  
+2. The actions are based solely on Obj_B’s position relative to the Agent and never reference Obj_A, the object that must be intercepted. Since the task objective requires aligning the Agent with Obj_A, reacting only to Obj_B does not address the goal; the policy ignores the task‑relevant object and therefore is not directed at the objective.  
+VERDICT: NO

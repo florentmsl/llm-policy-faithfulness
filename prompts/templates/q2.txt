@@ -1,4 +1,4 @@
-You are given a symbolic control policy and a description of its environment. Your task is to analyze the policy.
+You are given a symbolic control policy and a description of its environment. Your task is to describe what the policy does.
 
 # Environment
 {{ENV_DESCRIPTION}}
@@ -13,6 +13,6 @@ Describe what this policy does, based only on the policy code and the environmen
 
 # Answer Rules
 - Ground every claim in specific branches of the policy code.
-- Separate mechanical code-tracing from performance claims. If the context does not justify a task-success claim, do not invent one.
-- Do not assume any specific game name or domain beyond what the description states.
+- Separate mechanical code-tracing from performance claims. If the context does not support a task-success claim, do not invent one.
+- Do not assume any specific game name or domain beyond what is stated.
 - Be concise.

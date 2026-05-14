@@ -1,0 +1,33 @@
+**Policy overview**
+
+The policy selects an action each time step by examining a handful of scalar features that describe the vertical relationship between the Agent and the task‑relevant object `Obj_A`, together with a few Agent‑specific motion quantities. The decision tree can be read directly from the nested `if` statements:
+
+| Condition (in order of evaluation) | Action returned | What the condition is checking |
+|-------------------------------------|----------------|--------------------------------|
+| `state['Obj_A.y'] <= 35` (Obj_A is low on the screen) | – | – |
+| &nbsp;&nbsp;`state['C(Agent, Obj_A).y'] <= 56` (the combined y‑coordinate of Agent and Obj_A is not far above the Agent) | – | – |
+| &nbsp;&nbsp;&nbsp;&nbsp;`state['ED(Agent, Obj_A)'] <= 110` (Agent and Obj_A are within ~110 units Euclidean distance) | **1** (`FIRE`) | When Obj_A is low, close enough, and the combined y‑position is modest, the policy fires/serves. |
+| &nbsp;&nbsp;&nbsp;&nbsp;`else` (distance > 110) | **3** (`LEFT`) | If Obj_A is low but farther away, the Agent moves left. |
+| &nbsp;&nbsp;`else` (`state['C(Agent, Obj_A).y'] > 56`) | – | – |
+| &nbsp;&nbsp;&nbsp;&nbsp;`state['C(Agent, Obj_A).y'] <= 79` (combined y still moderate) | – | – |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`state['DV(Agent).y'] <= -8` (Agent is accelerating downward strongly) | **0** (`NOOP`) | When Obj_A is moderately high and the Agent is already moving down fast, the policy does nothing. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`else` (downward acceleration not strong) | – | – |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`state['Agent.y[t-1]'] <= 144` (Agent’s previous y‑position is not too high) | **3** (`LEFT`) | If the Agent hasn’t risen too far, it moves left. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`else` (Agent was high last step) | – | – |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`state['V(Agent).x'] <= 2` (horizontal speed is low) | **3** (`LEFT`) | With low horizontal velocity, the policy again chooses left. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`else` (horizontal speed > 2) | **0** (`NOOP`) | If the Agent is already moving right fast enough, it waits. |
+| &nbsp;&nbsp;&nbsp;&nbsp;`else` (`state['C(Agent, Obj_A).y'] > 79`) (combined y is high) | **0** (`NOOP`) | When Obj_A is relatively high (combined y > 79), the policy does nothing. |
+| `else` (first test failed → `state['Obj_A.y'] > 35`, Obj_A is higher on the screen) | – | – |
+| &nbsp;&nbsp;`state['Obj_A.y#1'] <= 59` (Obj_A’s y‑position one step ago was ≤ 59) | – | – |
+| &nbsp;&nbsp;&nbsp;&nbsp;`state['Obj_A.x'] <= 89` (Obj_A is left of the midline) | **1** (`FIRE`) | If Obj_A was recently low‑mid and is currently on the left side, the policy fires. |
+| &nbsp;&nbsp;&nbsp;&nbsp;`else` (Obj_A.x > 89, i.e., on the right side) | **2** (`RIGHT`) | When Obj_A is on the right, the Agent moves right. |
+| &nbsp;&nbsp;`else` (`state['Obj_A.y#1'] > 59` (Obj_A was already high last step)) | **2** (`RIGHT`) | If Obj_A has been high for a step, the policy simply moves right. |
+
+**What the policy does (in plain language)**  
+
+- When `Obj_A` is low on the screen (`y ≤ 35`), the policy tries to engage it: if the Agent is close enough (Euclidean distance ≤ 110) it fires; otherwise it drifts left.  
+- If `Obj_A` is moderately high (the combined `C(Agent, Obj_A).y` lies between 56 and 79), the policy looks at the Agent’s vertical acceleration: a strong downward push leads to waiting; otherwise it tends to move left unless the Agent is already high and moving right fast enough, in which case it waits.  
+- When `Obj_A` is relatively high (`C(Agent, Obj_A).y > 79`), the policy does nothing.  
+- If `Obj_A` is above the low threshold (`y > 35`), the policy bases its choice on where `Obj_A` was one step ago and where it is now: if it was recently low‑mid and is now left of centre, it fires; otherwise it moves right.  
+
+Thus the policy is a rule‑based controller that alternates between firing/serving, moving left, moving right, and waiting, depending on the vertical position of `Obj_A`, the Agent’s relative position and motion, and a short‑term history of `Obj_A`. No claims about task success are made; the description follows directly from the code’s branches.
