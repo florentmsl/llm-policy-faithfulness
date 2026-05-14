@@ -1,6 +1,0 @@
-logits_NOOP = 0
-
-logits_RIGHT = 0
-
-logits_LEFT = 0
-

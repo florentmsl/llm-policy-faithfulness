@@ -1,8 +1,0 @@
-def play(state):
-    if state["ED(Obj1, Obj3)"] <= 2:
-        return 0  # NOOP
-    if state["D(Obj1, Obj3).y"] > 0:
-        return 1  # UP
-    if state["D(Obj1, Obj3).y"] < 0:
-        return 2  # DOWN
-    return 0  # NOOP
