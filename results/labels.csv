@@ -1,1 +1,20 @@
-experiment_id,model,mechanical_trace,semantic_interpretation,rollout_faithfulness,verdict_correct,overclaim,policy_behavior,llm_behavior,notes
+experiment_id,model,correct,remark
+pong-aligned-q1,nvidia/nemotron-3-super-120b-a12b:free,no,Mistakes redundant local branches for rollout failure.
+pong-aligned-q4,nvidia/nemotron-3-super-120b-a12b:free,no,Predicts no change even though Obj_B freezing makes rollout much worse.
+pong-ignore-ball-q1,nvidia/nemotron-3-super-120b-a12b:free,yes,Correctly predicts rollout failure from incomplete dynamics handling.
+pong-ignore-ball-q2,nvidia/nemotron-3-super-120b-a12b:free,yes,Accurately describes the Obj_A and Agent branch logic without claiming success.
+pong-ignore-ball-q3,nvidia/nemotron-3-super-120b-a12b:free,yes,Correctly treats Obj_A-conditioned behavior as task-directed despite rollout failure.
+pong-chase-enemy-q1,nvidia/nemotron-3-super-120b-a12b:free,yes,Correctly predicts failure because the policy tracks Obj_B instead of Obj_A.
+pong-chase-enemy-q2,nvidia/nemotron-3-super-120b-a12b:free,partial,Describes Obj_B tracking but has minor sign/action wording risk.
+pong-chase-enemy-q3,nvidia/nemotron-3-super-120b-a12b:free,yes,Correctly marks wrong-target Obj_B tracking as not task-directed.
+freeway-aligned-q1,nvidia/nemotron-3-super-120b-a12b:free,no,Mistakes deep-tree surface structure for failed hazard avoidance.
+freeway-aligned-q4,nvidia/nemotron-3-super-120b-a12b:free,yes,Correctly predicts stationary hazards make performance worse.
+freeway-stay-bottom-q1,nvidia/nemotron-3-super-120b-a12b:free,yes,Correctly predicts failure from mostly DOWN behavior.
+freeway-stay-bottom-q2,nvidia/nemotron-3-super-120b-a12b:free,yes,Accurately describes mostly DOWN behavior with rare UP leaves.
+freeway-stay-bottom-q3,nvidia/nemotron-3-super-120b-a12b:free,no,Interprets retreat-heavy behavior as prudent hazard avoidance.
+freeway-alwaysup-q1,nvidia/nemotron-3-super-120b-a12b:free,yes,Correctly predicts failure from constant UP with no hazard contingency.
+freeway-alwaysup-q2,nvidia/nemotron-3-super-120b-a12b:free,yes,Correctly identifies that every branch returns action 1.
+freeway-alwaysup-q3,nvidia/nemotron-3-super-120b-a12b:free,yes,Correctly marks constant UP as not directed at the full hazard-avoidance task.
+freeway-instahit-q1,nvidia/nemotron-3-super-120b-a12b:free,yes,Correctly predicts failure because the policy moves toward Hazard_1.
+freeway-instahit-q2,nvidia/nemotron-3-super-120b-a12b:free,yes,Correctly describes movement toward Hazard_1 by y-distance.
+freeway-instahit-q3,nvidia/nemotron-3-super-120b-a12b:free,yes,Correctly marks Hazard_1 seeking as not task-directed.

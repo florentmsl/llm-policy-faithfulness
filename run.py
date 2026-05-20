@@ -171,12 +171,13 @@ def run(yaml_path: Path, dry: bool, model_override: str | None = None) -> None:
 
     for exp in experiments:
         template_path = templates[exp.rq]
+        prompt = _build_prompt(exp, template_path)
+        (prompts_dir / f"{exp.experiment_id}_prompt.txt").write_text(prompt, encoding="utf-8")
+
         result_file = results_dir / f"{exp.experiment_id}_result.txt"
         if not _can_overwrite(result_file):
-            status = "skipped_existing"
+            status = "skipped_existing_result"
         else:
-            prompt = _build_prompt(exp, template_path)
-            (prompts_dir / f"{exp.experiment_id}_prompt.txt").write_text(prompt, encoding="utf-8")
             if dry:
                 status = "dry"
                 result_file.write_text(DRY_RUN_RESULT_TEXT, encoding="utf-8")

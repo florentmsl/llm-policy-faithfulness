@@ -58,7 +58,7 @@ experiments:
     policy_file: policies/pong/ignore_ball.py
     env_file: contexts/pong/environment.txt
     task_file: contexts/pong/task.txt
-    expected: "actions not directed at Obj_A interception"
+    expected: "directed at Obj_A but incomplete; fails outcome not intent"
 
   - id: pong-chase-enemy-q1
     rq: q1
