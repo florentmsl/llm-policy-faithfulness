@@ -58,6 +58,7 @@ logs/
 *.secrets.*
 
 # --- AI assistants / tooling ---
+docs/
 AGENTS.md
 CLAUDE.md
 CURSOR.md
